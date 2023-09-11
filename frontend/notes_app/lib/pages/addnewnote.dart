@@ -51,7 +51,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                 await Provider.of<NotesProvider>(context, listen: false)
                     .addNewNote(newNote);
               }
-              Navigator.of(context).pop();
+              if (mounted) {
+                Navigator.of(context).pop();
+              }
             },
           )
         ],
