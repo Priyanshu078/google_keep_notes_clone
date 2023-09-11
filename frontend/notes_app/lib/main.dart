@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/homepage.dart';
-import 'package:notes_app/notes_provider.dart';
+import 'package:notes_app/pages/homepage.dart';
+import 'package:notes_app/provider/notes_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {

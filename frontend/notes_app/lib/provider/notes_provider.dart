@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/api_service.dart';
-import 'package:notes_app/note.dart';
+import 'package:notes_app/api/api_service.dart';
+import 'package:notes_app/data/note.dart';
 
 class NotesProvider extends ChangeNotifier {
   List<Note> notes = [];

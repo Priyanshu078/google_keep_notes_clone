@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/note.dart';
-import 'package:notes_app/notes_provider.dart';
+import 'package:notes_app/data/note.dart';
+import 'package:notes_app/provider/notes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -62,6 +62,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
           TextField(
             autofocus: widget.isUpdate ? false : true,
             controller: titleController,
+            style: const TextStyle(
+                fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
             decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: "title",
@@ -73,6 +75,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
           TextField(
             maxLines: null,
             controller: contentController,
+            style: const TextStyle(
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
             decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: "content",

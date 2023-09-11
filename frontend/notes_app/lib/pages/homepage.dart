@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/addnewnote.dart';
-import 'package:notes_app/mytext.dart';
-import 'package:notes_app/notes_provider.dart';
+import 'package:notes_app/pages/addnewnote.dart';
+import 'package:notes_app/widgets/mytext.dart';
+import 'package:notes_app/provider/notes_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -75,21 +75,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                   border: Border.all(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 8.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     MyText(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         text: value.notes[index].title,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     MyText(
-                                        text: value.notes[index].content,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black)
+                                      text: value.notes[index].content,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black,
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
                                   ],
                                 ),
                               ),
