@@ -19,7 +19,8 @@ class ApiService {
           userid: data[i]['userid'],
           content: data[i]['content'],
           title: data[i]['title'],
-          dateAdded: data[i]['dateadded']));
+          dateAdded: data[i]['dateadded'],
+          pinned: data[i]["pinned"]));
     }
     return notes;
   }

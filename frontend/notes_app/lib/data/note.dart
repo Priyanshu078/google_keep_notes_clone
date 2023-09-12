@@ -4,13 +4,16 @@ class Note {
   final String content;
   final String title;
   final String dateAdded;
+  final bool pinned;
 
-  Note(
-      {required this.id,
-      required this.userid,
-      required this.content,
-      required this.title,
-      required this.dateAdded});
+  Note({
+    required this.id,
+    required this.userid,
+    required this.content,
+    required this.title,
+    required this.dateAdded,
+    required this.pinned,
+  });
 
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
@@ -18,16 +21,18 @@ class Note {
         userid: json['userid'],
         content: json['content'],
         title: json['title'],
-        dateAdded: json['dateAdded']);
+        dateAdded: json['dateAdded'],
+        pinned: json['pinned']);
   }
 
-  Note copyWith(String content, String title, String dateAdded) {
+  Note copyWith(String content, String title, String dateAdded, bool pinned) {
     return Note(
         id: id,
         userid: userid,
         content: content,
         title: title,
-        dateAdded: dateAdded);
+        dateAdded: dateAdded,
+        pinned: pinned);
   }
 
   Map<String, dynamic> toJson() {
@@ -36,7 +41,8 @@ class Note {
       "userid": userid,
       "content": content,
       "title": title,
-      "dateadded": dateAdded.toString()
+      "dateadded": dateAdded.toString(),
+      "pinned": pinned,
     };
   }
 }
