@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/data/note.dart';
-import 'package:notes_app/provider/notes_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddNewWidgetPage extends StatefulWidget {
@@ -40,15 +38,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             onPressed: () {
               // context.read<NotesProvider>().setPinned(widget.index);
             },
-            icon: widget.isUpdate
-                ? widget.note!.pinned
-                    ? const Icon(CupertinoIcons.pin_fill)
-                    : const Icon(CupertinoIcons.pin)
-                : Consumer<NotesProvider>(builder: (context, value, child) {
-                    return value.notes[widget.index!].pinned
-                        ? const Icon(CupertinoIcons.pin_fill)
-                        : const Icon(CupertinoIcons.pin);
-                  }),
+            icon: const Icon(CupertinoIcons.pin),
           ),
           IconButton(
             icon: const Icon(Icons.check),
@@ -59,8 +49,6 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                     titleController.text,
                     DateTime.now().toIso8601String(),
                     widget.note!.pinned);
-                Provider.of<NotesProvider>(context, listen: false)
-                    .updateNote(updated);
               } else {
                 Note newNote = Note(
                     id: const Uuid().v1(),
@@ -69,8 +57,6 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                     title: titleController.text,
                     dateAdded: DateTime.now().toIso8601String(),
                     pinned: false);
-                await Provider.of<NotesProvider>(context, listen: false)
-                    .addNewNote(newNote);
               }
               if (mounted) {
                 Navigator.of(context).pop();
