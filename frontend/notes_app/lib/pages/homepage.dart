@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/data/note.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/pages/addnewnote.dart';
 import 'package:notes_app/widgets/mytext.dart';
+
+import '../notes_bloc/notes_bloc.dart';
+import '../notes_bloc/notes_states.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -13,7 +16,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Note> notes = [];
   @override
   void initState() {
     super.initState();
@@ -34,67 +36,71 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-            itemCount: notes.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisSpacing: 5, mainAxisSpacing: 5, crossAxisCount: 2),
-            itemBuilder: ((context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) {
-                          return AddNewWidgetPage(
-                            isUpdate: true,
-                            note: notes[index],
-                            index: index,
-                          );
-                        }));
-                  },
-                  onLongPress: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .inversePrimary
-                            .withOpacity(0.5),
-                        border:
-                            Border.all(color: Theme.of(context).primaryColor),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MyText(
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              text: notes[index].title,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                          const SizedBox(
-                            height: 10,
+          child: BlocBuilder<NotesBloc, NotesStates>(
+            builder: (context, state) {
+              return GridView.builder(
+                itemCount: state.notes.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 5, mainAxisSpacing: 5, crossAxisCount: 2),
+                itemBuilder: ((context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) {
+                              return AddNewWidgetPage(
+                                isUpdate: true,
+                                note: state.notes[index],
+                                index: index,
+                              );
+                            }));
+                      },
+                      onLongPress: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .inversePrimary
+                                .withOpacity(0.5),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MyText(
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: state.notes[index].title,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              MyText(
+                                text: state.notes[index].content,
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                maxLines: 5,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
                           ),
-                          MyText(
-                            text: notes[index].content,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                            maxLines: 5,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               );
-            }),
+            },
           ),
         ),
         floatingActionButton: FloatingActionButton(

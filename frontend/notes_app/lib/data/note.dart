@@ -25,14 +25,15 @@ class Note {
         pinned: json['pinned']);
   }
 
-  Note copyWith(String content, String title, String dateAdded, bool pinned) {
+  Note copyWith(
+      String? content, String? title, String? dateAdded, bool? pinned) {
     return Note(
         id: id,
         userid: userid,
-        content: content,
-        title: title,
-        dateAdded: dateAdded,
-        pinned: pinned);
+        content: content ?? this.content,
+        title: title ?? this.title,
+        dateAdded: dateAdded ?? this.dateAdded,
+        pinned: pinned ?? this.pinned);
   }
 
   Map<String, dynamic> toJson() {
