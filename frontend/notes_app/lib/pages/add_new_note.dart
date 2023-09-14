@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_states.dart';
@@ -41,12 +42,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<AddNotesCubit>().pinUnpinNote();
+            },
             icon: widget.isUpdate
                 ? Container()
                 : BlocBuilder<AddNotesCubit, AddNotesState>(
                     builder: (context, state) {
-                      return state.pinned
+                      return state.note.pinned
                           ? const Icon(CupertinoIcons.pin_fill)
                           : const Icon(CupertinoIcons.pin);
                     },
@@ -57,18 +60,20 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             onPressed: () async {
               if (widget.isUpdate) {
                 Note updated = widget.note!.copyWith(
-                    contentController.text,
-                    titleController.text,
-                    DateTime.now().toIso8601String(),
-                    widget.note!.pinned);
-              } else {
-                Note newNote = Note(
-                    id: const Uuid().v1(),
-                    userid: "priyanshupaliwal",
                     content: contentController.text,
                     title: titleController.text,
                     dateAdded: DateTime.now().toIso8601String(),
-                    pinned: false);
+                    pinned: widget.note!.pinned);
+              } else {
+                var state = context.read<AddNotesCubit>().state;
+                Note newNote = state.note.copyWith(
+                  id: const Uuid().v1(),
+                  userid: "priyanshupaliwal",
+                  content: contentController.text,
+                  title: titleController.text,
+                  dateAdded: DateTime.now().toIso8601String(),
+                );
+                context.read<NotesBloc>().add(AddNote(note: newNote));
               }
               if (mounted) {
                 Navigator.of(context).pop();

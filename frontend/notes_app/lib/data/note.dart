@@ -15,6 +15,15 @@ class Note {
     required this.pinned,
   });
 
+  Note.temp({
+    this.id = "",
+    this.userid = "",
+    this.content = "",
+    this.title = "",
+    this.dateAdded = "",
+    this.pinned = false,
+  });
+
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
         id: json['id'],
@@ -26,10 +35,15 @@ class Note {
   }
 
   Note copyWith(
-      String? content, String? title, String? dateAdded, bool? pinned) {
+      {String? id,
+      String? userid,
+      String? content,
+      String? title,
+      String? dateAdded,
+      bool? pinned}) {
     return Note(
-        id: id,
-        userid: userid,
+        id: id ?? this.id,
+        userid: userid ?? this.userid,
         content: content ?? this.content,
         title: title ?? this.title,
         dateAdded: dateAdded ?? this.dateAdded,

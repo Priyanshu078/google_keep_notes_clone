@@ -25,8 +25,11 @@ class NotesProvider extends ChangeNotifier {
   void updateNote(Note note) async {
     int index =
         notes.indexOf(notes.firstWhere((element) => (element.id == note.id)));
-    notes[index] = notes[index]
-        .copyWith(note.content, note.title, note.dateAdded, note.pinned);
+    notes[index] = notes[index].copyWith(
+        content: note.content,
+        title: note.title,
+        dateAdded: note.dateAdded,
+        pinned: note.pinned);
     await _apiService.updateNotes(note);
     sortNotes();
     notifyListeners();

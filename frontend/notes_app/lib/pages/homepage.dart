@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/bloc/addnotes_cubit/addnotes_cubit.dart';
-import 'package:notes_app/data/note.dart';
-import 'package:notes_app/pages/addnewnote.dart';
+import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 import '../bloc/notes_bloc/notes_bloc.dart';
