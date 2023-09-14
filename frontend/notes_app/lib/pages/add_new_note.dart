@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_bloc.dart';
-import 'package:notes_app/bloc/notes_bloc/notes_states.dart';
 import 'package:uuid/uuid.dart';
-
 import '../bloc/addnotes_cubit/addnotes_cubit.dart';
 import '../bloc/addnotes_cubit/addnotes_states.dart';
 

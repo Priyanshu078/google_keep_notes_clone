@@ -96,7 +96,7 @@ class MyHomePage extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black,
-                                  maxLines: 5,
+                                  maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
                                 )
                               ],
