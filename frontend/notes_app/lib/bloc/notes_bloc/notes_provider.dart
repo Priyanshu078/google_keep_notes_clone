@@ -4,13 +4,9 @@ import 'package:notes_app/data/note.dart';
 
 class NotesProvider extends ChangeNotifier {
   List<Note> notes = [];
-  bool loading = true;
   final ApiService _apiService = ApiService();
 
   void fetchNotes(String userid) async {
-    notes = await _apiService.getNotes(userid);
-    loading = false;
-    sortNotes();
     notifyListeners();
   }
 

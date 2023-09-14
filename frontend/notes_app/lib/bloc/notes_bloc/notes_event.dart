@@ -11,4 +11,9 @@ class UpdateNote extends NotesEvent {}
 
 class DeleteNote extends NotesEvent {}
 
-class FetchNotes extends NotesEvent {}
+class FetchNotes extends NotesEvent {
+  final String userId;
+  FetchNotes({required this.userId});
+  @override
+  List<Object?> get props => [userId];
+}

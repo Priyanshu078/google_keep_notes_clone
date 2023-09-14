@@ -9,3 +9,7 @@ class NotesStates extends Equatable {
   @override
   List<Object?> get props => [notes];
 }
+
+class NotesLoading extends NotesStates {
+  const NotesLoading({required super.notes});
+}

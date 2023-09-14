@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/data/note.dart';
+import 'package:notes_app/bloc/notes_bloc/notes_bloc.dart';
+import 'package:notes_app/bloc/notes_bloc/notes_states.dart';
 import 'package:uuid/uuid.dart';
+
+import '../bloc/addnotes_cubit/addnotes_cubit.dart';
+import '../bloc/addnotes_cubit/addnotes_states.dart';
 
 class AddNewWidgetPage extends StatefulWidget {
   const AddNewWidgetPage(
@@ -35,10 +41,16 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            onPressed: () {
-              // context.read<NotesProvider>().setPinned(widget.index);
-            },
-            icon: const Icon(CupertinoIcons.pin),
+            onPressed: () {},
+            icon: widget.isUpdate
+                ? Container()
+                : BlocBuilder<AddNotesCubit, AddNotesState>(
+                    builder: (context, state) {
+                      return state.pinned
+                          ? const Icon(CupertinoIcons.pin_fill)
+                          : const Icon(CupertinoIcons.pin);
+                    },
+                  ),
           ),
           IconButton(
             icon: const Icon(Icons.check),
