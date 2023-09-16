@@ -20,7 +20,12 @@ class UpdateNote extends NotesEvent {
   List<Object?> get props => [note];
 }
 
-class DeleteNote extends NotesEvent {}
+class DeleteNote extends NotesEvent {
+  final Note note;
+  DeleteNote({required this.note});
+  @override
+  List<Object?> get props => [note];
+}
 
 class FetchNotes extends NotesEvent {
   final String userId;

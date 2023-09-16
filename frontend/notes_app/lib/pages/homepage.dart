@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/bloc/addnotes_cubit/addnotes_cubit.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
@@ -39,55 +39,38 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return SafeArea(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark),
       child: Scaffold(
           backgroundColor: Colors.white,
-          // appBar: AppBar(
-          //   backgroundColor: Theme.of(context).colorScheme.primary,
-          //   title: const MyText(
-          //       text: "Notes App",
-          //       fontSize: 25,
-          //       fontWeight: FontWeight.w600,
-          //       color: Colors.white),
-          //   actions: [
-          //     BlocBuilder<NotesBloc, NotesStates>(
-          //       builder: (context, state) {
-          //         return IconButton(
-          //           onPressed: () {
-          //             context.read<NotesBloc>().add(ChangeViewEvent());
-          //           },
-          //           icon: state.gridViewMode
-          //               ? const Icon(
-          //                   Icons.menu_outlined,
-          //                   color: Colors.white,
-          //                 )
-          //               : const Icon(
-          //                   Icons.grid_view_rounded,
-          //                   color: Colors.white,
-          //                 ),
-          //         );
-          //       },
-          //     ),
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: const Icon(
-          //         Icons.dark_mode,
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //   ],
-          // ),
           appBar: PreferredSize(
               preferredSize: Size(
                 AppBar().preferredSize.width,
                 AppBar().preferredSize.height + height * 0.01,
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                padding: EdgeInsets.fromLTRB(
+                    16, AppBar().preferredSize.height * 0.5, 16, 0),
                 child: TextField(
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
+                    hintText: "Search your notes",
+                    suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
+                      builder: (context, state) {
+                        return IconButton(
+                          onPressed: () {
+                            context.read<NotesBloc>().add(ChangeViewEvent());
+                          },
+                          icon: state.gridViewMode
+                              ? const Icon(Icons.sort)
+                              : const Icon(
+                                  Icons.grid_view_outlined,
+                                ),
+                        );
+                      },
+                    ),
                     prefixIcon: IconButton(
                         onPressed: () {}, icon: const Icon(Icons.menu)),
                     isCollapsed: true,
@@ -135,7 +118,11 @@ class MyHomePage extends StatelessWidget {
                             onTap: () {
                               moveToUpdatePage(context, index);
                             },
-                            onLongPress: () {},
+                            onLongPress: () {
+                              context
+                                  .read<NotesBloc>()
+                                  .add(DeleteNote(note: state.notes[index]));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                   color: Theme.of(context)
@@ -188,7 +175,11 @@ class MyHomePage extends StatelessWidget {
                               onTap: () {
                                 moveToUpdatePage(context, index);
                               },
-                              onLongPress: () {},
+                              onLongPress: () {
+                                context
+                                    .read<NotesBloc>()
+                                    .add(DeleteNote(note: state.notes[index]));
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: Theme.of(context)

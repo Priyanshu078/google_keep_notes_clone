@@ -13,6 +13,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<AddNote>((event, emit) => addNotes(event, emit));
     on<UpdateNote>((event, emit) => updateNotes(event, emit));
     on<ChangeViewEvent>((event, emit) => changeView(event, emit));
+    on<DeleteNote>((event, emit) => deleteNotes(event, emit));
   }
   final ApiService _apiService = ApiService();
 
@@ -60,6 +61,18 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     emit(NotesStates(
         notes: state.notes,
         gridViewMode: !state.gridViewMode,
+        lightMode: state.lightMode));
+  }
+
+  Future<void> deleteNotes(DeleteNote event, Emitter emit) async {
+    await _apiService.deleteNotes(event.note);
+    List<Note> notes = List.from(state.notes);
+    int index = notes.indexWhere((element) => element.id == event.note.id);
+    notes.removeAt(index);
+    notes = sortNotes(notes);
+    emit(NotesStates(
+        notes: notes,
+        gridViewMode: state.gridViewMode,
         lightMode: state.lightMode));
   }
 }
