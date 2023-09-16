@@ -10,7 +10,7 @@ import '../bloc/notes_bloc/notes_bloc.dart';
 import '../bloc/notes_bloc/notes_states.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({
+  MyHomePage({
     super.key,
   });
 
@@ -36,14 +36,18 @@ class MyHomePage extends StatelessWidget {
         }));
   }
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
           statusBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark),
       child: Scaffold(
+          key: _scaffoldKey,
           backgroundColor: Colors.white,
           appBar: PreferredSize(
               preferredSize: Size(
@@ -72,7 +76,10 @@ class MyHomePage extends StatelessWidget {
                       },
                     ),
                     prefixIcon: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.menu)),
+                        onPressed: () {
+                          _scaffoldKey.currentState!.openDrawer();
+                        },
+                        icon: const Icon(Icons.menu)),
                     isCollapsed: true,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -226,6 +233,14 @@ class MyHomePage extends StatelessWidget {
                 }
               }
             }),
+          ),
+          drawer: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+            ),
+            width: width * 0.85,
+            height: height,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
