@@ -33,6 +33,7 @@ class ApiService {
       "userid": note.userid,
       "title": note.title,
       "content": note.content,
+      "pinned": note.pinned,
     });
     debugPrint(response.data.toString());
   }
@@ -53,6 +54,7 @@ class ApiService {
       "id": note.id,
       "title": note.title,
       "content": note.content,
+      "pinned": note.pinned,
     });
     debugPrint(response.data.toString());
   }

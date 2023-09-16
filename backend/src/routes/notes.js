@@ -13,6 +13,7 @@ router.post("/addNotes", async (req, res) => {
     userid: req.body.userid,
     title: req.body.title,
     content: req.body.content,
+    pinned: req.body.pinned,
   });
   try {
     await newNote.save();
@@ -32,6 +33,7 @@ router.post("/updateNotes", async (req, res) => {
     const update = {
       title: req.body.title,
       content: req.body.content,
+      pinned: req.body.pinned,
     };
     await doc.updateOne(update);
     res.send({ status: 200, message: "document updated succussfully" });
