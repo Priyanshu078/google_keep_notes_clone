@@ -13,7 +13,12 @@ class AddNote extends NotesEvent {
   List<Object?> get props => [note];
 }
 
-class UpdateNote extends NotesEvent {}
+class UpdateNote extends NotesEvent {
+  final Note note;
+  UpdateNote({required this.note});
+  @override
+  List<Object?> get props => [note];
+}
 
 class DeleteNote extends NotesEvent {}
 

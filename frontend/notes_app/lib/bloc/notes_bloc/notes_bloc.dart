@@ -9,6 +9,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   NotesBloc() : super(const NotesLoading(notes: [])) {
     on<FetchNotes>((event, emit) => fetchNotes(event, emit));
     on<AddNote>((event, emit) => addNotes(event, emit));
+    on<UpdateNote>((event, emit) => updateNotes(event, emit));
   }
   final ApiService _apiService = ApiService();
 
@@ -30,6 +31,15 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     await _apiService.addNotes(event.note);
     List<Note> notes = List.from(state.notes);
     notes.add(event.note);
+    notes = sortNotes(notes);
+    emit(NotesStates(notes: notes));
+  }
+
+  Future<void> updateNotes(UpdateNote event, Emitter emit) async {
+    await _apiService.updateNotes(event.note);
+    List<Note> notes = List.from(state.notes);
+    int index = notes.indexWhere((note) => note.id == event.note.id);
+    notes[index] = event.note;
     notes = sortNotes(notes);
     emit(NotesStates(notes: notes));
   }

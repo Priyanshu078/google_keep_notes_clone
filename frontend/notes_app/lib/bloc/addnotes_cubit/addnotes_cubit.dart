@@ -10,4 +10,8 @@ class AddNotesCubit extends Cubit<AddNotesState> {
     Note note = state.note.copyWith(pinned: !state.note.pinned);
     emit(AddNotesState(note: note));
   }
+
+  void setNoteData(Note note) {
+    emit(AddNotesState(note: note));
+  }
 }

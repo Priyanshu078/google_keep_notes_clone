@@ -9,11 +9,9 @@ import '../bloc/addnotes_cubit/addnotes_cubit.dart';
 import '../bloc/addnotes_cubit/addnotes_states.dart';
 
 class AddNewWidgetPage extends StatefulWidget {
-  const AddNewWidgetPage(
-      {super.key, required this.isUpdate, this.note, this.index});
+  const AddNewWidgetPage({super.key, required this.isUpdate, this.note});
   final bool isUpdate;
   final Note? note;
-  final int? index;
 
   @override
   State<AddNewWidgetPage> createState() => _AddNewWidgetPageState();
@@ -44,7 +42,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
               context.read<AddNotesCubit>().pinUnpinNote();
             },
             icon: widget.isUpdate
-                ? Container()
+                ? BlocBuilder<AddNotesCubit, AddNotesState>(
+                    builder: (context, state) {
+                      return state.note.pinned
+                          ? const Icon(CupertinoIcons.pin_fill)
+                          : const Icon(CupertinoIcons.pin);
+                    },
+                  )
                 : BlocBuilder<AddNotesCubit, AddNotesState>(
                     builder: (context, state) {
                       return state.note.pinned
@@ -56,14 +60,15 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
+              var state = context.read<AddNotesCubit>().state;
               if (widget.isUpdate) {
-                Note updated = widget.note!.copyWith(
+                Note updated = state.note.copyWith(
                     content: contentController.text,
                     title: titleController.text,
                     dateAdded: DateTime.now().toIso8601String(),
-                    pinned: widget.note!.pinned);
+                    pinned: state.note.pinned);
+                context.read<NotesBloc>().add(UpdateNote(note: updated));
               } else {
-                var state = context.read<AddNotesCubit>().state;
                 Note newNote = state.note.copyWith(
                   id: const Uuid().v1(),
                   userid: "priyanshupaliwal",

@@ -54,12 +54,18 @@ class MyHomePage extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               fullscreenDialog: true,
                               builder: (_) {
-                                return BlocProvider.value(
-                                  value: context.read<NotesBloc>(),
+                                return MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(
+                                      value: context.read<NotesBloc>(),
+                                    ),
+                                    BlocProvider(
+                                        create: (context) => AddNotesCubit()
+                                          ..setNoteData(state.notes[index]))
+                                  ],
                                   child: AddNewWidgetPage(
                                     isUpdate: true,
                                     note: state.notes[index],
-                                    index: index,
                                   ),
                                 );
                               }));
@@ -93,7 +99,7 @@ class MyHomePage extends StatelessWidget {
                                 ),
                                 MyText(
                                   text: state.notes[index].content,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black,
                                   maxLines: 4,
