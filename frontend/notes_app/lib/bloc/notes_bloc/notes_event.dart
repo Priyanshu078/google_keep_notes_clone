@@ -28,3 +28,5 @@ class FetchNotes extends NotesEvent {
   @override
   List<Object?> get props => [userId];
 }
+
+class ChangeViewEvent extends NotesEvent {}
