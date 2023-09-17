@@ -44,137 +44,84 @@ class MyHomePage extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark),
-      child: Scaffold(
-          key: _scaffoldKey,
-          backgroundColor: Colors.white,
-          appBar: PreferredSize(
-              preferredSize: Size(
-                AppBar().preferredSize.width,
-                AppBar().preferredSize.height + height * 0.01,
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    16, AppBar().preferredSize.height * 0.5, 16, 0),
-                child: TextField(
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    hintText: "Search your notes",
-                    suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
-                      builder: (context, state) {
-                        return IconButton(
-                          onPressed: () {
-                            context.read<NotesBloc>().add(ChangeViewEvent());
-                          },
-                          icon: state.gridViewMode
-                              ? const Icon(Icons.sort)
-                              : const Icon(
-                                  Icons.grid_view_outlined,
-                                ),
-                        );
-                      },
-                    ),
-                    prefixIcon: IconButton(
-                        onPressed: () {
-                          _scaffoldKey.currentState!.openDrawer();
-                        },
-                        icon: const Icon(Icons.menu)),
-                    isCollapsed: true,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(30)),
-                    filled: true,
-                    fillColor: Theme.of(context)
-                        .colorScheme
-                        .inversePrimary
-                        .withOpacity(0.5),
-                  ),
+        systemNavigationBarColor: Colors.white,
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Stack(children: [
+        Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: Colors.white,
+            appBar: PreferredSize(
+                preferredSize: Size(
+                  AppBar().preferredSize.width,
+                  AppBar().preferredSize.height + height * 0.01,
                 ),
-              )),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                BlocBuilder<NotesBloc, NotesStates>(builder: (context, state) {
-              if (state is NotesLoading) {
-                return const Center(
-                    child: CircularProgressIndicator.adaptive());
-              } else {
-                if (state.notes.isEmpty) {
-                  return Center(
-                    child: MyText(
-                      text: "No Notes Yet",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColor,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      16, AppBar().preferredSize.height * 0.5, 16, 0),
+                  child: TextField(
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      hintText: "Search your notes",
+                      suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
+                        builder: (context, state) {
+                          return IconButton(
+                            onPressed: () {
+                              context.read<NotesBloc>().add(ChangeViewEvent());
+                            },
+                            icon: state.gridViewMode
+                                ? const Icon(Icons.sort)
+                                : const Icon(
+                                    Icons.grid_view_outlined,
+                                  ),
+                          );
+                        },
+                      ),
+                      prefixIcon: IconButton(
+                          onPressed: () {
+                            _scaffoldKey.currentState!.openDrawer();
+                          },
+                          icon: const Icon(Icons.menu)),
+                      isCollapsed: true,
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(30)),
+                      filled: true,
+                      fillColor: Theme.of(context)
+                          .colorScheme
+                          .inversePrimary
+                          .withOpacity(0.15),
                     ),
-                  );
+                  ),
+                )),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: BlocBuilder<NotesBloc, NotesStates>(
+                  builder: (context, state) {
+                if (state is NotesLoading) {
+                  return const Center(
+                      child: CircularProgressIndicator.adaptive());
                 } else {
-                  if (state.gridViewMode) {
-                    return GridView.builder(
-                      itemCount: state.notes.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                              crossAxisCount: 2),
-                      itemBuilder: ((context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              moveToUpdatePage(context, index);
-                            },
-                            onLongPress: () {
-                              context
-                                  .read<NotesBloc>()
-                                  .add(DeleteNote(note: state.notes[index]));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary
-                                      .withOpacity(0.5),
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MyText(
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        text: state.notes[index].title,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                    SizedBox(
-                                      height: height * 0.005,
-                                    ),
-                                    MyText(
-                                      text: state.notes[index].content,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
+                  if (state.notes.isEmpty) {
+                    return Center(
+                      child: MyText(
+                        text: "No Notes Yet",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     );
                   } else {
-                    return ListView.builder(
+                    if (state.gridViewMode) {
+                      return GridView.builder(
                         itemCount: state.notes.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
+                                crossAxisCount: 2),
                         itemBuilder: ((context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -228,46 +175,110 @@ class MyHomePage extends StatelessWidget {
                               ),
                             ),
                           );
-                        }));
+                        }),
+                      );
+                    } else {
+                      return ListView.builder(
+                          itemCount: state.notes.length,
+                          itemBuilder: ((context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  moveToUpdatePage(context, index);
+                                },
+                                onLongPress: () {
+                                  context.read<NotesBloc>().add(
+                                      DeleteNote(note: state.notes[index]));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary
+                                          .withOpacity(0.5),
+                                      border: Border.all(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        MyText(
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: state.notes[index].title,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                        SizedBox(
+                                          height: height * 0.005,
+                                        ),
+                                        MyText(
+                                          text: state.notes[index].content,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black,
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }));
+                    }
                   }
                 }
-              }
-            }),
-          ),
-          drawer: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
+              }),
             ),
-            width: width * 0.85,
-            height: height,
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (_) {
-                    return MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(
-                          value: context.read<NotesBloc>(),
-                        ),
-                        BlocProvider(
-                          create: (context) => AddNotesCubit(),
-                        ),
-                      ],
-                      child: const AddNewWidgetPage(
-                        isUpdate: false,
-                      ),
-                    );
-                  }));
-            },
-            tooltip: 'Increment',
-            child: const Icon(
-              Icons.add,
-              size: 35,
+            drawer: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              width: width * 0.85,
+              height: height,
             ),
-          )),
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton(
+                // heroTag: "Floating Action Button",
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (_) {
+                        return MultiBlocProvider(
+                          providers: [
+                            BlocProvider(
+                              lazy: false,
+                              create: (context) => AddNotesCubit(),
+                            ),
+                            BlocProvider.value(
+                              value: context.read<NotesBloc>(),
+                            ),
+                          ],
+                          child: const AddNewWidgetPage(
+                            isUpdate: false,
+                          ),
+                        );
+                      }));
+                },
+                tooltip: 'Increment',
+                child: const Icon(
+                  Icons.add,
+                  size: 35,
+                ),
+              ),
+            )),
+      ]),
     );
   }
 }
