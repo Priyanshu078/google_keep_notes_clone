@@ -145,7 +145,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     builder: (context, state) {
                                       return Container(
                                         padding: const EdgeInsets.all(16.0),
-                                        height: height * 0.3,
+                                        height: height * 0.2,
                                         width: double.infinity,
                                         color: state.color,
                                         child: Column(
@@ -160,7 +160,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.black),
                                             SizedBox(
-                                              height: height * 0.05,
+                                              height: height * 0.02,
                                             ),
                                             SizedBox(
                                               height: height * 0.1,
@@ -173,7 +173,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                     (index) => Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .all(8.0),
+                                                                  .only(
+                                                                  right: 8.0),
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
@@ -185,17 +186,43 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                         index],
                                                                   );
                                                             },
-                                                            child: Container(
-                                                              decoration: BoxDecoration(
-                                                                  color: colors[
-                                                                      index],
-                                                                  shape: BoxShape
-                                                                      .circle),
-                                                              height:
-                                                                  height * 0.1,
-                                                              width:
-                                                                  height * 0.1,
-                                                            ),
+                                                            child: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                        color: colors[
+                                                                            index],
+                                                                        shape: BoxShape
+                                                                            .circle),
+                                                                    height:
+                                                                        height *
+                                                                            0.1,
+                                                                    width:
+                                                                        height *
+                                                                            0.1,
+                                                                  ),
+                                                                  state.color ==
+                                                                          colors[
+                                                                              index]
+                                                                      ? Container(
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.all(width: 2, color: Colors.blue),
+                                                                              shape: BoxShape.circle),
+                                                                          height:
+                                                                              height * 0.1,
+                                                                          width:
+                                                                              height * 0.1,
+                                                                          child: const Center(
+                                                                              child: Icon(
+                                                                            Icons.check,
+                                                                            size:
+                                                                                30,
+                                                                            color:
+                                                                                Colors.blue,
+                                                                          )),
+                                                                        )
+                                                                      : Container()
+                                                                ]),
                                                           ),
                                                         )).toList(),
                                               ),
