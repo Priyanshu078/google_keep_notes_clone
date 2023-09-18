@@ -1,13 +1,11 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 import 'package:notes_app/data/note.dart';
 
 class AddNotesState extends Equatable {
   final Note note;
-  final Color color;
+  final int colorIndex;
 
-  const AddNotesState({required this.note, required this.color});
+  const AddNotesState({required this.note, required this.colorIndex});
   @override
-  List<Object?> get props => [note, color];
+  List<Object?> get props => [note, colorIndex];
 }

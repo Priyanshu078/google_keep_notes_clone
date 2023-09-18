@@ -14,6 +14,7 @@ router.post("/addNotes", async (req, res) => {
     title: req.body.title,
     content: req.body.content,
     pinned: req.body.pinned,
+    colorIndex: req.body.colorIndex,
   });
   try {
     await newNote.save();
@@ -34,6 +35,7 @@ router.post("/updateNotes", async (req, res) => {
       title: req.body.title,
       content: req.body.content,
       pinned: req.body.pinned,
+      colorIndex: req.body.colorIndex,
     };
     await doc.updateOne(update);
     res.send({ status: 200, message: "document updated succussfully" });

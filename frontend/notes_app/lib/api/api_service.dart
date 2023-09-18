@@ -20,7 +20,8 @@ class ApiService {
           content: data[i]['content'],
           title: data[i]['title'],
           dateAdded: data[i]['dateadded'],
-          pinned: data[i]["pinned"]));
+          pinned: data[i]["pinned"],
+          colorIndex: data[i]["colorIndex"]));
     }
     return notes;
   }
@@ -34,6 +35,7 @@ class ApiService {
       "title": note.title,
       "content": note.content,
       "pinned": note.pinned,
+      "colorIndex": note.colorIndex,
     });
     debugPrint(response.data.toString());
   }
@@ -55,6 +57,7 @@ class ApiService {
       "title": note.title,
       "content": note.content,
       "pinned": note.pinned,
+      "colorIndex": note.colorIndex,
     });
     debugPrint(response.data.toString());
   }

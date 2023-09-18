@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_bloc.dart';
@@ -40,16 +41,16 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
     return BlocBuilder<AddNotesCubit, AddNotesState>(builder: (context, state) {
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          systemNavigationBarColor: state.color,
-          statusBarColor: state.color,
+          systemNavigationBarColor: colors[state.colorIndex],
+          statusBarColor: colors[state.colorIndex],
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: Scaffold(
-          backgroundColor: state.color,
+          backgroundColor: colors[state.colorIndex],
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.black),
-            backgroundColor: state.color,
+            backgroundColor: colors[state.colorIndex],
             actions: [
               IconButton(
                 onPressed: () {
@@ -78,6 +79,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                         content: contentController.text,
                         title: titleController.text,
                         dateAdded: DateTime.now().toIso8601String(),
+                        colorIndex: state.colorIndex,
+                        pinned: state.note.pinned,
                       );
                       context.read<NotesBloc>().add(AddNote(note: newNote));
                     }
@@ -102,32 +105,32 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                   TextField(
                     autofocus: widget.isUpdate ? false : true,
                     controller: titleController,
-                    style: const TextStyle(
-                        fontSize: 25,
+                    style: GoogleFonts.poppins(
+                        fontSize: 22,
                         color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                    decoration: const InputDecoration(
+                        fontWeight: FontWeight.w500),
+                    decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Title",
-                        hintStyle: TextStyle(
-                            fontSize: 25,
+                        hintStyle: GoogleFonts.poppins(
+                            fontSize: 22,
                             color: Colors.grey,
-                            fontWeight: FontWeight.bold)),
+                            fontWeight: FontWeight.w500)),
                   ),
                   TextField(
                     maxLines: null,
                     controller: contentController,
-                    style: const TextStyle(
-                        fontSize: 18,
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
                         color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                    decoration: const InputDecoration(
+                        fontWeight: FontWeight.w400),
+                    decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Note",
-                        hintStyle: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600)),
+                        hintStyle: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.grey.withOpacity(1),
+                            fontWeight: FontWeight.w400)),
                   ),
                 ]),
               ),
@@ -147,7 +150,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                         padding: const EdgeInsets.all(16.0),
                                         height: height * 0.2,
                                         width: double.infinity,
-                                        color: state.color,
+                                        color: colors[state.colorIndex],
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -182,8 +185,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                   .read<
                                                                       AddNotesCubit>()
                                                                   .setBackgroundColor(
-                                                                    colors[
-                                                                        index],
+                                                                    index,
                                                                   );
                                                             },
                                                             child: Stack(
@@ -201,9 +203,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                         height *
                                                                             0.1,
                                                                   ),
-                                                                  state.color ==
-                                                                          colors[
-                                                                              index]
+                                                                  state.colorIndex ==
+                                                                          index
                                                                       ? Container(
                                                                           decoration: BoxDecoration(
                                                                               border: Border.all(width: 2, color: Colors.blue),
@@ -234,7 +235,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   ),
                                 ));
                       },
-                      icon: const Icon(Icons.color_lens_outlined)),
+                      icon: const Icon(
+                        Icons.color_lens_outlined,
+                        color: Colors.black,
+                      )),
                   MyText(
                       text:
                           "Edited ${TimeOfDay.fromDateTime(DateTime.now()).format(context)}",
@@ -242,7 +246,33 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       fontWeight: FontWeight.w400,
                       color: Colors.black),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) => Container(
+                                  color: Colors.white,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  height: height * 0.15,
+                                  width: double.infinity,
+                                  child: ListTile(
+                                    horizontalTitleGap: 0,
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    leading: const Icon(Icons.delete_outline),
+                                    title: const Padding(
+                                      padding: EdgeInsets.only(left: 8.0),
+                                      child: MyText(
+                                          text: "Delete",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                ));
+                      },
+                      color: Colors.black,
                       icon: const Icon(Icons.more_vert_outlined))
                 ],
               ),

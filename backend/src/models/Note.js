@@ -24,6 +24,9 @@ const noteSchema = mongoose.Schema({
   pinned:{
     type: Boolean,
   },
+  colorIndex:{
+    type: Number
+  }
 });
 
 module.exports = mongoose.model("Note", noteSchema);

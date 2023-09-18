@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/bloc/addnotes_cubit/addnotes_cubit.dart';
 import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
+import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/add_new_note.dart';
+import 'package:notes_app/utils/my_clipper.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 import '../bloc/notes_bloc/notes_bloc.dart';
@@ -136,12 +138,11 @@ class MyHomePage extends StatelessWidget {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary
-                                        .withOpacity(0.5),
-                                    border: Border.all(
-                                        color: Theme.of(context).primaryColor),
+                                    color:
+                                        colors[state.notes[index].colorIndex],
+                                    border: state.notes[index].colorIndex == 0
+                                        ? Border.all(color: Colors.grey)
+                                        : null,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -193,13 +194,11 @@ class MyHomePage extends StatelessWidget {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary
-                                          .withOpacity(0.5),
-                                      border: Border.all(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                      color:
+                                          colors[state.notes[index].colorIndex],
+                                      border: state.notes[index].colorIndex == 0
+                                          ? Border.all(color: Colors.grey)
+                                          : null,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -248,9 +247,8 @@ class MyHomePage extends StatelessWidget {
               height: height,
             ),
             floatingActionButton: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),
               child: FloatingActionButton(
-                // heroTag: "Floating Action Button",
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       fullscreenDialog: true,
@@ -278,6 +276,20 @@ class MyHomePage extends StatelessWidget {
                 ),
               ),
             )),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: ClipPath(
+            clipper: MyClipper(height: height, width: width),
+            child: Container(
+              height: height * 0.055,
+              width: double.infinity,
+              color:
+                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.2),
+            ),
+          ),
+        )
       ]),
     );
   }
