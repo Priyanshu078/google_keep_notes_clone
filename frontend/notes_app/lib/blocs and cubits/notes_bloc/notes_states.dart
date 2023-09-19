@@ -21,3 +21,10 @@ class NotesLoading extends NotesStates {
       required super.gridViewMode,
       required super.lightMode});
 }
+
+class NotesDeleted extends NotesStates {
+  const NotesDeleted(
+      {required super.notes,
+      required super.gridViewMode,
+      required super.lightMode});
+}

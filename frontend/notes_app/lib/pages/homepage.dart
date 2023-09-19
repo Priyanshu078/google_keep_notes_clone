@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes_app/bloc/addnotes_cubit/addnotes_cubit.dart';
-import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
+import 'package:notes_app/blocs%20and%20cubits/addnotes_cubit/addnotes_cubit.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/utils/my_clipper.dart';
 import 'package:notes_app/widgets/mydrawer.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
-import '../bloc/notes_bloc/notes_bloc.dart';
-import '../bloc/notes_bloc/notes_states.dart';
+import '../blocs and cubits/notes_bloc/notes_bloc.dart';
+import '../blocs and cubits/notes_bloc/notes_states.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({
@@ -100,7 +100,7 @@ class MyHomePage extends StatelessWidget {
                   ),
                 )),
             body: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0),
               child: BlocBuilder<NotesBloc, NotesStates>(
                   builder: (context, state) {
                 if (state is NotesLoading) {
@@ -133,9 +133,9 @@ class MyHomePage extends StatelessWidget {
                                 moveToUpdatePage(context, index);
                               },
                               onLongPress: () {
-                                context
-                                    .read<NotesBloc>()
-                                    .add(DeleteNote(note: state.notes[index]));
+                                context.read<NotesBloc>().add(DeleteNote(
+                                    note: state.notes[index],
+                                    addNotesPage: false));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -190,8 +190,9 @@ class MyHomePage extends StatelessWidget {
                                   moveToUpdatePage(context, index);
                                 },
                                 onLongPress: () {
-                                  context.read<NotesBloc>().add(
-                                      DeleteNote(note: state.notes[index]));
+                                  context.read<NotesBloc>().add(DeleteNote(
+                                      note: state.notes[index],
+                                      addNotesPage: false));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -277,15 +278,15 @@ class MyHomePage extends StatelessWidget {
           bottom: 0,
           left: 0,
           right: 0,
-          child: ClipPath(
-            clipper: MyClipper(height: height, width: width),
-            child: Container(
-              height: height * 0.055,
-              width: double.infinity,
-              color:
-                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.2),
-            ),
+          // child: ClipPath(
+          //   clipper: MyClipper(height: height, width: width),
+          child: Container(
+            height: height * 0.055,
+            width: double.infinity,
+            color:
+                Theme.of(context).colorScheme.inversePrimary.withOpacity(0.2),
           ),
+          // ),
         )
       ]),
     );

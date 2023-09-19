@@ -22,9 +22,10 @@ class UpdateNote extends NotesEvent {
 
 class DeleteNote extends NotesEvent {
   final Note note;
-  DeleteNote({required this.note});
+  final bool addNotesPage;
+  DeleteNote({required this.note, required this.addNotesPage});
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [note, addNotesPage];
 }
 
 class FetchNotes extends NotesEvent {

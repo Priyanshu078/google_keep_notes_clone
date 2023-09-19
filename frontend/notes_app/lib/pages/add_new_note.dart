@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/data/note.dart';
-import 'package:notes_app/bloc/notes_bloc/notes_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/utils/utilities.dart';
 import 'package:notes_app/widgets/mytext.dart';
 import 'package:uuid/uuid.dart';
-import '../bloc/addnotes_cubit/addnotes_cubit.dart';
-import '../bloc/addnotes_cubit/addnotes_states.dart';
+import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
+import '../blocs and cubits/addnotes_cubit/addnotes_states.dart';
+import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
 
 class AddNewWidgetPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class AddNewWidgetPage extends StatefulWidget {
 class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
+  final _utilities = Utilities();
 
   @override
   void initState() {
@@ -88,7 +90,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       Navigator.of(context).pop();
                     }
                   } else {
-                    Utilities().showSnackBar(
+                    _utilities.showSnackBar(
                         context, "Empty notes can not be saved!!!");
                   }
                 },
@@ -249,35 +251,61 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       onPressed: () {
                         showModalBottomSheet(
                             context: context,
-                            builder: (_) => BlocProvider.value(
-                                  value: context.read<AddNotesCubit>(),
-                                  child:
-                                      BlocBuilder<AddNotesCubit, AddNotesState>(
-                                    builder: (context, state) {
-                                      return Container(
-                                        color: colors[state.colorIndex],
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8),
-                                        height: height * 0.15,
-                                        width: double.infinity,
-                                        child: ListTile(
-                                          horizontalTitleGap: 0,
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          leading:
-                                              const Icon(Icons.delete_outline),
-                                          title: const Padding(
-                                            padding: EdgeInsets.only(left: 8.0),
-                                            child: MyText(
-                                                text: "Delete",
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                      );
+                            builder: (_) => MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(
+                                      value: context.read<AddNotesCubit>(),
+                                    ),
+                                    BlocProvider.value(
+                                      value: context.read<NotesBloc>(),
+                                    ),
+                                  ],
+                                  child: BlocListener<NotesBloc, NotesStates>(
+                                    listener: (context, state) {
+                                      if (state is NotesDeleted) {
+                                        Navigator.of(context).pop();
+                                        _utilities.showSnackBar(
+                                            context, "Note Deleted !!!");
+                                      }
                                     },
+                                    child: BlocBuilder<AddNotesCubit,
+                                        AddNotesState>(
+                                      builder: (context, state) {
+                                        return Container(
+                                          color: colors[state.colorIndex],
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          height: height * 0.15,
+                                          width: double.infinity,
+                                          child: ListTile(
+                                            horizontalTitleGap: 0,
+                                            onTap: () {
+                                              if (state.note.title.isNotEmpty) {
+                                                context.read<NotesBloc>().add(
+                                                    DeleteNote(
+                                                        note: state.note,
+                                                        addNotesPage: true));
+                                              } else {
+                                                _utilities.showSnackBar(context,
+                                                    "Empty Note can not be deleted !!!");
+                                              }
+                                              Navigator.of(context).pop();
+                                            },
+                                            leading: const Icon(
+                                                Icons.delete_outline),
+                                            title: const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 8.0),
+                                              child: MyText(
+                                                  text: "Delete",
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ));
                       },

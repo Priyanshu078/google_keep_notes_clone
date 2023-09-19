@@ -70,9 +70,16 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     int index = notes.indexWhere((element) => element.id == event.note.id);
     notes.removeAt(index);
     notes = sortNotes(notes);
-    emit(NotesStates(
-        notes: notes,
-        gridViewMode: state.gridViewMode,
-        lightMode: state.lightMode));
+    if (event.addNotesPage) {
+      emit(NotesDeleted(
+          notes: notes,
+          gridViewMode: state.gridViewMode,
+          lightMode: state.lightMode));
+    } else {
+      emit(NotesStates(
+          notes: notes,
+          gridViewMode: state.gridViewMode,
+          lightMode: state.lightMode));
+    }
   }
 }
