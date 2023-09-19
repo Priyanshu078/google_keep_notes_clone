@@ -9,6 +9,9 @@ Color storm = const Color(0xff507B9C);
 Color dusk = const Color(0xffA667AB);
 Color palepink = const Color(0xffCC7D9A);
 Color cherryBlossom = const Color(0xffF7CEE0);
+Color textFieldBackgoundColor = const Color(0xfff4f7fc);
+Color bottomBannerColor = const Color(0xfff2f5fc);
+Color fabColor = const Color(0xffeff4fa);
 
 const List<Color> colors = [
   Color(0xffFFFFFF),

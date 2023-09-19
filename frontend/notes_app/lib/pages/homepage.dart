@@ -8,9 +8,9 @@ import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/utils/my_clipper.dart';
 import 'package:notes_app/widgets/mydrawer.dart';
 import 'package:notes_app/widgets/mytext.dart';
-
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
+import '../utils/my_painter.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({
@@ -45,9 +45,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).red);
+    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).green);
+    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).blue);
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: bottomBannerColor,
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarIconBrightness: Brightness.dark,
@@ -92,39 +95,87 @@ class MyHomePage extends StatelessWidget {
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(30)),
                       filled: true,
-                      fillColor: Theme.of(context)
-                          .colorScheme
-                          .inversePrimary
-                          .withOpacity(0.15),
+                      fillColor: textFieldBackgoundColor,
                     ),
                   ),
                 )),
-            body: Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0),
-              child: BlocBuilder<NotesBloc, NotesStates>(
-                  builder: (context, state) {
-                if (state is NotesLoading) {
-                  return const Center(
-                      child: CircularProgressIndicator.adaptive());
+            body:
+                BlocBuilder<NotesBloc, NotesStates>(builder: (context, state) {
+              if (state is NotesLoading) {
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
+              } else {
+                if (state.notes.isEmpty) {
+                  return Center(
+                    child: MyText(
+                      text: "No Notes Yet",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  );
                 } else {
-                  if (state.notes.isEmpty) {
-                    return Center(
-                      child: MyText(
-                        text: "No Notes Yet",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                  if (state.gridViewMode) {
+                    return GridView.builder(
+                      itemCount: state.notes.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
+                      itemBuilder: ((context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              moveToUpdatePage(context, index);
+                            },
+                            onLongPress: () {
+                              context.read<NotesBloc>().add(DeleteNote(
+                                  note: state.notes[index],
+                                  addNotesPage: false));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: colors[state.notes[index].colorIndex],
+                                  border: state.notes[index].colorIndex == 0
+                                      ? Border.all(color: Colors.grey)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 8.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MyText(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        text: state.notes[index].title,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                    SizedBox(
+                                      height: height * 0.005,
+                                    ),
+                                    MyText(
+                                      text: state.notes[index].content,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black,
+                                      maxLines: 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     );
                   } else {
-                    if (state.gridViewMode) {
-                      return GridView.builder(
+                    return ListView.builder(
                         itemCount: state.notes.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5,
-                                crossAxisCount: 2),
                         itemBuilder: ((context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -177,69 +228,11 @@ class MyHomePage extends StatelessWidget {
                               ),
                             ),
                           );
-                        }),
-                      );
-                    } else {
-                      return ListView.builder(
-                          itemCount: state.notes.length,
-                          itemBuilder: ((context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  moveToUpdatePage(context, index);
-                                },
-                                onLongPress: () {
-                                  context.read<NotesBloc>().add(DeleteNote(
-                                      note: state.notes[index],
-                                      addNotesPage: false));
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color:
-                                          colors[state.notes[index].colorIndex],
-                                      border: state.notes[index].colorIndex == 0
-                                          ? Border.all(color: Colors.grey)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        MyText(
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            text: state.notes[index].title,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
-                                        SizedBox(
-                                          height: height * 0.005,
-                                        ),
-                                        MyText(
-                                          text: state.notes[index].content,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black,
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }));
-                    }
+                        }));
                   }
                 }
-              }),
-            ),
+              }
+            }),
             drawer: MyDrawer(
               height: height,
               width: width,
@@ -247,6 +240,7 @@ class MyHomePage extends StatelessWidget {
             floatingActionButton: Padding(
               padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),
               child: FloatingActionButton(
+                backgroundColor: bottomBannerColor,
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       fullscreenDialog: true,
@@ -275,18 +269,33 @@ class MyHomePage extends StatelessWidget {
               ),
             )),
         Positioned(
-          bottom: 0,
+          top: height - height * 0.055,
           left: 0,
           right: 0,
-          // child: ClipPath(
-          //   clipper: MyClipper(height: height, width: width),
-          child: Container(
-            height: height * 0.055,
-            width: double.infinity,
-            color:
-                Theme.of(context).colorScheme.inversePrimary.withOpacity(0.2),
-          ),
-          // ),
+          child: Stack(children: [
+            ClipPath(
+              clipper: MyClipper(height: height, width: width),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: bottomBannerColor,
+                  // border: Border(
+                  //     top: BorderSide(color: Colors.grey.shade300, width: 0.5)),
+                ),
+                height: height * 0.055,
+                width: width,
+              ),
+            ),
+            CustomPaint(
+              painter: MyPainter(),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                height: height * 0.055,
+                width: width,
+              ),
+            ),
+          ]),
         )
       ]),
     );
