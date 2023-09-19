@@ -249,26 +249,35 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       onPressed: () {
                         showModalBottomSheet(
                             context: context,
-                            builder: (context) => Container(
-                                  color: Colors.white,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  height: height * 0.15,
-                                  width: double.infinity,
-                                  child: ListTile(
-                                    horizontalTitleGap: 0,
-                                    onTap: () {
-                                      Navigator.pop(context);
+                            builder: (_) => BlocProvider.value(
+                                  value: context.read<AddNotesCubit>(),
+                                  child:
+                                      BlocBuilder<AddNotesCubit, AddNotesState>(
+                                    builder: (context, state) {
+                                      return Container(
+                                        color: colors[state.colorIndex],
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8),
+                                        height: height * 0.15,
+                                        width: double.infinity,
+                                        child: ListTile(
+                                          horizontalTitleGap: 0,
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          leading:
+                                              const Icon(Icons.delete_outline),
+                                          title: const Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: MyText(
+                                                text: "Delete",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    leading: const Icon(Icons.delete_outline),
-                                    title: const Padding(
-                                      padding: EdgeInsets.only(left: 8.0),
-                                      child: MyText(
-                                          text: "Delete",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black),
-                                    ),
                                   ),
                                 ));
                       },

@@ -6,6 +6,7 @@ import 'package:notes_app/bloc/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/utils/my_clipper.dart';
+import 'package:notes_app/widgets/mydrawer.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 import '../bloc/notes_bloc/notes_bloc.dart';
@@ -238,13 +239,9 @@ class MyHomePage extends StatelessWidget {
                 }
               }),
             ),
-            drawer: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-              ),
-              width: width * 0.85,
+            drawer: MyDrawer(
               height: height,
+              width: width,
             ),
             floatingActionButton: Padding(
               padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),

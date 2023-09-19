@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/data/note.dart';
-
 import 'addnotes_states.dart';
 
 class AddNotesCubit extends Cubit<AddNotesState> {
@@ -12,7 +11,7 @@ class AddNotesCubit extends Cubit<AddNotesState> {
   }
 
   void setNoteData(Note note) {
-    emit(AddNotesState(note: note, colorIndex: state.colorIndex));
+    emit(AddNotesState(note: note, colorIndex: note.colorIndex));
   }
 
   void setBackgroundColor(int colorIndex) {
