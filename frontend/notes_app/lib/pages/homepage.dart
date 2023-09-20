@@ -45,9 +45,6 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).red);
-    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).green);
-    print(Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5).blue);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: bottomBannerColor,
@@ -55,52 +52,51 @@ class MyHomePage extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
-      child: Stack(children: [
-        Scaffold(
-            key: _scaffoldKey,
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-                preferredSize: Size(
-                  AppBar().preferredSize.width,
-                  AppBar().preferredSize.height + height * 0.01,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      16, AppBar().preferredSize.height * 0.5, 16, 0),
-                  child: TextField(
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                      hintText: "Search your notes",
-                      suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
-                        builder: (context, state) {
-                          return IconButton(
-                            onPressed: () {
-                              context.read<NotesBloc>().add(ChangeViewEvent());
-                            },
-                            icon: state.gridViewMode
-                                ? const Icon(Icons.sort)
-                                : const Icon(
-                                    Icons.grid_view_outlined,
-                                  ),
-                          );
-                        },
-                      ),
-                      prefixIcon: IconButton(
+      child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
+              preferredSize: Size(
+                AppBar().preferredSize.width,
+                AppBar().preferredSize.height + height * 0.01,
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    16, AppBar().preferredSize.height * 0.5, 16, 0),
+                child: TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    hintText: "Search your notes",
+                    suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
+                      builder: (context, state) {
+                        return IconButton(
                           onPressed: () {
-                            _scaffoldKey.currentState!.openDrawer();
+                            context.read<NotesBloc>().add(ChangeViewEvent());
                           },
-                          icon: const Icon(Icons.menu)),
-                      isCollapsed: true,
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(30)),
-                      filled: true,
-                      fillColor: textFieldBackgoundColor,
+                          icon: state.gridViewMode
+                              ? const Icon(Icons.sort)
+                              : const Icon(
+                                  Icons.grid_view_outlined,
+                                ),
+                        );
+                      },
                     ),
+                    prefixIcon: IconButton(
+                        onPressed: () {
+                          _scaffoldKey.currentState!.openDrawer();
+                        },
+                        icon: const Icon(Icons.menu)),
+                    isCollapsed: true,
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(30)),
+                    filled: true,
+                    fillColor: textFieldBackgoundColor,
                   ),
-                )),
-            body:
-                BlocBuilder<NotesBloc, NotesStates>(builder: (context, state) {
+                ),
+              )),
+          body: Stack(children: [
+            BlocBuilder<NotesBloc, NotesStates>(builder: (context, state) {
               if (state is NotesLoading) {
                 return const Center(
                     child: CircularProgressIndicator.adaptive());
@@ -233,71 +229,71 @@ class MyHomePage extends StatelessWidget {
                 }
               }
             }),
-            drawer: MyDrawer(
-              height: height,
-              width: width,
-            ),
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),
-              child: FloatingActionButton(
-                backgroundColor: bottomBannerColor,
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (_) {
-                        return MultiBlocProvider(
-                          providers: [
-                            BlocProvider(
-                              lazy: false,
-                              create: (context) => AddNotesCubit(),
-                            ),
-                            BlocProvider.value(
-                              value: context.read<NotesBloc>(),
-                            ),
-                          ],
-                          child: const AddNewWidgetPage(
-                            isUpdate: false,
-                          ),
-                        );
-                      }));
-                },
-                tooltip: 'Increment',
-                child: const Icon(
-                  Icons.add,
-                  size: 35,
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Stack(children: [
+                ClipPath(
+                  clipper: MyClipper(height: height, width: width),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: bottomBannerColor,
+                      // border: Border(
+                      //     top: BorderSide(color: Colors.grey.shade300, width: 0.5)),
+                    ),
+                    height: height * 0.055,
+                    width: width,
+                  ),
                 ),
-              ),
-            )),
-        Positioned(
-          top: height - height * 0.055,
-          left: 0,
-          right: 0,
-          child: Stack(children: [
-            ClipPath(
-              clipper: MyClipper(height: height, width: width),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: bottomBannerColor,
-                  // border: Border(
-                  //     top: BorderSide(color: Colors.grey.shade300, width: 0.5)),
+                CustomPaint(
+                  painter: MyPainter(),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    height: height * 0.055,
+                    width: width,
+                  ),
                 ),
-                height: height * 0.055,
-                width: width,
-              ),
-            ),
-            CustomPaint(
-              painter: MyPainter(),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                height: height * 0.055,
-                width: width,
-              ),
-            ),
+              ]),
+            )
           ]),
-        )
-      ]),
+          drawer: MyDrawer(
+            height: height,
+            width: width,
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),
+            child: FloatingActionButton(
+              backgroundColor: bottomBannerColor,
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (_) {
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                            lazy: false,
+                            create: (context) => AddNotesCubit(),
+                          ),
+                          BlocProvider.value(
+                            value: context.read<NotesBloc>(),
+                          ),
+                        ],
+                        child: const AddNewWidgetPage(
+                          isUpdate: false,
+                        ),
+                      );
+                    }));
+              },
+              tooltip: 'Increment',
+              child: const Icon(
+                Icons.add,
+                size: 35,
+              ),
+            ),
+          )),
     );
   }
 }
