@@ -119,7 +119,16 @@ class MyHomePage extends StatelessWidget {
                               crossAxisCount: 2),
                       itemBuilder: ((context, index) {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: (state.notes.length % 2 == 0)
+                              ? ((index == state.notes.length - 1) ||
+                                      (index == state.notes.length - 2))
+                                  ? EdgeInsets.fromLTRB(
+                                      8.0, 8.0, 8.0, height * 0.07)
+                                  : const EdgeInsets.all(8.0)
+                              : (index == state.notes.length - 1)
+                                  ? EdgeInsets.fromLTRB(
+                                      8.0, 8.0, 8.0, height * 0.07)
+                                  : const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTap: () {
                               moveToUpdatePage(context, index);
@@ -174,7 +183,10 @@ class MyHomePage extends StatelessWidget {
                         itemCount: state.notes.length,
                         itemBuilder: ((context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: (index == state.notes.length - 1)
+                                ? EdgeInsets.fromLTRB(
+                                    8.0, 8.0, 8.0, height * 0.07)
+                                : const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: () {
                                 moveToUpdatePage(context, index);
@@ -239,8 +251,6 @@ class MyHomePage extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: bottomBannerColor,
-                      // border: Border(
-                      //     top: BorderSide(color: Colors.grey.shade300, width: 0.5)),
                     ),
                     height: height * 0.055,
                     width: width,
