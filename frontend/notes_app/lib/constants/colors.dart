@@ -12,6 +12,10 @@ import 'dart:ui';
 Color textFieldBackgoundColor = const Color(0xfff4f7fc);
 Color bottomBannerColor = const Color(0xfff2f5fc);
 Color fabColor = const Color(0xffeff4fa);
+Color dividerColor = const Color(0xffdae5f4);
+Color rippleColor = const Color(0xffe6eef9);
+Color selectedColor = const Color(0xffc3e7ff);
+Color selectedTextColor = const Color(0xff124b99);
 
 const List<Color> colors = [
   Color(0xffFFFFFF),
