@@ -74,7 +74,7 @@ class MyHomePage extends StatelessWidget {
                             context.read<NotesBloc>().add(ChangeViewEvent());
                           },
                           icon: state.gridViewMode
-                              ? const Icon(Icons.sort)
+                              ? const Icon(Icons.view_agenda_outlined)
                               : const Icon(
                                   Icons.grid_view_outlined,
                                 ),

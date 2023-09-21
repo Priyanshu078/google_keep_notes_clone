@@ -36,3 +36,9 @@ class FetchNotes extends NotesEvent {
 }
 
 class ChangeViewEvent extends NotesEvent {}
+
+class NotesSelectEvent extends NotesEvent {}
+
+class ArchiveSelectEvent extends NotesEvent {}
+
+class TrashSelectEvent extends NotesEvent {}

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/widgets/mytext.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
+import 'package:notes_app/constants/colors.dart';
+import 'package:notes_app/widgets/drawer_listtile.dart';
+
+import '../blocs and cubits/notes_bloc/notes_bloc.dart';
+import '../blocs and cubits/notes_bloc/notes_states.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key, required this.height, required this.width});
@@ -18,60 +24,109 @@ class MyDrawer extends StatelessWidget {
         height: height,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32.0),
-          child: Column(
-            children: [
-              Image.asset("assets/google-keep-logo.png"),
-              ListTile(
-                leading: const Icon(Icons.lightbulb_outline_rounded),
-                title: const MyText(
-                  text: "Notes",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.lightbulb_outline_rounded),
-                title: const MyText(
-                  text: "Notes",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.lightbulb_outline_rounded),
-                title: const MyText(
-                  text: "Notes",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.lightbulb_outline_rounded),
-                title: const MyText(
-                  text: "Notes",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.lightbulb_outline_rounded),
-                title: const MyText(
-                  text: "Help & feedback",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                onTap: () {},
-              ),
-            ],
+          child: BlocBuilder<NotesBloc, NotesStates>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  Image.asset("assets/google-keep-logo.png"),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<NotesBloc>().add(NotesSelectEvent());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: DrawerListTile(
+                        icon: Icons.lightbulb_outline_rounded,
+                        text: "Notes",
+                        textColor: state.notesSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        backgroundColor:
+                            state.notesSelected ? selectedColor : Colors.white,
+                        iconColor: state.notesSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        height: height * 0.07,
+                        width: width,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: dividerColor,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<NotesBloc>().add(ArchiveSelectEvent());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: DrawerListTile(
+                        icon: Icons.archive_outlined,
+                        text: "Archive",
+                        textColor: state.archiveSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        backgroundColor: state.archiveSelected
+                            ? selectedColor
+                            : Colors.white,
+                        iconColor: state.archiveSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        height: height * 0.07,
+                        width: width,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<NotesBloc>().add(TrashSelectEvent());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: DrawerListTile(
+                        icon: Icons.delete_outline,
+                        text: "Trash",
+                        textColor: state.trashSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        backgroundColor:
+                            state.trashSelected ? selectedColor : Colors.white,
+                        iconColor: state.trashSelected
+                            ? selectedTextColor
+                            : Colors.black,
+                        height: height * 0.07,
+                        width: width,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: DrawerListTile(
+                      icon: Icons.settings_outlined,
+                      text: "Settings",
+                      textColor: Colors.black,
+                      backgroundColor: Colors.white,
+                      iconColor: Colors.black,
+                      height: height * 0.07,
+                      width: width,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: DrawerListTile(
+                      icon: Icons.help_outline_outlined,
+                      text: "Help & feedback",
+                      textColor: Colors.black,
+                      backgroundColor: Colors.white,
+                      iconColor: Colors.black,
+                      height: height * 0.07,
+                      width: width,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ));
   }
