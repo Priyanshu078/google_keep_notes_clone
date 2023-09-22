@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 class DrawerListTile extends StatelessWidget {
-  const DrawerListTile(
-      {super.key,
-      required this.icon,
-      required this.text,
-      required this.textColor,
-      required this.backgroundColor,
-      required this.iconColor,
-      required this.height,
-      required this.width});
+  const DrawerListTile({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.textColor,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.isTheme,
+    required this.themeText,
+    required this.height,
+    required this.width,
+  });
 
   final IconData icon;
   final String text;
@@ -19,6 +22,8 @@ class DrawerListTile extends StatelessWidget {
   final Color iconColor;
   final double height;
   final double width;
+  final bool isTheme;
+  final String themeText;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,18 @@ class DrawerListTile extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: textColor,
             ),
+            isTheme
+                ? Expanded(
+                    child: Container(),
+                  )
+                : Container(),
+            isTheme
+                ? MyText(
+                    text: themeText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black)
+                : Container()
           ],
         ),
       ),
