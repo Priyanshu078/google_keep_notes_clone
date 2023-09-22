@@ -8,10 +8,16 @@ import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key, required this.height, required this.width});
+  const MyDrawer({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.scaffoldKey,
+  });
 
   final double height;
   final double width;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +38,7 @@ class MyDrawer extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       context.read<NotesBloc>().add(NotesSelectEvent());
+                      scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -60,6 +67,7 @@ class MyDrawer extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       context.read<NotesBloc>().add(ArchiveSelectEvent());
+                      scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -85,6 +93,7 @@ class MyDrawer extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       context.read<NotesBloc>().add(TrashSelectEvent());
+                      scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
