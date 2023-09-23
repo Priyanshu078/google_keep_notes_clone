@@ -26,6 +26,12 @@ const noteSchema = mongoose.Schema({
   },
   colorIndex:{
     type: Number
+  },
+  trashed : {
+    type : Boolean
+  },
+  archived : {
+    type : Boolean
   }
 });
 

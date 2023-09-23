@@ -14,14 +14,19 @@ class ApiService {
     var response = await dio.post(url, data: {"userid": userid});
     List data = response.data;
     for (int i = 0; i < data.length; i++) {
-      notes.add(Note(
+      notes.add(
+        Note(
           id: data[i]['id'],
           userid: data[i]['userid'],
           content: data[i]['content'],
           title: data[i]['title'],
           dateAdded: data[i]['dateadded'],
           pinned: data[i]["pinned"],
-          colorIndex: data[i]["colorIndex"]));
+          colorIndex: data[i]["colorIndex"],
+          trashed: data[i]['trashed'],
+          archived: data[i]['archived'],
+        ),
+      );
     }
     return notes;
   }
@@ -36,6 +41,8 @@ class ApiService {
       "content": note.content,
       "pinned": note.pinned,
       "colorIndex": note.colorIndex,
+      "trashed": note.trashed,
+      "archived": note.archived,
     });
     debugPrint(response.data.toString());
   }
@@ -58,6 +65,8 @@ class ApiService {
       "content": note.content,
       "pinned": note.pinned,
       "colorIndex": note.colorIndex,
+      "trashed": note.trashed,
+      "archived": note.archived,
     });
     debugPrint(response.data.toString());
   }

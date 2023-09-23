@@ -18,28 +18,6 @@ class MyHomePage extends StatelessWidget {
     super.key,
   });
 
-  void moveToUpdatePage(BuildContext context, int index) {
-    var state = context.read<NotesBloc>().state;
-    Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (_) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: context.read<NotesBloc>(),
-              ),
-              BlocProvider(
-                  create: (context) =>
-                      AddNotesCubit()..setNoteData(state.notes[index]))
-            ],
-            child: AddNewWidgetPage(
-              isUpdate: true,
-              note: state.notes[index],
-            ),
-          );
-        }));
-  }
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
