@@ -55,224 +55,344 @@ class MyHomePage extends StatelessWidget {
       child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
-          appBar: PreferredSize(
-              preferredSize: Size(
-                AppBar().preferredSize.width,
-                AppBar().preferredSize.height + height * 0.01,
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    16, AppBar().preferredSize.height * 0.5, 16, 0),
-                child: TextField(
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    hintText: "Search your notes",
-                    suffixIcon: BlocBuilder<NotesBloc, NotesStates>(
-                      builder: (context, state) {
-                        return IconButton(
-                          onPressed: () {
-                            context.read<NotesBloc>().add(ChangeViewEvent());
-                          },
-                          icon: state.gridViewMode
-                              ? const Icon(Icons.view_agenda_outlined)
-                              : const Icon(
-                                  Icons.grid_view_outlined,
-                                ),
-                        );
-                      },
-                    ),
-                    prefixIcon: IconButton(
-                        onPressed: () {
-                          _scaffoldKey.currentState!.openDrawer();
-                        },
-                        icon: const Icon(Icons.menu)),
-                    isCollapsed: true,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(30)),
-                    filled: true,
-                    fillColor: textFieldBackgoundColor,
-                  ),
-                ),
-              )),
           body: BlocBuilder<NotesBloc, NotesStates>(
             builder: (context, state) {
               return state.notesSelected
                   ? Stack(
                       children: [
-                        BlocBuilder<NotesBloc, NotesStates>(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BlocBuilder<NotesBloc, NotesStates>(
                             builder: (context, state) {
-                          if (state is NotesLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator.adaptive());
-                          } else {
-                            if (state.notes.isEmpty) {
-                              return Center(
-                                child: MyText(
-                                  text: "No Notes Yet",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              );
-                            } else {
-                              if (state.gridViewMode) {
-                                return GridView.builder(
-                                  itemCount: state.notes.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
-                                  itemBuilder: ((context, index) {
-                                    return Padding(
-                                      padding: (state.notes.length % 2 == 0)
-                                          ? ((index ==
-                                                      state.notes.length - 1) ||
-                                                  (index ==
-                                                      state.notes.length - 2))
-                                              ? EdgeInsets.fromLTRB(
-                                                  8.0, 8.0, 8.0, height * 0.07)
-                                              : const EdgeInsets.all(8.0)
-                                          : (index == state.notes.length - 1)
-                                              ? EdgeInsets.fromLTRB(
-                                                  8.0, 8.0, 8.0, height * 0.07)
-                                              : const EdgeInsets.all(8.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          moveToUpdatePage(context, index);
-                                        },
-                                        onLongPress: () {
-                                          context.read<NotesBloc>().add(
-                                              DeleteNote(
-                                                  note: state.notes[index],
-                                                  addNotesPage: false));
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: colors[state
-                                                  .notes[index].colorIndex],
-                                              border: state.notes[index]
-                                                          .colorIndex ==
-                                                      0
-                                                  ? Border.all(
-                                                      color: Colors.grey)
-                                                  : null,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0, vertical: 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                MyText(
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    text: state
-                                                        .notes[index].title,
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                                SizedBox(
-                                                  height: height * 0.005,
-                                                ),
-                                                MyText(
-                                                  text: state
-                                                      .notes[index].content,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
-                                                  maxLines: 4,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                );
+                              if (state is NotesLoading) {
+                                return const Center(
+                                    child:
+                                        CircularProgressIndicator.adaptive());
                               } else {
-                                return ListView.builder(
-                                    itemCount: state.notes.length,
-                                    itemBuilder: ((context, index) {
-                                      return Padding(
-                                        padding: (index ==
-                                                state.notes.length - 1)
-                                            ? EdgeInsets.fromLTRB(
-                                                8.0, 8.0, 8.0, height * 0.07)
-                                            : const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            moveToUpdatePage(context, index);
-                                          },
-                                          onLongPress: () {
-                                            context.read<NotesBloc>().add(
-                                                DeleteNote(
-                                                    note: state.notes[index],
-                                                    addNotesPage: false));
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: colors[state
-                                                    .notes[index].colorIndex],
-                                                border: state.notes[index]
-                                                            .colorIndex ==
-                                                        0
-                                                    ? Border.all(
-                                                        color: Colors.grey)
-                                                    : null,
+                                if (state.notes.isEmpty) {
+                                  return Center(
+                                    child: MyText(
+                                      text: "No Notes Yet",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  );
+                                } else {
+                                  if (state.gridViewMode) {
+                                    return SafeArea(
+                                      child: CustomScrollView(slivers: [
+                                        SliverPadding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          sliver: SliverAppBar(
+                                            surfaceTintColor:
+                                                textFieldBackgoundColor,
+                                            floating: true,
+                                            backgroundColor:
+                                                textFieldBackgoundColor,
+                                            shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0,
-                                                      vertical: 8.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  MyText(
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      text: state
-                                                          .notes[index].title,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black),
-                                                  SizedBox(
-                                                    height: height * 0.005,
-                                                  ),
-                                                  MyText(
-                                                    text: state
-                                                        .notes[index].content,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                    maxLines: 4,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  )
-                                                ],
+                                                    BorderRadius.circular(30)),
+                                            title: TextField(
+                                              textAlignVertical:
+                                                  TextAlignVertical.center,
+                                              decoration: InputDecoration(
+                                                hintText: "Search your notes",
+                                                isCollapsed: true,
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide.none,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                filled: true,
+                                                fillColor:
+                                                    textFieldBackgoundColor,
                                               ),
                                             ),
+                                            actions: [
+                                              BlocBuilder<NotesBloc,
+                                                  NotesStates>(
+                                                builder: (context, state) {
+                                                  return IconButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<NotesBloc>()
+                                                          .add(
+                                                              ChangeViewEvent());
+                                                    },
+                                                    icon: state.gridViewMode
+                                                        ? const Icon(Icons
+                                                            .view_agenda_outlined)
+                                                        : const Icon(
+                                                            Icons
+                                                                .grid_view_outlined,
+                                                          ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    }));
+                                        SliverGrid.builder(
+                                          itemCount: state.notes.length,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                          ),
+                                          itemBuilder: ((_, index) {
+                                            return Padding(
+                                              padding: (state.notes.length %
+                                                          2 ==
+                                                      0)
+                                                  ? ((index ==
+                                                              state.notes
+                                                                      .length -
+                                                                  1) ||
+                                                          (index ==
+                                                              state.notes
+                                                                      .length -
+                                                                  2))
+                                                      ? EdgeInsets.only(
+                                                          bottom: height * 0.06)
+                                                      : const EdgeInsets.all(0)
+                                                  : (index ==
+                                                          state.notes.length -
+                                                              1)
+                                                      ? EdgeInsets.only(
+                                                          bottom: height * 0.06)
+                                                      : const EdgeInsets.all(0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  moveToUpdatePage(
+                                                      context, index);
+                                                },
+                                                onLongPress: () {
+                                                  context.read<NotesBloc>().add(
+                                                      DeleteNote(
+                                                          note: state
+                                                              .notes[index],
+                                                          addNotesPage: false));
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: colors[state
+                                                          .notes[index]
+                                                          .colorIndex],
+                                                      border: state.notes[index]
+                                                                  .colorIndex ==
+                                                              0
+                                                          ? Border.all(
+                                                              color:
+                                                                  Colors.grey)
+                                                          : null,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0,
+                                                        vertical: 8.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        MyText(
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            text: state
+                                                                .notes[index]
+                                                                .title,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                        SizedBox(
+                                                          height:
+                                                              height * 0.005,
+                                                        ),
+                                                        MyText(
+                                                          text: state
+                                                              .notes[index]
+                                                              .content,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: Colors.black,
+                                                          maxLines: 4,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ]),
+                                    );
+                                  } else {
+                                    return SafeArea(
+                                      child: CustomScrollView(slivers: [
+                                        SliverPadding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          sliver: SliverAppBar(
+                                            surfaceTintColor:
+                                                textFieldBackgoundColor,
+                                            floating: true,
+                                            backgroundColor:
+                                                textFieldBackgoundColor,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30)),
+                                            title: TextField(
+                                              textAlignVertical:
+                                                  TextAlignVertical.center,
+                                              decoration: InputDecoration(
+                                                hintText: "Search your notes",
+                                                isCollapsed: true,
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide.none,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                filled: true,
+                                                fillColor:
+                                                    textFieldBackgoundColor,
+                                              ),
+                                            ),
+                                            actions: [
+                                              BlocBuilder<NotesBloc,
+                                                  NotesStates>(
+                                                builder: (context, state) {
+                                                  return IconButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<NotesBloc>()
+                                                          .add(
+                                                              ChangeViewEvent());
+                                                    },
+                                                    icon: state.gridViewMode
+                                                        ? const Icon(Icons
+                                                            .view_agenda_outlined)
+                                                        : const Icon(
+                                                            Icons
+                                                                .grid_view_outlined,
+                                                          ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SliverList.builder(
+                                          itemCount: state.notes.length,
+                                          itemBuilder: ((context, index) {
+                                            return Padding(
+                                              padding: (index ==
+                                                      state.notes.length - 1)
+                                                  ? EdgeInsets.only(
+                                                      top: 8.0,
+                                                      bottom: height * 0.06)
+                                                  : EdgeInsets.only(
+                                                      top:
+                                                          index == 0 ? 0 : 8.0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  moveToUpdatePage(
+                                                      context, index);
+                                                },
+                                                onLongPress: () {
+                                                  context.read<NotesBloc>().add(
+                                                      DeleteNote(
+                                                          note: state
+                                                              .notes[index],
+                                                          addNotesPage: false));
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: colors[state
+                                                          .notes[index]
+                                                          .colorIndex],
+                                                      border: state.notes[index]
+                                                                  .colorIndex ==
+                                                              0
+                                                          ? Border.all(
+                                                              color:
+                                                                  Colors.grey)
+                                                          : null,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0,
+                                                        vertical: 8.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        MyText(
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            text: state
+                                                                .notes[index]
+                                                                .title,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                        SizedBox(
+                                                          height:
+                                                              height * 0.005,
+                                                        ),
+                                                        MyText(
+                                                          text: state
+                                                              .notes[index]
+                                                              .content,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: Colors.black,
+                                                          maxLines: 4,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ]),
+                                    );
+                                  }
+                                }
                               }
-                            }
-                          }
-                        }),
+                            },
+                          ),
+                        ),
                         Positioned(
                           bottom: 0,
                           left: 0,
