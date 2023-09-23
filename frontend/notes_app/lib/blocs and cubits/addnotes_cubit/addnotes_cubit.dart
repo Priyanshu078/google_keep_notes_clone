@@ -15,6 +15,7 @@ class AddNotesCubit extends Cubit<AddNotesState> {
   }
 
   void setBackgroundColor(int colorIndex) {
-    emit(AddNotesState(note: state.note, colorIndex: colorIndex));
+    Note note = state.note.copyWith(colorIndex: colorIndex);
+    emit(AddNotesState(note: note, colorIndex: colorIndex));
   }
 }
