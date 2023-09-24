@@ -57,7 +57,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       trashSelected: false,
     ));
     List<Note> notes = [];
-    notes = await _apiService.getNotes(event.userId);
+    notes = await _apiService.getNotes(
+        userId: event.userId, trashed: false, archived: false);
     notes = sortNotes(notes);
     emit(NotesStates(
       notes: notes,

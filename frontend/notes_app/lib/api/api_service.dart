@@ -6,12 +6,16 @@ class ApiService {
   String baseUrl = "http://192.168.29.123:3000/api";
   final dio = Dio();
 
-  Future<List<Note>> getNotes(String userid) async {
+  Future<List<Note>> getNotes(
+      {required String userId,
+      required bool trashed,
+      required bool archived}) async {
     String endPoint = '/getNotes';
     String url = baseUrl + endPoint;
     List<Note> notes = [];
-    debugPrint(userid);
-    var response = await dio.post(url, data: {"userid": userid});
+    debugPrint(userId);
+    var response = await dio.post(url,
+        data: {"userid": userId, "trashed": trashed, "archived": archived});
     List data = response.data;
     for (int i = 0; i < data.length; i++) {
       notes.add(

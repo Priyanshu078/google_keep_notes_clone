@@ -88,57 +88,47 @@ class NotesView extends StatelessWidget {
                       mainAxisSpacing: 8,
                     ),
                     itemBuilder: ((_, index) {
-                      return Padding(
-                        padding: (state.notes.length % 2 == 0)
-                            ? ((index == state.notes.length - 1) ||
-                                    (index == state.notes.length - 2))
-                                ? EdgeInsets.only(bottom: height * 0.06)
-                                : const EdgeInsets.all(0)
-                            : (index == state.notes.length - 1)
-                                ? EdgeInsets.only(bottom: height * 0.06)
-                                : const EdgeInsets.all(0),
-                        child: GestureDetector(
-                          onTap: () {
-                            moveToUpdatePage(context, index);
-                          },
-                          onLongPress: () {
-                            context.read<NotesBloc>().add(DeleteNote(
-                                note: state.notes[index], addNotesPage: false));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: colors[state.notes[index].colorIndex],
-                                border: state.notes[index].colorIndex == 0
-                                    ? Border.all(color: Colors.grey)
-                                    : null,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 8.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MyText(
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      text: state.notes[index].title,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                  SizedBox(
-                                    height: height * 0.005,
-                                  ),
-                                  MyText(
-                                    text: state.notes[index].content,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
-                                    maxLines: 4,
+                      return GestureDetector(
+                        onTap: () {
+                          moveToUpdatePage(context, index);
+                        },
+                        onLongPress: () {
+                          context.read<NotesBloc>().add(DeleteNote(
+                              note: state.notes[index], addNotesPage: false));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: colors[state.notes[index].colorIndex],
+                              border: state.notes[index].colorIndex == 0
+                                  ? Border.all(color: Colors.grey)
+                                  : null,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                MyText(
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
+                                    text: state.notes[index].title,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                                SizedBox(
+                                  height: height * 0.005,
+                                ),
+                                MyText(
+                                  text: state.notes[index].content,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -149,9 +139,7 @@ class NotesView extends StatelessWidget {
                     itemCount: state.notes.length,
                     itemBuilder: ((context, index) {
                       return Padding(
-                        padding: (index == state.notes.length - 1)
-                            ? EdgeInsets.only(top: 8.0, bottom: height * 0.06)
-                            : EdgeInsets.only(top: index == 0 ? 0 : 8.0),
+                        padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                         child: GestureDetector(
                           onTap: () {
                             moveToUpdatePage(context, index);
