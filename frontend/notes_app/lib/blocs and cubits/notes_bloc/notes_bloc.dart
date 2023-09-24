@@ -14,20 +14,14 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           notesSelected: true,
           archiveSelected: false,
           trashSelected: false,
+          trashNotes: [],
+          archivedNotes: [],
         )) {
     on<FetchNotes>((event, emit) => fetchNotes(event, emit));
     on<AddNote>((event, emit) => addNotes(event, emit));
     on<UpdateNote>((event, emit) => updateNotes(event, emit));
     on<ChangeViewEvent>((event, emit) => changeView(event, emit));
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
-    on<NotesSelectEvent>((event, emit) => emit(NotesStates(
-          notes: state.notes,
-          gridViewMode: state.gridViewMode,
-          lightMode: state.lightMode,
-          notesSelected: true,
-          archiveSelected: false,
-          trashSelected: false,
-        )));
     on<ArchiveSelectEvent>((event, emit) => emit(NotesStates(
           notes: state.notes,
           gridViewMode: state.gridViewMode,
@@ -35,6 +29,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           notesSelected: false,
           archiveSelected: true,
           trashSelected: false,
+          trashNotes: state.trashNotes,
+          archivedNotes: state.archivedNotes,
         )));
     on<TrashSelectEvent>((event, emit) => emit(NotesStates(
           notes: state.notes,
@@ -43,18 +39,22 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           notesSelected: false,
           archiveSelected: false,
           trashSelected: true,
+          trashNotes: state.trashNotes,
+          archivedNotes: state.archivedNotes,
         )));
   }
   final ApiService _apiService = ApiService();
 
   Future<void> fetchNotes(FetchNotes event, Emitter emit) async {
-    emit(const NotesLoading(
-      notes: [],
+    emit(NotesLoading(
+      notes: const [],
       gridViewMode: true,
       lightMode: true,
       notesSelected: true,
       archiveSelected: false,
       trashSelected: false,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
     ));
     List<Note> notes = [];
     notes = await _apiService.getNotes(
@@ -67,6 +67,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       notesSelected: state.notesSelected,
       archiveSelected: state.archiveSelected,
       trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
     ));
   }
 
@@ -88,6 +90,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       notesSelected: state.notesSelected,
       archiveSelected: state.archiveSelected,
       trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
     ));
   }
 
@@ -104,6 +108,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       notesSelected: state.notesSelected,
       archiveSelected: state.archiveSelected,
       trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
     ));
   }
 
@@ -115,6 +121,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       notesSelected: state.notesSelected,
       archiveSelected: state.archiveSelected,
       trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
     ));
   }
 
@@ -132,6 +140,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
       ));
     } else {
       emit(NotesStates(
@@ -141,6 +151,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
       ));
     }
   }

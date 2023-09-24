@@ -16,8 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          NotesBloc()..add(FetchNotes(userId: 'priyanshupaliwal')),
+      create: (context) => NotesBloc()
+        ..add(FetchNotes(
+          userId: 'priyanshupaliwal',
+          allNotes: true,
+          trashedNotes: false,
+          archivedNotes: false,
+        )),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Notes App',

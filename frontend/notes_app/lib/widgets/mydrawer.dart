@@ -37,7 +37,12 @@ class MyDrawer extends StatelessWidget {
                   Image.asset("assets/google-keep-logo.png"),
                   GestureDetector(
                     onTap: () {
-                      context.read<NotesBloc>().add(NotesSelectEvent());
+                      context.read<NotesBloc>().add(FetchNotes(
+                            userId: 'priyanshupaliwal',
+                            allNotes: true,
+                            trashedNotes: false,
+                            archivedNotes: false,
+                          ));
                       scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(

@@ -30,14 +30,20 @@ class DeleteNote extends NotesEvent {
 
 class FetchNotes extends NotesEvent {
   final String userId;
-  FetchNotes({required this.userId});
+  final bool allNotes;
+  final bool trashedNotes;
+  final bool archivedNotes;
+  FetchNotes({
+    required this.userId,
+    required this.allNotes,
+    required this.trashedNotes,
+    required this.archivedNotes,
+  });
   @override
-  List<Object?> get props => [userId];
+  List<Object?> get props => [userId, allNotes, trashedNotes, archivedNotes];
 }
 
 class ChangeViewEvent extends NotesEvent {}
-
-class NotesSelectEvent extends NotesEvent {}
 
 class ArchiveSelectEvent extends NotesEvent {}
 
