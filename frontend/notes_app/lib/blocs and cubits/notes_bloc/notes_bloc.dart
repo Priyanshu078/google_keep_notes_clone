@@ -22,53 +22,35 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<UpdateNote>((event, emit) => updateNotes(event, emit));
     on<ChangeViewEvent>((event, emit) => changeView(event, emit));
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
-    on<ArchiveSelectEvent>((event, emit) => emit(NotesStates(
-          notes: state.notes,
-          gridViewMode: state.gridViewMode,
-          lightMode: state.lightMode,
-          notesSelected: false,
-          archiveSelected: true,
-          trashSelected: false,
-          trashNotes: state.trashNotes,
-          archivedNotes: state.archivedNotes,
-        )));
-    on<TrashSelectEvent>((event, emit) => emit(NotesStates(
-          notes: state.notes,
-          gridViewMode: state.gridViewMode,
-          lightMode: state.lightMode,
-          notesSelected: false,
-          archiveSelected: false,
-          trashSelected: true,
-          trashNotes: state.trashNotes,
-          archivedNotes: state.archivedNotes,
-        )));
   }
   final ApiService _apiService = ApiService();
 
   Future<void> fetchNotes(FetchNotes event, Emitter emit) async {
     emit(NotesLoading(
-      notes: const [],
-      gridViewMode: true,
-      lightMode: true,
-      notesSelected: true,
-      archiveSelected: false,
-      trashSelected: false,
+      notes: state.notes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      notesSelected: event.notes,
+      archiveSelected: event.archivedNotes,
+      trashSelected: event.trashedNotes,
       trashNotes: state.trashNotes,
       archivedNotes: state.archivedNotes,
     ));
     List<Note> notes = [];
     notes = await _apiService.getNotes(
-        userId: event.userId, trashed: false, archived: false);
+        userId: event.userId,
+        trashed: event.trashedNotes,
+        archived: event.archivedNotes);
     notes = sortNotes(notes);
     emit(NotesStates(
-      notes: notes,
+      notes: event.notes ? notes : state.notes,
       gridViewMode: state.gridViewMode,
       lightMode: state.lightMode,
-      notesSelected: state.notesSelected,
-      archiveSelected: state.archiveSelected,
-      trashSelected: state.trashSelected,
-      trashNotes: state.trashNotes,
-      archivedNotes: state.archivedNotes,
+      notesSelected: event.notes,
+      archiveSelected: event.archivedNotes,
+      trashSelected: event.trashedNotes,
+      trashNotes: event.trashedNotes ? notes : state.trashNotes,
+      archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
     ));
   }
 

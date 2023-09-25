@@ -37,12 +37,16 @@ class MyDrawer extends StatelessWidget {
                   Image.asset("assets/google-keep-logo.png"),
                   GestureDetector(
                     onTap: () {
-                      context.read<NotesBloc>().add(FetchNotes(
-                            userId: 'priyanshupaliwal',
-                            allNotes: true,
-                            trashedNotes: false,
-                            archivedNotes: false,
-                          ));
+                      if (!state.notesSelected) {
+                        context.read<NotesBloc>().add(
+                              FetchNotes(
+                                userId: 'priyanshupaliwal',
+                                notes: true,
+                                trashedNotes: false,
+                                archivedNotes: false,
+                              ),
+                            );
+                      }
                       scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(
@@ -71,7 +75,16 @@ class MyDrawer extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.read<NotesBloc>().add(ArchiveSelectEvent());
+                      if (!state.archiveSelected) {
+                        context.read<NotesBloc>().add(
+                              FetchNotes(
+                                userId: 'priyanshupaliwal',
+                                notes: false,
+                                trashedNotes: false,
+                                archivedNotes: true,
+                              ),
+                            );
+                      }
                       scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(
@@ -97,7 +110,16 @@ class MyDrawer extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.read<NotesBloc>().add(TrashSelectEvent());
+                      if (!state.trashSelected) {
+                        context.read<NotesBloc>().add(
+                              FetchNotes(
+                                userId: 'priyanshupaliwal',
+                                notes: false,
+                                trashedNotes: true,
+                                archivedNotes: false,
+                              ),
+                            );
+                      }
                       scaffoldKey.currentState!.closeDrawer();
                     },
                     child: Padding(

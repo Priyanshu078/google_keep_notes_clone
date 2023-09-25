@@ -17,20 +17,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NotesBloc()
-        ..add(FetchNotes(
-          userId: 'priyanshupaliwal',
-          allNotes: true,
-          trashedNotes: false,
-          archivedNotes: false,
-        )),
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Notes App',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-            useMaterial3: true,
+        ..add(
+          FetchNotes(
+            userId: 'priyanshupaliwal',
+            notes: true,
+            trashedNotes: false,
+            archivedNotes: false,
           ),
-          home: MyHomePage()),
+        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Notes App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+        ),
+        home: MyHomePage(),
+      ),
     );
   }
 }
