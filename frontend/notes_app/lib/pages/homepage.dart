@@ -8,7 +8,6 @@ import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/pages/notes_view.dart';
 import 'package:notes_app/utils/my_clipper.dart';
 import 'package:notes_app/widgets/mydrawer.dart';
-import 'package:notes_app/widgets/mytext.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../utils/my_painter.dart';
@@ -104,7 +103,11 @@ class MyHomePage extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                NotesView(height: height)
+                                NotesView(
+                                  height: height,
+                                  archivedNotes: false,
+                                  trashNotes: false,
+                                )
                               ]),
                             );
                           }),
@@ -139,19 +142,25 @@ class MyHomePage extends StatelessWidget {
                       ],
                     )
                   : state.archiveSelected
-                      ? const Center(
-                          child: MyText(
-                              text: "Archive Selected",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black),
+                      ? SafeArea(
+                          child: CustomScrollView(slivers: [
+                            NotesView(
+                              height: height,
+                              archivedNotes: true,
+                              trashNotes: false,
+                            ),
+                          ]),
                         )
-                      : const Center(
-                          child: MyText(
-                              text: "Trash Selected",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black),
+                      : SafeArea(
+                          child: CustomScrollView(
+                            slivers: [
+                              NotesView(
+                                height: height,
+                                archivedNotes: false,
+                                trashNotes: true,
+                              ),
+                            ],
+                          ),
                         );
             },
           ),

@@ -24,7 +24,7 @@ class MyText extends StatelessWidget {
       text,
       overflow: overflow,
       maxLines: maxLines,
-      style: GoogleFonts.poppins(
+      style: GoogleFonts.notoSans(
         fontSize: fontSize,
         fontWeight: fontWeight,
         color: color,
