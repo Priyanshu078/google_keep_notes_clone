@@ -181,7 +181,7 @@ class NotesView extends StatelessWidget {
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black,
-                                  maxLines: 3,
+                                  maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
                                 )
                               ],
