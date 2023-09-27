@@ -66,9 +66,10 @@ router.post('/deleteNotes', async(req,res) =>{
     }
 });
 
-router.post('/deleteTrashNotes', async (req,res) =>{
+router.post('/emptyTrash', async (req,res) =>{
   try{
     await Note.deleteMany({trashed : true});
+    res.send({status: 200, message: "removed everything from Trash"});
   }
   catch(e){
     res.send({

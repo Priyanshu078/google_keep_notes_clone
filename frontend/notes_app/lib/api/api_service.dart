@@ -6,6 +6,13 @@ class ApiService {
   String baseUrl = "http://192.168.43.123:3000/api";
   final dio = Dio();
 
+  Future<void> emptyTrash() async {
+    String endPoint = '/emptyTrash';
+    String url = baseUrl + endPoint;
+    var response = await dio.post(url);
+    debugPrint(response.toString());
+  }
+
   Future<List<Note>> getNotes({
     required String userId,
     required bool trashed,

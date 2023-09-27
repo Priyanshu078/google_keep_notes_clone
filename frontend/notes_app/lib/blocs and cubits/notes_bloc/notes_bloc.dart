@@ -23,6 +23,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<UpdateNote>((event, emit) => updateNotes(event, emit));
     on<ChangeViewEvent>((event, emit) => changeView(event, emit));
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
+    on<EmptyTrashEvent>((event, emit) => emptyTrash(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           notes: state.notes,
           gridViewMode: state.gridViewMode,
@@ -36,6 +37,22 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         ))));
   }
   final ApiService _apiService = ApiService();
+
+  Future<void> emptyTrash(EmptyTrashEvent event, Emitter emit) async {
+    await _apiService.emptyTrash();
+    List<Note> trashNotes = [];
+    emit(NotesStates(
+      notes: state.notes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      notesSelected: state.notesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: trashNotes,
+      archivedNotes: state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+    ));
+  }
 
   Future<void> fetchNotes(FetchNotes event, Emitter emit) async {
     emit(NotesLoading(

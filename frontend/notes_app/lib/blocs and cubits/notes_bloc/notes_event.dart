@@ -51,3 +51,5 @@ class ArchiveSearchClickedEvent extends NotesEvent {
   @override
   List<Object?> get props => [archiveSearchOn];
 }
+
+class EmptyTrashEvent extends NotesEvent {}

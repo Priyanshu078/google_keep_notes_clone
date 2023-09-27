@@ -225,9 +225,91 @@ class MyHomePage extends StatelessWidget {
                                           },
                                         )
                                       : Container(),
-                                  state.trashSelected
+                                  (state.trashSelected &&
+                                          state.trashNotes.isNotEmpty)
                                       ? IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showMenu(
+                                                color: textFieldBackgoundColor,
+                                                context: context,
+                                                position:
+                                                    const RelativeRect.fromLTRB(
+                                                        100, 0, 0, 100),
+                                                items: <PopupMenuEntry>[
+                                                  PopupMenuItem(
+                                                    onTap: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (_) =>
+                                                                  AlertDialog(
+                                                                    title: const MyText(
+                                                                        text:
+                                                                            "Empty Trash?",
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .black),
+                                                                    content: const MyText(
+                                                                        text:
+                                                                            "All notes in Trash will be permanently deleted.",
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .normal,
+                                                                        color: Colors
+                                                                            .black),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child:
+                                                                              MyText(
+                                                                            text:
+                                                                                "Cancel",
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color:
+                                                                                Theme.of(context).colorScheme.primary,
+                                                                          )),
+                                                                      TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            context.read<NotesBloc>().add(EmptyTrashEvent());
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child:
+                                                                              MyText(
+                                                                            text:
+                                                                                "Empty Trash",
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color:
+                                                                                Theme.of(context).colorScheme.primary,
+                                                                          )),
+                                                                    ],
+                                                                  ));
+                                                    },
+                                                    child: const MyText(
+                                                      text: "Empty Trash",
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: Colors.black,
+                                                    ),
+                                                  )
+                                                ]);
+                                          },
                                           icon: const Icon(
                                               Icons.more_vert_outlined),
                                         )
