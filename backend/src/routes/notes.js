@@ -66,4 +66,17 @@ router.post('/deleteNotes', async(req,res) =>{
     }
 });
 
+router.post('/deleteTrashNotes', async (req,res) =>{
+  try{
+    await Note.deleteMany({trashed : true});
+  }
+  catch(e){
+    res.send({
+      status: 400,
+      message: "Something Went Wrong",
+      error: e.toString(),
+    })
+  }
+});
+
 module.exports = router;
