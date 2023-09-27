@@ -77,6 +77,8 @@ class MyDrawer extends StatelessWidget {
                     onTap: () {
                       if (!state.archiveSelected) {
                         context.read<NotesBloc>().add(
+                            ArchiveSearchClickedEvent(archiveSearchOn: false));
+                        context.read<NotesBloc>().add(
                               FetchNotes(
                                 userId: 'priyanshupaliwal',
                                 notes: false,

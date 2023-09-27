@@ -44,3 +44,10 @@ class FetchNotes extends NotesEvent {
 }
 
 class ChangeViewEvent extends NotesEvent {}
+
+class ArchiveSearchClickedEvent extends NotesEvent {
+  final bool archiveSearchOn;
+  ArchiveSearchClickedEvent({required this.archiveSearchOn});
+  @override
+  List<Object?> get props => [archiveSearchOn];
+}

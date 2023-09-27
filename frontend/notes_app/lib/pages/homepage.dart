@@ -28,7 +28,14 @@ class MyHomePage extends StatelessWidget {
       onWillPop: () async {
         var state = context.read<NotesBloc>().state;
         if (state.archiveSelected) {
-          return false;
+          if (state.archiveSearchOn) {
+            context
+                .read<NotesBloc>()
+                .add(ArchiveSearchClickedEvent(archiveSearchOn: false));
+            return false;
+          } else {
+            return true;
+          }
         }
         return true;
       },
@@ -163,32 +170,41 @@ class MyHomePage extends StatelessWidget {
                                 backgroundColor: textFieldBackgoundColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
-                                title: MyText(
-                                  text: state.archiveSelected
-                                      ? "Archive"
-                                      : "Trash",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
-                                ),
-                                // TextField(
-                                //   textAlignVertical: TextAlignVertical.center,
-                                //   decoration: InputDecoration(
-                                //     hintText: "Search your notes",
-                                //     isCollapsed: true,
-                                //     border: OutlineInputBorder(
-                                //         borderSide: BorderSide.none,
-                                //         borderRadius: BorderRadius.circular(30)),
-                                //     filled: true,
-                                //     fillColor: textFieldBackgoundColor,
-                                //   ),
-                                // ),
+                                title: state.archiveSearchOn
+                                    ? TextField(
+                                        textAlignVertical:
+                                            TextAlignVertical.center,
+                                        decoration: InputDecoration(
+                                          hintText: "Search your notes",
+                                          isCollapsed: true,
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          filled: true,
+                                          fillColor: textFieldBackgoundColor,
+                                        ),
+                                      )
+                                    : MyText(
+                                        text: state.archiveSelected
+                                            ? "Archive"
+                                            : "Trash",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black,
+                                      ),
                                 actions: [
                                   state.archiveSelected
-                                      ? IconButton(
-                                          icon: const Icon(Icons.search),
-                                          onPressed: () {},
-                                        )
+                                      ? state.archiveSearchOn
+                                          ? Container()
+                                          : IconButton(
+                                              icon: const Icon(Icons.search),
+                                              onPressed: () {
+                                                context.read<NotesBloc>().add(
+                                                    ArchiveSearchClickedEvent(
+                                                        archiveSearchOn: true));
+                                              },
+                                            )
                                       : Container(),
                                   state.archiveSelected
                                       ? BlocBuilder<NotesBloc, NotesStates>(

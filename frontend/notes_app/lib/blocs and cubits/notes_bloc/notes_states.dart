@@ -10,6 +10,7 @@ class NotesStates extends Equatable {
   final List<Note> notes;
   final List<Note> trashNotes;
   final List<Note> archivedNotes;
+  final bool archiveSearchOn;
 
   const NotesStates({
     required this.notes,
@@ -20,6 +21,7 @@ class NotesStates extends Equatable {
     required this.trashSelected,
     required this.trashNotes,
     required this.archivedNotes,
+    required this.archiveSearchOn,
   });
 
   @override
@@ -29,7 +31,8 @@ class NotesStates extends Equatable {
         lightMode,
         notesSelected,
         archiveSelected,
-        trashSelected
+        trashSelected,
+        archiveSearchOn,
       ];
 }
 
@@ -43,6 +46,7 @@ class NotesLoading extends NotesStates {
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
+    required super.archiveSearchOn,
   });
 }
 
@@ -56,5 +60,6 @@ class NotesDeleted extends NotesStates {
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
+    required super.archiveSearchOn,
   });
 }
