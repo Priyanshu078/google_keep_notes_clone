@@ -197,7 +197,7 @@ class NotesView extends StatelessWidget {
                         : trashNotes
                             ? state.trashNotes.length
                             : state.notes.length,
-                    itemBuilder: ((context, index) {
+                    itemBuilder: ((_, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                         child: GestureDetector(

@@ -33,6 +33,9 @@ class NotesStates extends Equatable {
         archiveSelected,
         trashSelected,
         archiveSearchOn,
+        trashNotes,
+        archivedNotes,
+        archiveSearchOn,
       ];
 }
 
