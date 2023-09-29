@@ -15,7 +15,11 @@ import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
 
 class AddNewWidgetPage extends StatefulWidget {
-  const AddNewWidgetPage({super.key, required this.isUpdate, this.note});
+  const AddNewWidgetPage({
+    super.key,
+    required this.isUpdate,
+    this.note,
+  });
   final bool isUpdate;
   final Note? note;
 
@@ -37,6 +41,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
     }
   }
 
+  void showSnackBar() {
+    _utilities.showSnackBar(context, "Can't edit in Trash", true, () {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -54,47 +62,55 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: colors[state.colorIndex],
             actions: [
-              IconButton(
-                onPressed: () {
-                  context.read<AddNotesCubit>().pinUnpinNote();
-                },
-                icon: state.note.pinned
-                    ? const Icon(CupertinoIcons.pin_fill)
-                    : const Icon(CupertinoIcons.pin),
-              ),
-              IconButton(
-                icon: const Icon(Icons.check),
-                onPressed: () async {
-                  var state = context.read<AddNotesCubit>().state;
-                  if (titleController.text != "") {
-                    if (widget.isUpdate) {
-                      Note updated = state.note.copyWith(
-                          content: contentController.text,
-                          title: titleController.text,
-                          dateAdded: DateTime.now().toIso8601String(),
-                          pinned: state.note.pinned);
-                      context.read<NotesBloc>().add(UpdateNote(note: updated));
-                    } else {
-                      Note newNote = state.note.copyWith(
-                        id: const Uuid().v1(),
-                        userid: "priyanshupaliwal",
-                        content: contentController.text,
-                        title: titleController.text,
-                        dateAdded: DateTime.now().toIso8601String(),
-                        colorIndex: state.colorIndex,
-                        pinned: state.note.pinned,
-                      );
-                      context.read<NotesBloc>().add(AddNote(note: newNote));
-                    }
-                    if (mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  } else {
-                    _utilities.showSnackBar(
-                        context, "Empty notes can not be saved!!!");
-                  }
-                },
-              )
+              state.inTrash
+                  ? Container()
+                  : IconButton(
+                      onPressed: () {
+                        context.read<AddNotesCubit>().pinUnpinNote();
+                      },
+                      icon: state.note.pinned
+                          ? const Icon(CupertinoIcons.pin_fill)
+                          : const Icon(CupertinoIcons.pin),
+                    ),
+              state.inTrash
+                  ? Container()
+                  : IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: () async {
+                        var state = context.read<AddNotesCubit>().state;
+                        if (titleController.text != "") {
+                          if (widget.isUpdate) {
+                            Note updated = state.note.copyWith(
+                                content: contentController.text,
+                                title: titleController.text,
+                                dateAdded: DateTime.now().toIso8601String(),
+                                pinned: state.note.pinned);
+                            context
+                                .read<NotesBloc>()
+                                .add(UpdateNote(note: updated));
+                          } else {
+                            Note newNote = state.note.copyWith(
+                              id: const Uuid().v1(),
+                              userid: "priyanshupaliwal",
+                              content: contentController.text,
+                              title: titleController.text,
+                              dateAdded: DateTime.now().toIso8601String(),
+                              colorIndex: state.colorIndex,
+                              pinned: state.note.pinned,
+                            );
+                            context
+                                .read<NotesBloc>()
+                                .add(AddNote(note: newNote));
+                          }
+                          if (mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        } else {
+                          _utilities.showSnackBar(context,
+                              "Empty notes can not be saved!!!", false, null);
+                        }
+                      },
+                    )
             ],
           ),
           body: Column(
@@ -105,6 +121,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Column(children: [
                   TextField(
+                    onTap: () {
+                      if (state.inTrash) {
+                        showSnackBar();
+                      }
+                    },
+                    readOnly: state.inTrash,
                     autofocus: widget.isUpdate ? false : true,
                     controller: titleController,
                     style: GoogleFonts.poppins(
@@ -120,6 +142,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                             fontWeight: FontWeight.w500)),
                   ),
                   TextField(
+                    onTap: () {
+                      if (state.inTrash) {
+                        showSnackBar();
+                      }
+                    },
+                    readOnly: state.inTrash,
                     maxLines: null,
                     controller: contentController,
                     style: GoogleFonts.poppins(
@@ -140,103 +168,98 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (_) => BlocProvider.value(
-                                  value: context.read<AddNotesCubit>(),
-                                  child:
-                                      BlocBuilder<AddNotesCubit, AddNotesState>(
-                                    builder: (context, state) {
-                                      return Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        height: height * 0.2,
-                                        width: double.infinity,
-                                        color: colors[state.colorIndex],
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const MyText(
-                                                text: "Color",
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.1,
+                      onPressed: state.inTrash
+                          ? null
+                          : () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (_) => BlocProvider.value(
+                                        value: context.read<AddNotesCubit>(),
+                                        child: BlocBuilder<AddNotesCubit,
+                                            AddNotesState>(
+                                          builder: (context, state) {
+                                            return Container(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              height: height * 0.2,
                                               width: double.infinity,
-                                              child: ListView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                children: List.generate(
-                                                    colors.length,
-                                                    (index) => Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 8.0),
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              context
-                                                                  .read<
-                                                                      AddNotesCubit>()
-                                                                  .setBackgroundColor(
-                                                                    index,
-                                                                  );
-                                                            },
-                                                            child: Stack(
-                                                                children: [
-                                                                  Container(
-                                                                    decoration: BoxDecoration(
-                                                                        color: colors[
-                                                                            index],
-                                                                        shape: BoxShape
-                                                                            .circle),
-                                                                    height:
-                                                                        height *
-                                                                            0.1,
-                                                                    width:
-                                                                        height *
-                                                                            0.1,
-                                                                  ),
-                                                                  state.colorIndex ==
-                                                                          index
-                                                                      ? Container(
+                                              color: colors[state.colorIndex],
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const MyText(
+                                                      text: "Color",
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black),
+                                                  SizedBox(
+                                                    height: height * 0.02,
+                                                  ),
+                                                  SizedBox(
+                                                    height: height * 0.1,
+                                                    width: double.infinity,
+                                                    child: ListView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      children: List.generate(
+                                                          colors.length,
+                                                          (index) => Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            8.0),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    context
+                                                                        .read<
+                                                                            AddNotesCubit>()
+                                                                        .setBackgroundColor(
+                                                                          index,
+                                                                        );
+                                                                  },
+                                                                  child: Stack(
+                                                                      children: [
+                                                                        Container(
                                                                           decoration: BoxDecoration(
-                                                                              border: Border.all(width: 2, color: Colors.blue),
+                                                                              color: colors[index],
                                                                               shape: BoxShape.circle),
                                                                           height:
                                                                               height * 0.1,
                                                                           width:
                                                                               height * 0.1,
-                                                                          child: const Center(
-                                                                              child: Icon(
-                                                                            Icons.check,
-                                                                            size:
-                                                                                30,
-                                                                            color:
-                                                                                Colors.blue,
-                                                                          )),
-                                                                        )
-                                                                      : Container()
-                                                                ]),
-                                                          ),
-                                                        )).toList(),
+                                                                        ),
+                                                                        state.colorIndex ==
+                                                                                index
+                                                                            ? Container(
+                                                                                decoration: BoxDecoration(border: Border.all(width: 2, color: Colors.blue), shape: BoxShape.circle),
+                                                                                height: height * 0.1,
+                                                                                width: height * 0.1,
+                                                                                child: const Center(
+                                                                                    child: Icon(
+                                                                                  Icons.check,
+                                                                                  size: 30,
+                                                                                  color: Colors.blue,
+                                                                                )),
+                                                                              )
+                                                                            : Container()
+                                                                      ]),
+                                                                ),
+                                                              )).toList(),
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            )
-                                          ],
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ));
-                      },
+                                      ));
+                            },
                       icon: const Icon(
                         Icons.color_lens_outlined,
                         color: Colors.black,
@@ -264,8 +287,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     listener: (context, state) {
                                       if (state is NotesDeleted) {
                                         Navigator.of(context).pop();
-                                        _utilities.showSnackBar(
-                                            context, "Note Deleted !!!");
+                                        _utilities.showSnackBar(context,
+                                            "Note Deleted !!!", false, null);
                                       }
                                     },
                                     child: BlocBuilder<AddNotesCubit,
@@ -275,33 +298,75 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                           color: colors[state.colorIndex],
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8),
-                                          height: height * 0.15,
+                                          height: state.inTrash
+                                              ? height * 0.2
+                                              : height * 0.15,
                                           width: double.infinity,
-                                          child: ListTile(
-                                            horizontalTitleGap: 0,
-                                            onTap: () {
-                                              if (state.note.title.isNotEmpty) {
-                                                context.read<NotesBloc>().add(
-                                                    DeleteNote(
-                                                        note: state.note,
-                                                        addNotesPage: true));
-                                              } else {
-                                                _utilities.showSnackBar(context,
-                                                    "Empty Note can not be deleted !!!");
-                                              }
-                                              Navigator.of(context).pop();
-                                            },
-                                            leading: const Icon(
-                                                Icons.delete_outline),
-                                            title: const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 8.0),
-                                              child: MyText(
-                                                  text: "Delete",
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black),
-                                            ),
+                                          child: Column(
+                                            children: [
+                                              state.inTrash
+                                                  ? ListTile(
+                                                      horizontalTitleGap: 0,
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      leading: const Icon(
+                                                          Icons.restore),
+                                                      title: const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 8.0),
+                                                        child: MyText(
+                                                            text: "Restore",
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                              ListTile(
+                                                horizontalTitleGap: 0,
+                                                onTap: () {
+                                                  if (state
+                                                      .note.title.isNotEmpty) {
+                                                    context
+                                                        .read<NotesBloc>()
+                                                        .add(DeleteNote(
+                                                            note: state.note,
+                                                            addNotesPage:
+                                                                true));
+                                                  } else {
+                                                    _utilities.showSnackBar(
+                                                        context,
+                                                        "Empty Note can not be deleted !!!",
+                                                        false,
+                                                        null);
+                                                  }
+                                                  Navigator.of(context).pop();
+                                                },
+                                                leading: Icon(state.inTrash
+                                                    ? Icons
+                                                        .delete_forever_outlined
+                                                    : Icons.delete_outline),
+                                                title: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: MyText(
+                                                      text: state.inTrash
+                                                          ? "Delete forever"
+                                                          : "Delete",
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         );
                                       },

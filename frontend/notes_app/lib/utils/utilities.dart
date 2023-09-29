@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 class Utilities {
-  void showSnackBar(BuildContext context, String text) {
+  void showSnackBar(BuildContext context, String text, bool wantActionButton,
+      VoidCallback? actionButtonPressed) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: MyText(
           text: text,
@@ -12,6 +13,13 @@ class Utilities {
       duration: const Duration(seconds: 3),
       backgroundColor: Colors.black,
       behavior: SnackBarBehavior.floating,
+      action: wantActionButton
+          ? SnackBarAction(
+              label: "Restore",
+              onPressed: actionButtonPressed!,
+              textColor: Theme.of(context).colorScheme.primary,
+            )
+          : null,
     ));
   }
 }

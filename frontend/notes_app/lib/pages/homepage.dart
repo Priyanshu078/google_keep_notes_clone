@@ -121,8 +121,8 @@ class MyHomePage extends StatelessWidget {
                                   ),
                                   NotesView(
                                     height: height,
-                                    archivedNotes: false,
-                                    trashNotes: false,
+                                    inArchivedNotes: false,
+                                    inTrashedNotes: false,
                                   )
                                 ]),
                               );
@@ -319,8 +319,8 @@ class MyHomePage extends StatelessWidget {
                             ),
                             NotesView(
                               height: height,
-                              archivedNotes: state.archiveSelected,
-                              trashNotes: state.trashSelected,
+                              inArchivedNotes: state.archiveSelected,
+                              inTrashedNotes: state.trashSelected,
                             ),
                           ]),
                         ),
