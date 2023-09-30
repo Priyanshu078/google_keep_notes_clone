@@ -111,7 +111,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   List<Note> sortNotes(List<Note> notes) {
     notes.sort((a, b) {
-      print("${a.dateAdded}   ${b.dateAdded}");
       return DateTime.parse(b.dateAdded).compareTo(DateTime.parse(a.dateAdded));
     });
     return notes;
@@ -181,6 +180,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         ? List.from(state.pinnedNotes)
         : List.from(state.otherNotes);
     int index = notes.indexWhere((element) => element.id == event.note.id);
+    List<Note> trashedNotes = List.from(state.trashNotes);
+    trashedNotes.add(notes[index].copyWith(dateAdded: DateTime.now.toString()));
+    trashedNotes = sortNotes(trashedNotes);
     notes.removeAt(index);
     notes = sortNotes(notes);
     if (event.addNotesPage) {
@@ -192,7 +194,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
-        trashNotes: state.trashNotes,
+        trashNotes: trashedNotes,
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
       ));

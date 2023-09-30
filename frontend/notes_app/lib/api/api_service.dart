@@ -80,6 +80,7 @@ class ApiService {
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
       "id": note.id,
+      "dateadded": DateTime.now().toString(),
     });
     debugPrint(response.data.toString());
   }

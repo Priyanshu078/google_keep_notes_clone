@@ -77,8 +77,17 @@ router.post("/updateNotes", async (req, res) => {
 
 router.post('/deleteNotes', async (req, res) => {
   try {
-    await Note.deleteOne({ id: req.body.id });
-    res.send({ status: 200, message: "document deleted succussfully" });
+    // await Note.deleteOne({ id: req.body.id });
+    // res.send({ status: 200, message: "document deleted succussfully" });
+
+    const doc = await Note.findOne({id : req.body.id});
+    const update = {
+      pinned : false,
+      trashed : true,
+      dateadded : req.body.dateadded,
+    }
+    await doc.updateOne(update);
+    res.send({ status: 200, message: "document moved to trash succussfully" });
   }
   catch (e) {
     res.send({

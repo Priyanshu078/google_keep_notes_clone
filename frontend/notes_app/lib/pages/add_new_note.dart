@@ -286,9 +286,11 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   child: BlocListener<NotesBloc, NotesStates>(
                                     listener: (context, state) {
                                       if (state is NotesDeleted) {
+                                        print(
+                                            "Dfwejgweijgowigjweog  eoigweiogweiog");
                                         Navigator.of(context).pop();
                                         _utilities.showSnackBar(context,
-                                            "Note Deleted !!!", false, null);
+                                            "Note Trashed !!!", false, null);
                                       }
                                     },
                                     child: BlocBuilder<AddNotesCubit,
