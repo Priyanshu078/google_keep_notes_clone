@@ -5,13 +5,14 @@ import 'package:notes_app/blocs%20and%20cubits/addnotes_cubit/addnotes_cubit.dar
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/add_new_note.dart';
-import 'package:notes_app/pages/notes_view.dart';
+import 'package:notes_app/pages/notes_view_trash_archived.dart';
 import 'package:notes_app/utils/my_clipper.dart';
 import 'package:notes_app/widgets/mydrawer.dart';
 import 'package:notes_app/widgets/mytext.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../utils/my_painter.dart';
+import 'notes_view_home.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({
@@ -74,58 +75,55 @@ class MyHomePage extends StatelessWidget {
                               //     );
                               //   } else {
                               return SafeArea(
-                                child: CustomScrollView(slivers: [
-                                  SliverPadding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    sliver: SliverAppBar(
-                                      surfaceTintColor: textFieldBackgoundColor,
-                                      floating: true,
-                                      backgroundColor: textFieldBackgoundColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      title: TextField(
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        decoration: InputDecoration(
-                                          hintText: "Search your notes",
-                                          isCollapsed: true,
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          filled: true,
-                                          fillColor: textFieldBackgoundColor,
-                                        ),
+                                  child: CustomScrollView(slivers: [
+                                SliverPadding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  sliver: SliverAppBar(
+                                    surfaceTintColor: textFieldBackgoundColor,
+                                    floating: true,
+                                    backgroundColor: textFieldBackgoundColor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    title: TextField(
+                                      textAlignVertical:
+                                          TextAlignVertical.center,
+                                      decoration: InputDecoration(
+                                        hintText: "Search your notes",
+                                        isCollapsed: true,
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                        filled: true,
+                                        fillColor: textFieldBackgoundColor,
                                       ),
-                                      actions: [
-                                        BlocBuilder<NotesBloc, NotesStates>(
-                                          builder: (context, state) {
-                                            return IconButton(
-                                              onPressed: () {
-                                                context
-                                                    .read<NotesBloc>()
-                                                    .add(ChangeViewEvent());
-                                              },
-                                              icon: state.gridViewMode
-                                                  ? const Icon(Icons
-                                                      .view_agenda_outlined)
-                                                  : const Icon(
-                                                      Icons.grid_view_outlined,
-                                                    ),
-                                            );
-                                          },
-                                        ),
-                                      ],
                                     ),
+                                    actions: [
+                                      BlocBuilder<NotesBloc, NotesStates>(
+                                        builder: (context, state) {
+                                          return IconButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<NotesBloc>()
+                                                  .add(ChangeViewEvent());
+                                            },
+                                            icon: state.gridViewMode
+                                                ? const Icon(
+                                                    Icons.view_agenda_outlined)
+                                                : const Icon(
+                                                    Icons.grid_view_outlined,
+                                                  ),
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  NotesView(
-                                    height: height,
-                                    inArchivedNotes: false,
-                                    inTrashedNotes: false,
-                                  )
-                                ]),
-                              );
+                                ),
+                                NotesViewHome(
+                                  height: height,
+                                )
+                              ]));
                             }),
                           ),
                           Positioned(
@@ -317,10 +315,11 @@ class MyHomePage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            NotesView(
+                            NotesViewTrashArchived(
                               height: height,
                               inArchivedNotes: state.archiveSelected,
                               inTrashedNotes: state.trashSelected,
+                              pinnedNotes: false,
                             ),
                           ]),
                         ),

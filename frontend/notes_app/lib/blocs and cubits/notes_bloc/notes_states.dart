@@ -7,13 +7,15 @@ class NotesStates extends Equatable {
   final bool notesSelected;
   final bool archiveSelected;
   final bool trashSelected;
-  final List<Note> notes;
+  final List<Note> pinnedNotes;
+  final List<Note> otherNotes;
   final List<Note> trashNotes;
   final List<Note> archivedNotes;
   final bool archiveSearchOn;
 
   const NotesStates({
-    required this.notes,
+    required this.pinnedNotes,
+    required this.otherNotes,
     required this.gridViewMode,
     required this.lightMode,
     required this.notesSelected,
@@ -26,7 +28,8 @@ class NotesStates extends Equatable {
 
   @override
   List<Object?> get props => [
-        notes,
+        pinnedNotes,
+        otherNotes,
         gridViewMode,
         lightMode,
         notesSelected,
@@ -41,7 +44,8 @@ class NotesStates extends Equatable {
 
 class NotesLoading extends NotesStates {
   const NotesLoading({
-    required super.notes,
+    required super.pinnedNotes,
+    required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
     required super.notesSelected,
@@ -55,7 +59,8 @@ class NotesLoading extends NotesStates {
 
 class NotesDeleted extends NotesStates {
   const NotesDeleted({
-    required super.notes,
+    required super.pinnedNotes,
+    required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
     required super.notesSelected,

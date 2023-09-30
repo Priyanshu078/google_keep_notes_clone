@@ -39,7 +39,7 @@ class Note {
       userid: json['userid'],
       content: json['content'],
       title: json['title'],
-      dateAdded: json['dateAdded'],
+      dateAdded: json['dateadded'],
       pinned: json['pinned'],
       colorIndex: json['colorIndex'],
       trashed: json['trashed'],

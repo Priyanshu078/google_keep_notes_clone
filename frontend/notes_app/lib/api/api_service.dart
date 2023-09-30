@@ -13,34 +13,49 @@ class ApiService {
     debugPrint(response.toString());
   }
 
-  Future<List<Note>> getNotes({
+  Future<Map<String, List<Note>>> getNotes({
     required String userId,
     required bool trashed,
     required bool archived,
   }) async {
     String endPoint = '/getNotes';
     String url = baseUrl + endPoint;
-    List<Note> notes = [];
-    debugPrint(userId);
-    var response = await dio.post(url,
-        data: {"userid": userId, "trashed": trashed, "archived": archived});
-    List data = response.data;
-    for (int i = 0; i < data.length; i++) {
-      notes.add(
-        Note(
-          id: data[i]['id'],
-          userid: data[i]['userid'],
-          content: data[i]['content'],
-          title: data[i]['title'],
-          dateAdded: data[i]['dateadded'],
-          pinned: data[i]["pinned"],
-          colorIndex: data[i]["colorIndex"],
-          trashed: data[i]['trashed'],
-          archived: data[i]['archived'],
-        ),
-      );
+    if (!trashed && !archived) {
+      var response = await dio.post(url,
+          data: {"userid": userId, "trashed": trashed, "archived": archived});
+      List<Note> pinnedNotes = (response.data['pinned'] as List<dynamic>)
+          .map((element) => Note.fromJson(element))
+          .toList();
+      List<Note> otherNotes = (response.data['others'] as List<dynamic>)
+          .map((element) => Note.fromJson(element))
+          .toList();
+      return {
+        "pinned": pinnedNotes,
+        "others": otherNotes,
+      };
+    } else {
+      List<Note> notes = [];
+      debugPrint(userId);
+      var response = await dio.post(url,
+          data: {"userid": userId, "trashed": trashed, "archived": archived});
+      List data = response.data;
+      for (int i = 0; i < data.length; i++) {
+        notes.add(
+          Note(
+            id: data[i]['id'],
+            userid: data[i]['userid'],
+            content: data[i]['content'],
+            title: data[i]['title'],
+            dateAdded: data[i]['dateadded'].toString(),
+            pinned: data[i]["pinned"],
+            colorIndex: data[i]["colorIndex"],
+            trashed: data[i]['trashed'],
+            archived: data[i]['archived'],
+          ),
+        );
+      }
+      return {"notes": notes};
     }
-    return notes;
   }
 
   Future<void> addNotes(Note note) async {
@@ -55,6 +70,7 @@ class ApiService {
       "colorIndex": note.colorIndex,
       "trashed": note.trashed,
       "archived": note.archived,
+      "dateadded": note.dateAdded,
     });
     debugPrint(response.data.toString());
   }
@@ -79,6 +95,7 @@ class ApiService {
       "colorIndex": note.colorIndex,
       "trashed": note.trashed,
       "archived": note.archived,
+      "dateadded": note.dateAdded,
     });
     debugPrint(response.data.toString());
   }

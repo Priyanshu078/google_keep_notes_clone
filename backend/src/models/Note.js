@@ -18,8 +18,7 @@ const noteSchema = mongoose.Schema({
     type: String,
   },
   dateadded: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
   pinned:{
     type: Boolean,

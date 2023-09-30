@@ -8,7 +8,8 @@ import 'notes_states.dart';
 class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   NotesBloc()
       : super(const NotesLoading(
-          notes: [],
+          pinnedNotes: [],
+          otherNotes: [],
           gridViewMode: true,
           lightMode: true,
           notesSelected: true,
@@ -25,7 +26,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
     on<EmptyTrashEvent>((event, emit) => emptyTrash(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
-          notes: state.notes,
+          pinnedNotes: state.pinnedNotes,
+          otherNotes: state.otherNotes,
           gridViewMode: state.gridViewMode,
           lightMode: state.lightMode,
           notesSelected: state.notesSelected,
@@ -42,7 +44,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     await _apiService.emptyTrash();
     List<Note> trashNotes = [];
     emit(NotesStates(
-      notes: state.notes,
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: state.otherNotes,
       gridViewMode: state.gridViewMode,
       lightMode: state.lightMode,
       notesSelected: state.notesSelected,
@@ -56,7 +59,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   Future<void> fetchNotes(FetchNotes event, Emitter emit) async {
     emit(NotesLoading(
-      notes: state.notes,
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: state.otherNotes,
       gridViewMode: state.gridViewMode,
       lightMode: state.lightMode,
       notesSelected: event.notes,
@@ -66,38 +70,63 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
     ));
-    List<Note> notes = [];
-    notes = await _apiService.getNotes(
+    Map<String, List<Note>> data = await _apiService.getNotes(
         userId: event.userId,
         trashed: event.trashedNotes,
         archived: event.archivedNotes);
-    notes = sortNotes(notes);
-    emit(NotesStates(
-      notes: event.notes ? notes : state.notes,
-      gridViewMode: state.gridViewMode,
-      lightMode: state.lightMode,
-      notesSelected: event.notes,
-      archiveSelected: event.archivedNotes,
-      trashSelected: event.trashedNotes,
-      trashNotes: event.trashedNotes ? notes : state.trashNotes,
-      archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
-      archiveSearchOn: state.archiveSearchOn,
-    ));
+    if (event.notes) {
+      List<Note> pinnedNotes = [];
+      List<Note> otherNotes = [];
+      pinnedNotes = sortNotes(data['pinned']!);
+      otherNotes = sortNotes(data["others"]!);
+      emit(NotesStates(
+        pinnedNotes: pinnedNotes,
+        otherNotes: otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        notesSelected: event.notes,
+        archiveSelected: event.archivedNotes,
+        trashSelected: event.trashedNotes,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+      ));
+    } else {
+      List<Note> notes = data['notes']!;
+      notes = sortNotes(notes);
+      emit(NotesStates(
+        pinnedNotes: state.pinnedNotes,
+        otherNotes: state.otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        notesSelected: event.notes,
+        archiveSelected: event.archivedNotes,
+        trashSelected: event.trashedNotes,
+        trashNotes: event.trashedNotes ? notes : state.trashNotes,
+        archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+      ));
+    }
   }
 
   List<Note> sortNotes(List<Note> notes) {
-    notes.sort((a, b) =>
-        DateTime.parse(b.dateAdded).compareTo(DateTime.parse(a.dateAdded)));
+    notes.sort((a, b) {
+      print("${a.dateAdded}   ${b.dateAdded}");
+      return DateTime.parse(b.dateAdded).compareTo(DateTime.parse(a.dateAdded));
+    });
     return notes;
   }
 
   Future<void> addNotes(AddNote event, Emitter emit) async {
     await _apiService.addNotes(event.note);
-    List<Note> notes = List.from(state.notes);
+    List<Note> notes = event.note.pinned
+        ? List.from(state.pinnedNotes)
+        : List.from(state.otherNotes);
     notes.add(event.note);
     notes = sortNotes(notes);
     emit(NotesStates(
-      notes: notes,
+      pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
+      otherNotes: !event.note.pinned ? notes : state.otherNotes,
       gridViewMode: state.gridViewMode,
       lightMode: state.lightMode,
       notesSelected: state.notesSelected,
@@ -111,12 +140,15 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   Future<void> updateNotes(UpdateNote event, Emitter emit) async {
     await _apiService.updateNotes(event.note);
-    List<Note> notes = List.from(state.notes);
+    List<Note> notes = event.note.pinned
+        ? List.from(state.pinnedNotes)
+        : List.from(state.otherNotes);
     int index = notes.indexWhere((note) => note.id == event.note.id);
     notes[index] = event.note;
     notes = sortNotes(notes);
     emit(NotesStates(
-      notes: notes,
+      pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
+      otherNotes: !event.note.pinned ? notes : state.otherNotes,
       gridViewMode: state.gridViewMode,
       lightMode: state.lightMode,
       notesSelected: state.notesSelected,
@@ -130,7 +162,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   void changeView(ChangeViewEvent event, Emitter emit) {
     emit(NotesStates(
-      notes: state.notes,
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: state.otherNotes,
       gridViewMode: !state.gridViewMode,
       lightMode: state.lightMode,
       notesSelected: state.notesSelected,
@@ -144,13 +177,16 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   Future<void> deleteNotes(DeleteNote event, Emitter emit) async {
     await _apiService.deleteNotes(event.note);
-    List<Note> notes = List.from(state.notes);
+    List<Note> notes = event.note.pinned
+        ? List.from(state.pinnedNotes)
+        : List.from(state.otherNotes);
     int index = notes.indexWhere((element) => element.id == event.note.id);
     notes.removeAt(index);
     notes = sortNotes(notes);
     if (event.addNotesPage) {
       emit(NotesDeleted(
-        notes: notes,
+        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
+        otherNotes: !event.note.pinned ? notes : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
@@ -162,7 +198,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       ));
     } else {
       emit(NotesStates(
-        notes: notes,
+        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
+        otherNotes: !event.note.pinned ? notes : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
