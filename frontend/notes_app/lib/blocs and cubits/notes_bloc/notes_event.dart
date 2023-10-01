@@ -15,17 +15,25 @@ class AddNote extends NotesEvent {
 
 class UpdateNote extends NotesEvent {
   final Note note;
-  UpdateNote({required this.note});
+  final bool fromTrash;
+  UpdateNote({required this.note, required this.fromTrash});
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [note, fromTrash];
+}
+
+class TrashNote extends NotesEvent {
+  final Note note;
+  final bool addNotesPage;
+  TrashNote({required this.note, required this.addNotesPage});
+  @override
+  List<Object?> get props => [note, addNotesPage];
 }
 
 class DeleteNote extends NotesEvent {
   final Note note;
-  final bool addNotesPage;
-  DeleteNote({required this.note, required this.addNotesPage});
+  DeleteNote({required this.note});
   @override
-  List<Object?> get props => [note, addNotesPage];
+  List<Object?> get props => [note];
 }
 
 class FetchNotes extends NotesEvent {

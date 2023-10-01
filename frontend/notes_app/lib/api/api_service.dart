@@ -80,6 +80,15 @@ class ApiService {
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
       "id": note.id,
+    });
+    debugPrint(response.data.toString());
+  }
+
+  Future<void> trashNotes(Note note) async {
+    String endPoint = '/trashNotes';
+    String url = baseUrl + endPoint;
+    var response = await dio.post(url, data: {
+      "id": note.id,
       "dateAdded": DateTime.now().toIso8601String(),
     });
     debugPrint(response.data.toString());

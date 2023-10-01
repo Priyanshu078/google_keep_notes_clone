@@ -75,7 +75,7 @@ router.post("/updateNotes", async (req, res) => {
   }
 });
 
-router.post('/deleteNotes', async (req, res) => {
+router.post('/trashNotes', async (req, res) => {
   try {
     // await Note.deleteOne({ id: req.body.id });
     // res.send({ status: 200, message: "document deleted succussfully" });
@@ -108,7 +108,21 @@ router.post('/emptyTrash', async (req, res) => {
       status: 400,
       message: "Something Went Wrong",
       error: e.toString(),
-    })
+    });
+  }
+});
+
+router.post('/deleteNotes', async(req,res)=>{
+  try{
+    await Note.deleteOne({ id: req.body.id });
+    res.send({ status: 200, message: "document deleted succussfully" });
+  }
+  catch(e){
+    res.send({
+      status: 400,
+      message: "Something Went Wrong",
+      error: e.toString(),
+    });
   }
 });
 

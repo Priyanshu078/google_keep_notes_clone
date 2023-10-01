@@ -12,6 +12,7 @@ import 'package:notes_app/widgets/mytext.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../utils/my_painter.dart';
+import '../widgets/my_text_button.dart';
 import 'notes_view_home.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -122,6 +123,7 @@ class MyHomePage extends StatelessWidget {
                                 ),
                                 NotesViewHome(
                                   height: height,
+                                  scaffoldKey: _scaffoldKey,
                                 )
                               ]));
                             }),
@@ -262,39 +264,27 @@ class MyHomePage extends StatelessWidget {
                                                                         color: Colors
                                                                             .black),
                                                                     actions: [
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              MyText(
-                                                                            text:
-                                                                                "Cancel",
-                                                                            fontSize:
-                                                                                12,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            color:
-                                                                                Theme.of(context).colorScheme.primary,
-                                                                          )),
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            context.read<NotesBloc>().add(EmptyTrashEvent());
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              MyText(
-                                                                            text:
-                                                                                "Empty Trash",
-                                                                            fontSize:
-                                                                                12,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            color:
-                                                                                Theme.of(context).colorScheme.primary,
-                                                                          )),
+                                                                      MyTextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        text:
+                                                                            "Cancel",
+                                                                      ),
+                                                                      MyTextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          context
+                                                                              .read<NotesBloc>()
+                                                                              .add(EmptyTrashEvent());
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        text:
+                                                                            "Empty Trash",
+                                                                      ),
                                                                     ],
                                                                   ));
                                                     },
@@ -319,7 +309,6 @@ class MyHomePage extends StatelessWidget {
                               height: height,
                               inArchivedNotes: state.archiveSelected,
                               inTrashedNotes: state.trashSelected,
-                              pinnedNotes: false,
                             ),
                           ]),
                         ),

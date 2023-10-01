@@ -13,8 +13,9 @@ class NotesViewHome extends StatelessWidget {
   const NotesViewHome({
     super.key,
     required this.height,
+    required this.scaffoldKey,
   });
-
+  final GlobalKey<ScaffoldState> scaffoldKey;
   final double height;
 
   void moveToUpdatePage(BuildContext context, int index, bool pinnedNotes) {
@@ -120,7 +121,7 @@ class NotesViewHome extends StatelessWidget {
                                 moveToUpdatePage(context, index, true);
                               },
                               onLongPress: () {
-                                context.read<NotesBloc>().add(DeleteNote(
+                                context.read<NotesBloc>().add(TrashNote(
                                     note: state.pinnedNotes[index],
                                     addNotesPage: false));
                               },
@@ -200,7 +201,7 @@ class NotesViewHome extends StatelessWidget {
                                 moveToUpdatePage(context, index, false);
                               },
                               onLongPress: () {
-                                context.read<NotesBloc>().add(DeleteNote(
+                                context.read<NotesBloc>().add(TrashNote(
                                     note: state.otherNotes[index],
                                     addNotesPage: false));
                               },
@@ -280,7 +281,7 @@ class NotesViewHome extends StatelessWidget {
                               moveToUpdatePage(context, index, true);
                             },
                             onLongPress: () {
-                              context.read<NotesBloc>().add(DeleteNote(
+                              context.read<NotesBloc>().add(TrashNote(
                                   note: state.pinnedNotes[index],
                                   addNotesPage: false));
                             },
@@ -355,7 +356,7 @@ class NotesViewHome extends StatelessWidget {
                               moveToUpdatePage(context, index, false);
                             },
                             onLongPress: () {
-                              context.read<NotesBloc>().add(DeleteNote(
+                              context.read<NotesBloc>().add(TrashNote(
                                   note: state.otherNotes[index],
                                   addNotesPage: false));
                             },

@@ -7,6 +7,7 @@ import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/utils/utilities.dart';
+import 'package:notes_app/widgets/my_text_button.dart';
 import 'package:notes_app/widgets/mytext.dart';
 import 'package:uuid/uuid.dart';
 import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
@@ -42,7 +43,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
   }
 
   void showSnackBar() {
-    _utilities.showSnackBar(context, "Can't edit in Trash", true, () {});
+    _utilities.showSnackBar(
+      context,
+      "Can't edit in Trash",
+    );
   }
 
   @override
@@ -59,8 +63,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
         child: BlocListener<NotesBloc, NotesStates>(
           listener: (context, state) {
             if (state is NotesDeleted) {
+              _utilities.showSnackBar(context, "Note Deleted !!!");
               Navigator.of(context).pop();
-              _utilities.showSnackBar(context, "Note Trashed !!!", false, null);
+            } else if (state is NotesTrashed) {
+              _utilities.showSnackBar(context, "Note Trashed !!!");
+              Navigator.of(context).pop();
+            } else if (state is NotesRestored) {
+              _utilities.showSnackBar(context, "Note Restored !!!");
+              Navigator.of(context).pop();
             }
           },
           child: Scaffold(
@@ -92,9 +102,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   title: titleController.text,
                                   dateAdded: DateTime.now().toIso8601String(),
                                   pinned: state.note.pinned);
-                              context
-                                  .read<NotesBloc>()
-                                  .add(UpdateNote(note: updated));
+                              context.read<NotesBloc>().add(
+                                  UpdateNote(note: updated, fromTrash: false));
                             } else {
                               Note newNote = state.note.copyWith(
                                 id: const Uuid().v1(),
@@ -113,8 +122,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                               Navigator.of(context).pop();
                             }
                           } else {
-                            _utilities.showSnackBar(context,
-                                "Empty notes can not be saved!!!", false, null);
+                            _utilities.showSnackBar(
+                              context,
+                              "Empty notes can not be saved!!!",
+                            );
                           }
                         },
                       )
@@ -265,9 +276,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                           ),
                                         ));
                               },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.color_lens_outlined,
-                          color: Colors.black,
+                          color: state.inTrash ? Colors.black26 : Colors.black,
                         )),
                     MyText(
                         text:
@@ -302,6 +313,19 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                   ? ListTile(
                                                       horizontalTitleGap: 0,
                                                       onTap: () {
+                                                        Note note = state.note
+                                                            .copyWith(
+                                                                pinned: false,
+                                                                trashed: false,
+                                                                dateAdded: DateTime
+                                                                        .now()
+                                                                    .toIso8601String());
+                                                        context
+                                                            .read<NotesBloc>()
+                                                            .add(UpdateNote(
+                                                                note: note,
+                                                                fromTrash:
+                                                                    true));
                                                         Navigator.of(context)
                                                             .pop();
                                                       },
@@ -324,23 +348,62 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                   : Container(),
                                               ListTile(
                                                 horizontalTitleGap: 0,
-                                                onTap: () {
+                                                onTap: () async {
                                                   if (state
                                                       .note.title.isNotEmpty) {
-                                                    context
-                                                        .read<NotesBloc>()
-                                                        .add(DeleteNote(
-                                                            note: state.note,
-                                                            addNotesPage:
-                                                                true));
+                                                    if (state.inTrash) {
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (_) =>
+                                                                  AlertDialog(
+                                                                    backgroundColor:
+                                                                        textFieldBackgoundColor,
+                                                                    title: const MyText(
+                                                                        text:
+                                                                            "Delete this note forever",
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .normal,
+                                                                        color: Colors
+                                                                            .black),
+                                                                    actions: [
+                                                                      MyTextButton(
+                                                                          text:
+                                                                              "Cancel",
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop();
+                                                                          }),
+                                                                      MyTextButton(
+                                                                          text:
+                                                                              "Delete",
+                                                                          onPressed:
+                                                                              () {
+                                                                            context.read<NotesBloc>().add(DeleteNote(note: state.note));
+                                                                            Navigator.of(context).pop();
+                                                                          })
+                                                                    ],
+                                                                  ));
+                                                    } else {
+                                                      context
+                                                          .read<NotesBloc>()
+                                                          .add(TrashNote(
+                                                              note: state.note,
+                                                              addNotesPage:
+                                                                  true));
+                                                    }
                                                   } else {
                                                     _utilities.showSnackBar(
-                                                        context,
-                                                        "Empty Note can not be deleted !!!",
-                                                        false,
-                                                        null);
+                                                      context,
+                                                      "Empty Note can not be deleted !!!",
+                                                    );
                                                   }
-                                                  Navigator.of(context).pop();
+                                                  if (mounted) {
+                                                    Navigator.of(context).pop();
+                                                  }
                                                 },
                                                 leading: Icon(state.inTrash
                                                     ? Icons

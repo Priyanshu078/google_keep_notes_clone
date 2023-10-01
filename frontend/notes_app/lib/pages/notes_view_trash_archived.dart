@@ -15,13 +15,11 @@ class NotesViewTrashArchived extends StatelessWidget {
     required this.height,
     required this.inArchivedNotes,
     required this.inTrashedNotes,
-    required this.pinnedNotes,
   });
 
   final double height;
   final bool inArchivedNotes;
   final bool inTrashedNotes;
-  final bool pinnedNotes;
 
   void moveToUpdatePage(BuildContext context, int index) {
     var state = context.read<NotesBloc>().state;
@@ -35,22 +33,14 @@ class NotesViewTrashArchived extends StatelessWidget {
                     ..setNoteData(
                         note: inArchivedNotes
                             ? state.archivedNotes[index]
-                            : inTrashedNotes
-                                ? state.trashNotes[index]
-                                : pinnedNotes
-                                    ? state.pinnedNotes[index]
-                                    : state.otherNotes[index],
+                            : state.trashNotes[index],
                         inTrash: inTrashedNotes))
             ],
             child: AddNewWidgetPage(
               isUpdate: true,
               note: inArchivedNotes
                   ? state.archivedNotes[index]
-                  : inTrashedNotes
-                      ? state.trashNotes[index]
-                      : pinnedNotes
-                          ? state.pinnedNotes[index]
-                          : state.otherNotes[index],
+                  : state.trashNotes[index],
             ),
           );
         }));
@@ -73,11 +63,7 @@ class NotesViewTrashArchived extends StatelessWidget {
           )
         : (inArchivedNotes
                 ? state.archivedNotes.isEmpty
-                : inTrashedNotes
-                    ? state.trashNotes.isEmpty
-                    : pinnedNotes
-                        ? state.pinnedNotes.isEmpty
-                        : state.otherNotes.isEmpty)
+                : state.trashNotes.isEmpty)
             ? SliverList(
                 delegate: SliverChildListDelegate.fixed([
                   SizedBox(
@@ -101,9 +87,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                           MyText(
                             text: inArchivedNotes
                                 ? "Your archived notes appear here"
-                                : inTrashedNotes
-                                    ? "No notes in Trash"
-                                    : "Notes you add appear here",
+                                : "No notes in Trash",
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                             color: Colors.black,
@@ -116,11 +100,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                 ? SliverGrid.builder(
                     itemCount: inArchivedNotes
                         ? state.archivedNotes.length
-                        : inTrashedNotes
-                            ? state.trashNotes.length
-                            : pinnedNotes
-                                ? state.pinnedNotes.length
-                                : state.otherNotes.length,
+                        : state.trashNotes.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -133,36 +113,22 @@ class NotesViewTrashArchived extends StatelessWidget {
                           moveToUpdatePage(context, index);
                         },
                         onLongPress: () {
-                          context.read<NotesBloc>().add(DeleteNote(
+                          context.read<NotesBloc>().add(TrashNote(
                               note: inArchivedNotes
                                   ? state.archivedNotes[index]
-                                  : inTrashedNotes
-                                      ? state.trashNotes[index]
-                                      : pinnedNotes
-                                          ? state.pinnedNotes[index]
-                                          : state.otherNotes[index],
+                                  : state.trashNotes[index],
                               addNotesPage: false));
                         },
                         child: Container(
                           decoration: BoxDecoration(
                               color: colors[inArchivedNotes
                                   ? state.archivedNotes[index].colorIndex
-                                  : inTrashedNotes
-                                      ? state.trashNotes[index].colorIndex
-                                      : pinnedNotes
-                                          ? state.pinnedNotes[index].colorIndex
-                                          : state.otherNotes[index].colorIndex],
+                                  : state.trashNotes[index].colorIndex],
                               border: (inArchivedNotes
                                           ? state
                                               .archivedNotes[index].colorIndex
-                                          : inTrashedNotes
-                                              ? state
-                                                  .trashNotes[index].colorIndex
-                                              : pinnedNotes
-                                                  ? state.pinnedNotes[index]
-                                                      .colorIndex
-                                                  : state.otherNotes[index]
-                                                      .colorIndex) ==
+                                          : state
+                                              .trashNotes[index].colorIndex) ==
                                       0
                                   ? Border.all(color: Colors.grey)
                                   : null,
@@ -179,11 +145,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     text: inArchivedNotes
                                         ? state.archivedNotes[index].title
-                                        : inTrashedNotes
-                                            ? state.trashNotes[index].title
-                                            : pinnedNotes
-                                                ? state.pinnedNotes[index].title
-                                                : state.otherNotes[index].title,
+                                        : state.trashNotes[index].title,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
@@ -193,11 +155,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                                 MyText(
                                   text: inArchivedNotes
                                       ? state.archivedNotes[index].content
-                                      : inTrashedNotes
-                                          ? state.trashNotes[index].content
-                                          : pinnedNotes
-                                              ? state.pinnedNotes[index].content
-                                              : state.otherNotes[index].content,
+                                      : state.trashNotes[index].content,
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black,
@@ -214,11 +172,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                 : SliverList.builder(
                     itemCount: inArchivedNotes
                         ? state.archivedNotes.length
-                        : inTrashedNotes
-                            ? state.trashNotes.length
-                            : pinnedNotes
-                                ? state.pinnedNotes.length
-                                : state.otherNotes.length,
+                        : state.trashNotes.length,
                     itemBuilder: ((_, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
@@ -227,38 +181,22 @@ class NotesViewTrashArchived extends StatelessWidget {
                             moveToUpdatePage(context, index);
                           },
                           onLongPress: () {
-                            context.read<NotesBloc>().add(DeleteNote(
+                            context.read<NotesBloc>().add(TrashNote(
                                 note: inArchivedNotes
                                     ? state.archivedNotes[index]
-                                    : inTrashedNotes
-                                        ? state.trashNotes[index]
-                                        : pinnedNotes
-                                            ? state.pinnedNotes[index]
-                                            : state.otherNotes[index],
+                                    : state.trashNotes[index],
                                 addNotesPage: false));
                           },
                           child: Container(
                             decoration: BoxDecoration(
                                 color: colors[inArchivedNotes
                                     ? state.archivedNotes[index].colorIndex
-                                    : inTrashedNotes
-                                        ? state.trashNotes[index].colorIndex
-                                        : pinnedNotes
-                                            ? state
-                                                .pinnedNotes[index].colorIndex
-                                            : state
-                                                .otherNotes[index].colorIndex],
+                                    : state.trashNotes[index].colorIndex],
                                 border: (inArchivedNotes
                                             ? state
                                                 .archivedNotes[index].colorIndex
-                                            : inTrashedNotes
-                                                ? state.trashNotes[index]
-                                                    .colorIndex
-                                                : pinnedNotes
-                                                    ? state.pinnedNotes[index]
-                                                        .colorIndex
-                                                    : state.otherNotes[index]
-                                                        .colorIndex) ==
+                                            : state.trashNotes[index]
+                                                .colorIndex) ==
                                         0
                                     ? Border.all(color: Colors.grey)
                                     : null,
@@ -275,13 +213,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       text: inArchivedNotes
                                           ? state.archivedNotes[index].title
-                                          : inTrashedNotes
-                                              ? state.trashNotes[index].title
-                                              : pinnedNotes
-                                                  ? state
-                                                      .pinnedNotes[index].title
-                                                  : state
-                                                      .otherNotes[index].title,
+                                          : state.trashNotes[index].title,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
@@ -291,13 +223,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                                   MyText(
                                     text: inArchivedNotes
                                         ? state.archivedNotes[index].content
-                                        : inTrashedNotes
-                                            ? state.trashNotes[index].content
-                                            : pinnedNotes
-                                                ? state
-                                                    .pinnedNotes[index].content
-                                                : state
-                                                    .otherNotes[index].content,
+                                        : state.trashNotes[index].content,
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     color: Colors.black,

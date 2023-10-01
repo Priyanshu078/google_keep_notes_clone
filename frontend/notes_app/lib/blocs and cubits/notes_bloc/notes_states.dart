@@ -71,3 +71,33 @@ class NotesDeleted extends NotesStates {
     required super.archiveSearchOn,
   });
 }
+
+class NotesTrashed extends NotesStates {
+  const NotesTrashed({
+    required super.pinnedNotes,
+    required super.otherNotes,
+    required super.gridViewMode,
+    required super.lightMode,
+    required super.notesSelected,
+    required super.archiveSelected,
+    required super.trashSelected,
+    required super.trashNotes,
+    required super.archivedNotes,
+    required super.archiveSearchOn,
+  });
+}
+
+class NotesRestored extends NotesStates {
+  const NotesRestored({
+    required super.pinnedNotes,
+    required super.otherNotes,
+    required super.gridViewMode,
+    required super.lightMode,
+    required super.notesSelected,
+    required super.archiveSelected,
+    required super.trashSelected,
+    required super.trashNotes,
+    required super.archivedNotes,
+    required super.archiveSearchOn,
+  });
+}
