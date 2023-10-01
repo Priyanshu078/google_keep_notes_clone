@@ -24,9 +24,6 @@ class NotesViewHome extends StatelessWidget {
         builder: (_) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                value: context.read<NotesBloc>(),
-              ),
               BlocProvider(
                   create: (context) => AddNotesCubit()
                     ..setNoteData(
@@ -255,20 +252,22 @@ class NotesViewHome extends StatelessWidget {
                   )
                 : SliverList(
                     delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: SizedBox(
-                        height: height * 0.06,
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyText(
-                              text: "Pinned",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                      ),
-                    ),
+                    state.pinnedNotes.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: SizedBox(
+                              height: height * 0.06,
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: MyText(
+                                    text: "Pinned",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          )
+                        : Container(),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -327,20 +326,23 @@ class NotesViewHome extends StatelessWidget {
                         );
                       }),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: SizedBox(
-                        height: height * 0.06,
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyText(
-                              text: "Others",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                      ),
-                    ),
+                    (state.pinnedNotes.isNotEmpty &&
+                            state.otherNotes.isNotEmpty)
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: SizedBox(
+                              height: height * 0.06,
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: MyText(
+                                    text: "Others",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          )
+                        : Container(),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

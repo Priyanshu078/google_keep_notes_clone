@@ -30,9 +30,6 @@ class NotesViewTrashArchived extends StatelessWidget {
         builder: (_) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                value: context.read<NotesBloc>(),
-              ),
               BlocProvider(
                   create: (context) => AddNotesCubit()
                     ..setNoteData(

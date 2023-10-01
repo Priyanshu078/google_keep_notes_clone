@@ -38,7 +38,7 @@ router.post("/addNotes", async (req, res) => {
     colorIndex: req.body.colorIndex,
     trashed: req.body.trashed,
     archived: req.body.archived,
-    dateadded: req.body.dateadded
+    dateAdded: req.body.dateAdded
   });
   try {
     await newNote.save();
@@ -62,7 +62,7 @@ router.post("/updateNotes", async (req, res) => {
       colorIndex: req.body.colorIndex,
       trashed: req.body.trashed,
       archived: req.body.archived,
-      dateadded : req.body.dateadded,
+      dateAdded : req.body.dateAdded,
     };
     await doc.updateOne(update);
     res.send({ status: 200, message: "document updated succussfully" });
@@ -84,7 +84,7 @@ router.post('/deleteNotes', async (req, res) => {
     const update = {
       pinned : false,
       trashed : true,
-      dateadded : req.body.dateadded,
+      dateAdded : req.body.dateAdded,
     }
     await doc.updateOne(update);
     res.send({ status: 200, message: "document moved to trash succussfully" });

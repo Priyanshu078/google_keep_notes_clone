@@ -46,7 +46,7 @@ class ApiService {
             userid: data[i]['userid'],
             content: data[i]['content'],
             title: data[i]['title'],
-            dateAdded: data[i]['dateadded'].toString(),
+            dateAdded: data[i]['dateAdded'].toString(),
             pinned: data[i]["pinned"],
             colorIndex: data[i]["colorIndex"],
             trashed: data[i]['trashed'],
@@ -70,7 +70,7 @@ class ApiService {
       "colorIndex": note.colorIndex,
       "trashed": note.trashed,
       "archived": note.archived,
-      "dateadded": note.dateAdded,
+      "dateAdded": note.dateAdded,
     });
     debugPrint(response.data.toString());
   }
@@ -80,7 +80,7 @@ class ApiService {
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
       "id": note.id,
-      "dateadded": DateTime.now().toString(),
+      "dateAdded": DateTime.now().toString(),
     });
     debugPrint(response.data.toString());
   }
@@ -96,7 +96,7 @@ class ApiService {
       "colorIndex": note.colorIndex,
       "trashed": note.trashed,
       "archived": note.archived,
-      "dateadded": note.dateAdded,
+      "dateAdded": note.dateAdded,
     });
     debugPrint(response.data.toString());
   }
