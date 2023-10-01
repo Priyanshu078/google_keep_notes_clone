@@ -56,243 +56,235 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
-        child: Scaffold(
-          backgroundColor: colors[state.colorIndex],
-          appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.black),
+        child: BlocListener<NotesBloc, NotesStates>(
+          listener: (context, state) {
+            if (state is NotesDeleted) {
+              Navigator.of(context).pop();
+              _utilities.showSnackBar(context, "Note Trashed !!!", false, null);
+            }
+          },
+          child: Scaffold(
             backgroundColor: colors[state.colorIndex],
-            actions: [
-              state.inTrash
-                  ? Container()
-                  : IconButton(
-                      onPressed: () {
-                        context.read<AddNotesCubit>().pinUnpinNote();
-                      },
-                      icon: state.note.pinned
-                          ? const Icon(CupertinoIcons.pin_fill)
-                          : const Icon(CupertinoIcons.pin),
-                    ),
-              state.inTrash
-                  ? Container()
-                  : IconButton(
-                      icon: const Icon(Icons.check),
-                      onPressed: () async {
-                        var state = context.read<AddNotesCubit>().state;
-                        if (titleController.text != "") {
-                          if (widget.isUpdate) {
-                            Note updated = state.note.copyWith(
+            appBar: AppBar(
+              iconTheme: const IconThemeData(color: Colors.black),
+              backgroundColor: colors[state.colorIndex],
+              actions: [
+                state.inTrash
+                    ? Container()
+                    : IconButton(
+                        onPressed: () {
+                          context.read<AddNotesCubit>().pinUnpinNote();
+                        },
+                        icon: state.note.pinned
+                            ? const Icon(CupertinoIcons.pin_fill)
+                            : const Icon(CupertinoIcons.pin),
+                      ),
+                state.inTrash
+                    ? Container()
+                    : IconButton(
+                        icon: const Icon(Icons.check),
+                        onPressed: () async {
+                          var state = context.read<AddNotesCubit>().state;
+                          if (titleController.text != "") {
+                            if (widget.isUpdate) {
+                              Note updated = state.note.copyWith(
+                                  content: contentController.text,
+                                  title: titleController.text,
+                                  dateAdded: DateTime.now().toIso8601String(),
+                                  pinned: state.note.pinned);
+                              context
+                                  .read<NotesBloc>()
+                                  .add(UpdateNote(note: updated));
+                            } else {
+                              Note newNote = state.note.copyWith(
+                                id: const Uuid().v1(),
+                                userid: "priyanshupaliwal",
                                 content: contentController.text,
                                 title: titleController.text,
                                 dateAdded: DateTime.now().toIso8601String(),
-                                pinned: state.note.pinned);
-                            context
-                                .read<NotesBloc>()
-                                .add(UpdateNote(note: updated));
+                                colorIndex: state.colorIndex,
+                                pinned: state.note.pinned,
+                              );
+                              context
+                                  .read<NotesBloc>()
+                                  .add(AddNote(note: newNote));
+                            }
+                            if (mounted) {
+                              Navigator.of(context).pop();
+                            }
                           } else {
-                            Note newNote = state.note.copyWith(
-                              id: const Uuid().v1(),
-                              userid: "priyanshupaliwal",
-                              content: contentController.text,
-                              title: titleController.text,
-                              dateAdded: DateTime.now().toIso8601String(),
-                              colorIndex: state.colorIndex,
-                              pinned: state.note.pinned,
-                            );
-                            context
-                                .read<NotesBloc>()
-                                .add(AddNote(note: newNote));
+                            _utilities.showSnackBar(context,
+                                "Empty notes can not be saved!!!", false, null);
                           }
-                          if (mounted) {
-                            Navigator.of(context).pop();
-                          }
-                        } else {
-                          _utilities.showSnackBar(context,
-                              "Empty notes can not be saved!!!", false, null);
+                        },
+                      )
+              ],
+            ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Column(children: [
+                    TextField(
+                      onTap: () {
+                        if (state.inTrash) {
+                          showSnackBar();
                         }
                       },
-                    )
-            ],
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Column(children: [
-                  TextField(
-                    onTap: () {
-                      if (state.inTrash) {
-                        showSnackBar();
-                      }
-                    },
-                    readOnly: state.inTrash,
-                    autofocus: widget.isUpdate ? false : true,
-                    controller: titleController,
-                    style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Title",
-                        hintStyle: GoogleFonts.poppins(
-                            fontSize: 22,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                  TextField(
-                    onTap: () {
-                      if (state.inTrash) {
-                        showSnackBar();
-                      }
-                    },
-                    readOnly: state.inTrash,
-                    maxLines: null,
-                    controller: contentController,
-                    style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Note",
-                        hintStyle: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.grey.withOpacity(1),
-                            fontWeight: FontWeight.w400)),
-                  ),
-                ]),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: state.inTrash
-                          ? null
-                          : () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (_) => BlocProvider.value(
-                                        value: context.read<AddNotesCubit>(),
-                                        child: BlocBuilder<AddNotesCubit,
-                                            AddNotesState>(
-                                          builder: (context, state) {
-                                            return Container(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              height: height * 0.2,
-                                              width: double.infinity,
-                                              color: colors[state.colorIndex],
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const MyText(
-                                                      text: "Color",
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  SizedBox(
-                                                    height: height * 0.1,
-                                                    width: double.infinity,
-                                                    child: ListView(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      children: List.generate(
-                                                          colors.length,
-                                                          (index) => Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            8.0),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    context
-                                                                        .read<
-                                                                            AddNotesCubit>()
-                                                                        .setBackgroundColor(
-                                                                          index,
-                                                                        );
-                                                                  },
-                                                                  child: Stack(
-                                                                      children: [
-                                                                        Container(
-                                                                          decoration: BoxDecoration(
-                                                                              color: colors[index],
-                                                                              shape: BoxShape.circle),
-                                                                          height:
-                                                                              height * 0.1,
-                                                                          width:
-                                                                              height * 0.1,
-                                                                        ),
-                                                                        state.colorIndex ==
-                                                                                index
-                                                                            ? Container(
-                                                                                decoration: BoxDecoration(border: Border.all(width: 2, color: Colors.blue), shape: BoxShape.circle),
-                                                                                height: height * 0.1,
-                                                                                width: height * 0.1,
-                                                                                child: const Center(
-                                                                                    child: Icon(
-                                                                                  Icons.check,
-                                                                                  size: 30,
-                                                                                  color: Colors.blue,
-                                                                                )),
-                                                                              )
-                                                                            : Container()
-                                                                      ]),
-                                                                ),
-                                                              )).toList(),
+                      readOnly: state.inTrash,
+                      autofocus: widget.isUpdate ? false : true,
+                      controller: titleController,
+                      style: GoogleFonts.poppins(
+                          fontSize: 22,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Title",
+                          hintStyle: GoogleFonts.poppins(
+                              fontSize: 22,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                    TextField(
+                      onTap: () {
+                        if (state.inTrash) {
+                          showSnackBar();
+                        }
+                      },
+                      readOnly: state.inTrash,
+                      maxLines: null,
+                      controller: contentController,
+                      style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Note",
+                          hintStyle: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: Colors.grey.withOpacity(1),
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ]),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: state.inTrash
+                            ? null
+                            : () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) => BlocProvider.value(
+                                          value: context.read<AddNotesCubit>(),
+                                          child: BlocBuilder<AddNotesCubit,
+                                              AddNotesState>(
+                                            builder: (context, state) {
+                                              return Container(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                height: height * 0.2,
+                                                width: double.infinity,
+                                                color: colors[state.colorIndex],
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const MyText(
+                                                        text: "Color",
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
+                                                    SizedBox(
+                                                      height: height * 0.02,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ));
-                            },
-                      icon: const Icon(
-                        Icons.color_lens_outlined,
-                        color: Colors.black,
-                      )),
-                  MyText(
-                      text:
-                          "Edited ${TimeOfDay.fromDateTime(DateTime.now()).format(context)}",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                  IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (_) => MultiBlocProvider(
-                                  providers: [
-                                    BlocProvider.value(
-                                      value: context.read<AddNotesCubit>(),
-                                    ),
-                                    BlocProvider.value(
-                                      value: context.read<NotesBloc>(),
-                                    ),
-                                  ],
-                                  child: BlocListener<NotesBloc, NotesStates>(
-                                    listener: (context, state) {
-                                      if (state is NotesDeleted) {
-                                        print(
-                                            "Dfwejgweijgowigjweog  eoigweiogweiog");
-                                        Navigator.of(context).pop();
-                                        _utilities.showSnackBar(context,
-                                            "Note Trashed !!!", false, null);
-                                      }
-                                    },
+                                                    SizedBox(
+                                                      height: height * 0.1,
+                                                      width: double.infinity,
+                                                      child: ListView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        children: List.generate(
+                                                            colors.length,
+                                                            (index) => Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          right:
+                                                                              8.0),
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      context
+                                                                          .read<
+                                                                              AddNotesCubit>()
+                                                                          .setBackgroundColor(
+                                                                            index,
+                                                                          );
+                                                                    },
+                                                                    child: Stack(
+                                                                        children: [
+                                                                          Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: colors[index], shape: BoxShape.circle),
+                                                                            height:
+                                                                                height * 0.1,
+                                                                            width:
+                                                                                height * 0.1,
+                                                                          ),
+                                                                          state.colorIndex == index
+                                                                              ? Container(
+                                                                                  decoration: BoxDecoration(border: Border.all(width: 2, color: Colors.blue), shape: BoxShape.circle),
+                                                                                  height: height * 0.1,
+                                                                                  width: height * 0.1,
+                                                                                  child: const Center(
+                                                                                      child: Icon(
+                                                                                    Icons.check,
+                                                                                    size: 30,
+                                                                                    color: Colors.blue,
+                                                                                  )),
+                                                                                )
+                                                                              : Container()
+                                                                        ]),
+                                                                  ),
+                                                                )).toList(),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ));
+                              },
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.black,
+                        )),
+                    MyText(
+                        text:
+                            "Edited ${TimeOfDay.fromDateTime(DateTime.now()).format(context)}",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                    IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (_) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(
+                                        value: context.read<AddNotesCubit>(),
+                                      ),
+                                    ],
                                     child: BlocBuilder<AddNotesCubit,
                                         AddNotesState>(
                                       builder: (context, state) {
@@ -373,14 +365,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                         );
                                       },
                                     ),
-                                  ),
-                                ));
-                      },
-                      color: Colors.black,
-                      icon: const Icon(Icons.more_vert_outlined))
-                ],
-              ),
-            ],
+                                  ));
+                        },
+                        color: Colors.black,
+                        icon: const Icon(Icons.more_vert_outlined))
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );

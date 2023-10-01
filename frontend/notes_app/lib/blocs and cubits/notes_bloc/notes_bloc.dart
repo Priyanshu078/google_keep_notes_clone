@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:notes_app/api/api_service.dart';
 import 'package:notes_app/data/note.dart';
 
