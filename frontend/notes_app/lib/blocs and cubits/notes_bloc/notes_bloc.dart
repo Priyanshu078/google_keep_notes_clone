@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:notes_app/api/api_service.dart';
 import 'package:notes_app/data/note.dart';
 
@@ -111,7 +112,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   List<Note> sortNotes(List<Note> notes) {
     notes.sort((a, b) {
-      return DateTime.parse(b.dateAdded).compareTo(DateTime.parse(a.dateAdded));
+      return DateTime.parse(b.dateAdded).compareTo(DateTime.parse(b.dateAdded));
     });
     return notes;
   }
@@ -181,7 +182,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         : List.from(state.otherNotes);
     int index = notes.indexWhere((element) => element.id == event.note.id);
     List<Note> trashedNotes = List.from(state.trashNotes);
-    trashedNotes.add(notes[index].copyWith(dateAdded: DateTime.now.toString()));
+    trashedNotes.add(
+        notes[index].copyWith(dateAdded: DateTime.now().toIso8601String()));
     trashedNotes = sortNotes(trashedNotes);
     notes.removeAt(index);
     notes = sortNotes(notes);

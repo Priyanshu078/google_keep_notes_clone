@@ -46,7 +46,7 @@ class ApiService {
             userid: data[i]['userid'],
             content: data[i]['content'],
             title: data[i]['title'],
-            dateAdded: data[i]['dateAdded'].toString(),
+            dateAdded: data[i]['dateAdded'],
             pinned: data[i]["pinned"],
             colorIndex: data[i]["colorIndex"],
             trashed: data[i]['trashed'],
@@ -80,7 +80,7 @@ class ApiService {
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
       "id": note.id,
-      "dateAdded": DateTime.now().toString(),
+      "dateAdded": DateTime.now().toIso8601String(),
     });
     debugPrint(response.data.toString());
   }

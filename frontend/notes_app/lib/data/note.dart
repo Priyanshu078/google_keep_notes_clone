@@ -77,7 +77,7 @@ class Note {
       "userid": userid,
       "content": content,
       "title": title,
-      "dateAdded": dateAdded.toString(),
+      "dateAdded": dateAdded,
       "pinned": pinned,
       "colorIndex": colorIndex,
       "trashed": trashed,

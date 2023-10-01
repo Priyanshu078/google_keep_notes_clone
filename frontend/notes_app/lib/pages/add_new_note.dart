@@ -83,7 +83,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                             Note updated = state.note.copyWith(
                                 content: contentController.text,
                                 title: titleController.text,
-                                dateAdded: DateTime.now().toString(),
+                                dateAdded: DateTime.now().toIso8601String(),
                                 pinned: state.note.pinned);
                             context
                                 .read<NotesBloc>()
@@ -94,7 +94,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                               userid: "priyanshupaliwal",
                               content: contentController.text,
                               title: titleController.text,
-                              dateAdded: DateTime.now().toString(),
+                              dateAdded: DateTime.now().toIso8601String(),
                               colorIndex: state.colorIndex,
                               pinned: state.note.pinned,
                             );
