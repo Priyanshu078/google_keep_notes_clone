@@ -79,6 +79,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             } else if (state is NotesUnarchived) {
               _utilities.showSnackBar(context, "Note Unarchived !!!");
               Navigator.of(context).pop();
+            } else if (state is NotesPinnedUnarchived) {
+              _utilities.showSnackBar(context, "Note Pinned & Unarchived !!!");
+              Navigator.of(context).pop();
             }
           },
           child: Scaffold(

@@ -214,17 +214,33 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           : List.from(state.otherNotes);
       otherNotes.add(note);
       otherNotes = sortNotes(otherNotes);
-      emit(NotesUnarchived(
-          pinnedNotes: event.pinnedUnarchive ? otherNotes : state.pinnedNotes,
-          otherNotes: !event.pinnedUnarchive ? otherNotes : state.otherNotes,
-          gridViewMode: state.gridViewMode,
-          lightMode: state.lightMode,
-          notesSelected: state.notesSelected,
-          archiveSelected: state.archiveSelected,
-          trashSelected: state.trashSelected,
-          trashNotes: state.trashNotes,
-          archivedNotes: notes,
-          archiveSearchOn: state.archiveSearchOn));
+      emit(event.pinnedUnarchive
+          ? NotesPinnedUnarchived(
+              pinnedNotes:
+                  event.pinnedUnarchive ? otherNotes : state.pinnedNotes,
+              otherNotes:
+                  !event.pinnedUnarchive ? otherNotes : state.otherNotes,
+              gridViewMode: state.gridViewMode,
+              lightMode: state.lightMode,
+              notesSelected: state.notesSelected,
+              archiveSelected: state.archiveSelected,
+              trashSelected: state.trashSelected,
+              trashNotes: state.trashNotes,
+              archivedNotes: notes,
+              archiveSearchOn: state.archiveSearchOn)
+          : NotesUnarchived(
+              pinnedNotes:
+                  event.pinnedUnarchive ? otherNotes : state.pinnedNotes,
+              otherNotes:
+                  !event.pinnedUnarchive ? otherNotes : state.otherNotes,
+              gridViewMode: state.gridViewMode,
+              lightMode: state.lightMode,
+              notesSelected: state.notesSelected,
+              archiveSelected: state.archiveSelected,
+              trashSelected: state.trashSelected,
+              trashNotes: state.trashNotes,
+              archivedNotes: notes,
+              archiveSearchOn: state.archiveSearchOn));
     } else {
       List<Note> notes = event.fromArchive
           ? List.from(state.archivedNotes)

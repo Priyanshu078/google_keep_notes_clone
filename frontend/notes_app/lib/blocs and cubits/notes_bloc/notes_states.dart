@@ -131,3 +131,18 @@ class NotesUnarchived extends NotesStates {
     required super.archiveSearchOn,
   });
 }
+
+class NotesPinnedUnarchived extends NotesStates {
+  const NotesPinnedUnarchived({
+    required super.pinnedNotes,
+    required super.otherNotes,
+    required super.gridViewMode,
+    required super.lightMode,
+    required super.notesSelected,
+    required super.archiveSelected,
+    required super.trashSelected,
+    required super.trashNotes,
+    required super.archivedNotes,
+    required super.archiveSearchOn,
+  });
+}
