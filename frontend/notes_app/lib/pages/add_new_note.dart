@@ -184,8 +184,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     forUnArchive: false,
                                     pinnedUnarchive: false,
                                   ));
-                            }
-                            if (widget.isArchiveUpdate) {
+                            } else if (widget.isArchiveUpdate) {
                               Note updated = state.note.copyWith(
                                   content: contentController.text,
                                   title: titleController.text,
