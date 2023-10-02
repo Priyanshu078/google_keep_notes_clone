@@ -251,15 +251,23 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       notes[index] = event.note;
       notes = sortNotes(notes);
       emit(NotesStates(
-        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
-        otherNotes: !event.note.pinned ? notes : state.otherNotes,
+        pinnedNotes: event.fromArchive
+            ? state.pinnedNotes
+            : event.note.pinned
+                ? notes
+                : state.pinnedNotes,
+        otherNotes: event.fromArchive
+            ? state.otherNotes
+            : !event.note.pinned
+                ? notes
+                : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
         trashNotes: state.trashNotes,
-        archivedNotes: state.archivedNotes,
+        archivedNotes: event.fromArchive ? notes : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
       ));
     }

@@ -29,7 +29,7 @@ class UpdateNote extends NotesEvent {
       required this.pinnedUnarchive});
   @override
   List<Object?> get props =>
-      [note, fromTrash, fromArchive, forUnArchive, pinnedUnarchive];
+      [note, fromTrash, fromArchive, forArchive, forUnArchive, pinnedUnarchive];
 }
 
 class TrashNote extends NotesEvent {
