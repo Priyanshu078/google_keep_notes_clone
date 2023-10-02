@@ -19,10 +19,12 @@ class AddNewWidgetPage extends StatefulWidget {
   const AddNewWidgetPage({
     super.key,
     required this.isUpdate,
+    required this.isArchiveUpdate,
     this.note,
   });
   final bool isUpdate;
   final Note? note;
+  final bool isArchiveUpdate;
 
   @override
   State<AddNewWidgetPage> createState() => _AddNewWidgetPageState();
@@ -36,7 +38,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.isUpdate) {
+    if (widget.isUpdate || widget.isArchiveUpdate) {
       titleController.text = widget.note!.title;
       contentController.text = widget.note!.content;
     }
@@ -71,6 +73,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             } else if (state is NotesRestored) {
               _utilities.showSnackBar(context, "Note Restored !!!");
               Navigator.of(context).pop();
+            } else if (state is NotesArchived) {
+              _utilities.showSnackBar(context, "Note Archived !!!");
+              Navigator.of(context).pop();
+            } else if (state is NotesUnarchived) {
+              _utilities.showSnackBar(context, "Note Unarchived !!!");
+              Navigator.of(context).pop();
             }
           },
           child: Scaffold(
@@ -84,11 +92,74 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                     : IconButton(
                         onPressed: () {
                           context.read<AddNotesCubit>().pinUnpinNote();
+                          if (widget.isArchiveUpdate) {
+                            Note note = state.note.copyWith(
+                              title: titleController.text,
+                              content: contentController.text,
+                              dateAdded: DateTime.now().toIso8601String(),
+                              archived: false,
+                              pinned: true,
+                              colorIndex: state.colorIndex,
+                              trashed: false,
+                            );
+                            context.read<NotesBloc>().add(UpdateNote(
+                                  note: note,
+                                  fromTrash: false,
+                                  fromArchive: false,
+                                  forArchive: false,
+                                  forUnArchive: true,
+                                  pinnedUnarchive: true,
+                                ));
+                          }
                         },
                         icon: state.note.pinned
                             ? const Icon(CupertinoIcons.pin_fill)
                             : const Icon(CupertinoIcons.pin),
                       ),
+                state.inTrash
+                    ? Container()
+                    : IconButton(
+                        onPressed: () {
+                          if (state.inArchive) {
+                            Note note = state.note.copyWith(
+                              title: titleController.text,
+                              content: contentController.text,
+                              trashed: false,
+                              archived: false,
+                              pinned: false,
+                              dateAdded: DateTime.now().toIso8601String(),
+                              colorIndex: state.colorIndex,
+                            );
+                            context.read<NotesBloc>().add(UpdateNote(
+                                  note: note,
+                                  fromTrash: false,
+                                  fromArchive: false,
+                                  forArchive: false,
+                                  forUnArchive: true,
+                                  pinnedUnarchive: false,
+                                ));
+                          } else {
+                            Note note = state.note.copyWith(
+                              title: titleController.text,
+                              content: contentController.text,
+                              dateAdded: DateTime.now().toIso8601String(),
+                              trashed: false,
+                              archived: true,
+                              colorIndex: state.colorIndex,
+                            );
+                            context.read<NotesBloc>().add(UpdateNote(
+                                  note: note,
+                                  fromTrash: false,
+                                  fromArchive: false,
+                                  forArchive: true,
+                                  forUnArchive: false,
+                                  pinnedUnarchive: false,
+                                ));
+                          }
+                        },
+                        icon: state.inArchive
+                            ? const Icon(Icons.unarchive_outlined)
+                            : const Icon(Icons.archive_outlined)),
                 state.inTrash
                     ? Container()
                     : IconButton(
@@ -102,8 +173,29 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   title: titleController.text,
                                   dateAdded: DateTime.now().toIso8601String(),
                                   pinned: state.note.pinned);
-                              context.read<NotesBloc>().add(
-                                  UpdateNote(note: updated, fromTrash: false));
+                              context.read<NotesBloc>().add(UpdateNote(
+                                    note: updated,
+                                    fromTrash: false,
+                                    fromArchive: false,
+                                    forArchive: false,
+                                    forUnArchive: false,
+                                    pinnedUnarchive: false,
+                                  ));
+                            }
+                            if (widget.isArchiveUpdate) {
+                              Note updated = state.note.copyWith(
+                                  content: contentController.text,
+                                  title: titleController.text,
+                                  dateAdded: DateTime.now().toIso8601String(),
+                                  pinned: state.note.pinned);
+                              context.read<NotesBloc>().add(UpdateNote(
+                                    note: updated,
+                                    fromTrash: false,
+                                    fromArchive: true,
+                                    forArchive: false,
+                                    forUnArchive: false,
+                                    pinnedUnarchive: false,
+                                  ));
                             } else {
                               Note newNote = state.note.copyWith(
                                 id: const Uuid().v1(),
@@ -324,8 +416,15 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                             .read<NotesBloc>()
                                                             .add(UpdateNote(
                                                                 note: note,
-                                                                fromTrash:
-                                                                    true));
+                                                                fromTrash: true,
+                                                                fromArchive:
+                                                                    false,
+                                                                forArchive:
+                                                                    false,
+                                                                forUnArchive:
+                                                                    false,
+                                                                pinnedUnarchive:
+                                                                    false));
                                                         Navigator.of(context)
                                                             .pop();
                                                       },

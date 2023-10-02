@@ -180,10 +180,57 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
       ));
-    } else {
+    } else if (event.forArchive) {
       List<Note> notes = event.note.pinned
           ? List.from(state.pinnedNotes)
           : List.from(state.otherNotes);
+      int index = notes.indexWhere((element) => element.id == event.note.id);
+      Note note = event.note.copyWith(pinned: false);
+      notes.removeAt(index);
+      notes = sortNotes(notes);
+      List<Note> archivedNotes = List.from(state.archivedNotes);
+      archivedNotes.add(note);
+      archivedNotes = sortNotes(archivedNotes);
+      emit(NotesArchived(
+        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
+        otherNotes: !event.note.pinned ? notes : state.otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        notesSelected: state.notesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+      ));
+    } else if (event.forUnArchive) {
+      List<Note> notes = List.from(state.archivedNotes);
+      int index = notes.indexWhere((element) => element.id == event.note.id);
+      Note note = notes[index];
+      notes.removeAt(index);
+      notes = sortNotes(notes);
+      List<Note> otherNotes = event.pinnedUnarchive
+          ? List.from(state.pinnedNotes)
+          : List.from(state.otherNotes);
+      otherNotes.add(note);
+      otherNotes = sortNotes(otherNotes);
+      emit(NotesUnarchived(
+          pinnedNotes: event.pinnedUnarchive ? otherNotes : state.pinnedNotes,
+          otherNotes: !event.pinnedUnarchive ? otherNotes : state.otherNotes,
+          gridViewMode: state.gridViewMode,
+          lightMode: state.lightMode,
+          notesSelected: state.notesSelected,
+          archiveSelected: state.archiveSelected,
+          trashSelected: state.trashSelected,
+          trashNotes: state.trashNotes,
+          archivedNotes: notes,
+          archiveSearchOn: state.archiveSearchOn));
+    } else {
+      List<Note> notes = event.fromArchive
+          ? List.from(state.archivedNotes)
+          : event.note.pinned
+              ? List.from(state.pinnedNotes)
+              : List.from(state.otherNotes);
       int index = notes.indexWhere((note) => note.id == event.note.id);
       notes[index] = event.note;
       notes = sortNotes(notes);

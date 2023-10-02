@@ -16,9 +16,20 @@ class AddNote extends NotesEvent {
 class UpdateNote extends NotesEvent {
   final Note note;
   final bool fromTrash;
-  UpdateNote({required this.note, required this.fromTrash});
+  final bool fromArchive;
+  final bool forArchive;
+  final bool forUnArchive;
+  final bool pinnedUnarchive;
+  UpdateNote(
+      {required this.note,
+      required this.fromTrash,
+      required this.fromArchive,
+      required this.forArchive,
+      required this.forUnArchive,
+      required this.pinnedUnarchive});
   @override
-  List<Object?> get props => [note, fromTrash];
+  List<Object?> get props =>
+      [note, fromTrash, fromArchive, forUnArchive, pinnedUnarchive];
 }
 
 class TrashNote extends NotesEvent {

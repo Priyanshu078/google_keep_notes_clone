@@ -28,13 +28,16 @@ class NotesViewHome extends StatelessWidget {
               BlocProvider(
                   create: (context) => AddNotesCubit()
                     ..setNoteData(
-                        note: pinnedNotes
-                            ? state.pinnedNotes[index]
-                            : state.otherNotes[index],
-                        inTrash: false))
+                      note: pinnedNotes
+                          ? state.pinnedNotes[index]
+                          : state.otherNotes[index],
+                      inTrash: false,
+                      inArchive: false,
+                    ))
             ],
             child: AddNewWidgetPage(
               isUpdate: true,
+              isArchiveUpdate: false,
               note: pinnedNotes
                   ? state.pinnedNotes[index]
                   : state.otherNotes[index],

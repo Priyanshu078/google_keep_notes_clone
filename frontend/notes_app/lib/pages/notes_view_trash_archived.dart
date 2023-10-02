@@ -31,13 +31,16 @@ class NotesViewTrashArchived extends StatelessWidget {
               BlocProvider(
                   create: (context) => AddNotesCubit()
                     ..setNoteData(
-                        note: inArchivedNotes
-                            ? state.archivedNotes[index]
-                            : state.trashNotes[index],
-                        inTrash: inTrashedNotes))
+                      note: inArchivedNotes
+                          ? state.archivedNotes[index]
+                          : state.trashNotes[index],
+                      inTrash: inTrashedNotes,
+                      inArchive: inArchivedNotes,
+                    ))
             ],
             child: AddNewWidgetPage(
-              isUpdate: true,
+              isUpdate: false,
+              isArchiveUpdate: true,
               note: inArchivedNotes
                   ? state.archivedNotes[index]
                   : state.trashNotes[index],
