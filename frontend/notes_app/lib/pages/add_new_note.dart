@@ -20,11 +20,13 @@ class AddNewWidgetPage extends StatefulWidget {
     super.key,
     required this.isUpdate,
     required this.isArchiveUpdate,
+    required this.pinnedNote,
     this.note,
   });
   final bool isUpdate;
   final Note? note;
   final bool isArchiveUpdate;
+  final bool pinnedNote;
 
   @override
   State<AddNewWidgetPage> createState() => _AddNewWidgetPageState();
@@ -112,6 +114,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   forArchive: false,
                                   forUnArchive: true,
                                   pinnedUnarchive: true,
+                                  homeNotePinned: widget.pinnedNote,
                                 ));
                           }
                         },
@@ -140,6 +143,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   forArchive: false,
                                   forUnArchive: true,
                                   pinnedUnarchive: false,
+                                  homeNotePinned: widget.pinnedNote,
                                 ));
                           } else {
                             Note note = state.note.copyWith(
@@ -157,6 +161,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   forArchive: true,
                                   forUnArchive: false,
                                   pinnedUnarchive: false,
+                                  homeNotePinned: widget.pinnedNote,
                                 ));
                           }
                         },
@@ -183,6 +188,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     forArchive: false,
                                     forUnArchive: false,
                                     pinnedUnarchive: false,
+                                    homeNotePinned: widget.pinnedNote,
                                   ));
                             } else if (widget.isArchiveUpdate) {
                               Note updated = state.note.copyWith(
@@ -197,6 +203,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     forArchive: false,
                                     forUnArchive: false,
                                     pinnedUnarchive: false,
+                                    homeNotePinned: widget.pinnedNote,
                                   ));
                             } else {
                               Note newNote = state.note.copyWith(
@@ -417,16 +424,19 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                         context
                                                             .read<NotesBloc>()
                                                             .add(UpdateNote(
-                                                                note: note,
-                                                                fromTrash: true,
-                                                                fromArchive:
-                                                                    false,
-                                                                forArchive:
-                                                                    false,
-                                                                forUnArchive:
-                                                                    false,
-                                                                pinnedUnarchive:
-                                                                    false));
+                                                              note: note,
+                                                              fromTrash: true,
+                                                              fromArchive:
+                                                                  false,
+                                                              forArchive: false,
+                                                              forUnArchive:
+                                                                  false,
+                                                              pinnedUnarchive:
+                                                                  false,
+                                                              homeNotePinned:
+                                                                  widget
+                                                                      .pinnedNote,
+                                                            ));
                                                         Navigator.of(context)
                                                             .pop();
                                                       },

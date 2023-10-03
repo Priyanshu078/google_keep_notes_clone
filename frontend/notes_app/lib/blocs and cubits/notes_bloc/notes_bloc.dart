@@ -244,7 +244,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     } else {
       List<Note> notes = event.fromArchive
           ? List.from(state.archivedNotes)
-          : event.note.pinned
+          : event.homeNotePinned
               ? List.from(state.pinnedNotes)
               : List.from(state.otherNotes);
       int index = notes.indexWhere((note) => note.id == event.note.id);
@@ -253,12 +253,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       emit(NotesStates(
         pinnedNotes: event.fromArchive
             ? state.pinnedNotes
-            : event.note.pinned
+            : event.homeNotePinned
                 ? notes
                 : state.pinnedNotes,
         otherNotes: event.fromArchive
             ? state.otherNotes
-            : !event.note.pinned
+            : !event.homeNotePinned
                 ? notes
                 : state.otherNotes,
         gridViewMode: state.gridViewMode,

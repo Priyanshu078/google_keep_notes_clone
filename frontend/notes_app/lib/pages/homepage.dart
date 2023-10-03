@@ -344,6 +344,7 @@ class MyHomePage extends StatelessWidget {
                                     child: const AddNewWidgetPage(
                                       isUpdate: false,
                                       isArchiveUpdate: false,
+                                      pinnedNote: false,
                                     ),
                                   );
                                 }));

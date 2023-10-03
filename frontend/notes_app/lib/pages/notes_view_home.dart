@@ -41,6 +41,7 @@ class NotesViewHome extends StatelessWidget {
               note: pinnedNotes
                   ? state.pinnedNotes[index]
                   : state.otherNotes[index],
+              pinnedNote: pinnedNotes,
             ),
           );
         }));
