@@ -16,9 +16,7 @@ import '../widgets/my_text_button.dart';
 import 'notes_view_home.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({
-    super.key,
-  });
+  MyHomePage({super.key});
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -86,20 +84,26 @@ class MyHomePage extends StatelessWidget {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(30)),
-                                    title: TextField(
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      decoration: InputDecoration(
-                                        hintText: "Search your notes",
-                                        isCollapsed: true,
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        filled: true,
-                                        fillColor: textFieldBackgoundColor,
-                                      ),
-                                    ),
+                                    title: const MyText(
+                                        text: "Search your notes",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black54),
+                                    // TextField(
+                                    //   controller: searchController,
+                                    //   textAlignVertical:
+                                    //       TextAlignVertical.center,
+                                    //   decoration: InputDecoration(
+                                    //     hintText: "Search your notes",
+                                    //     isCollapsed: true,
+                                    //     border: OutlineInputBorder(
+                                    //         borderSide: BorderSide.none,
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(30)),
+                                    //     filled: true,
+                                    //     fillColor: textFieldBackgoundColor,
+                                    //   ),
+                                    // ),
                                     actions: [
                                       BlocBuilder<NotesBloc, NotesStates>(
                                         builder: (context, state) {
@@ -171,20 +175,26 @@ class MyHomePage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
                                 title: state.archiveSearchOn
-                                    ? TextField(
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        decoration: InputDecoration(
-                                          hintText: "Search your notes",
-                                          isCollapsed: true,
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          filled: true,
-                                          fillColor: textFieldBackgoundColor,
-                                        ),
-                                      )
+                                    ? const MyText(
+                                        text: "Search your notes",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black54)
+                                    // ? TextField(
+                                    //     controller: searchController,
+                                    //     textAlignVertical:
+                                    //         TextAlignVertical.center,
+                                    //     decoration: InputDecoration(
+                                    //       hintText: "Search your notes",
+                                    //       isCollapsed: true,
+                                    //       border: OutlineInputBorder(
+                                    //           borderSide: BorderSide.none,
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(30)),
+                                    //       filled: true,
+                                    //       fillColor: textFieldBackgoundColor,
+                                    //     ),
+                                    //   )
                                     : MyText(
                                         text: state.archiveSelected
                                             ? "Archive"
