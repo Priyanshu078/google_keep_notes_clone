@@ -18,6 +18,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           trashNotes: [],
           archivedNotes: [],
           archiveSearchOn: false,
+          homeSearchOn: false,
         )) {
     on<FetchNotes>((event, emit) => fetchNotes(event, emit));
     on<AddNote>((event, emit) => addNotes(event, emit));
@@ -25,6 +26,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<ChangeViewEvent>((event, emit) => changeView(event, emit));
     on<TrashNote>((event, emit) => trashNotes(event, emit));
     on<EmptyTrashEvent>((event, emit) => emptyTrash(event, emit));
+    on<DeleteNote>((event, emit) => deleteNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -36,8 +38,21 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           trashNotes: state.trashNotes,
           archivedNotes: state.archivedNotes,
           archiveSearchOn: event.archiveSearchOn,
+          homeSearchOn: state.homeSearchOn,
         ))));
-    on<DeleteNote>((event, emit) => deleteNotes(event, emit));
+    on<HomeSearchClickedEvent>((event, emit) => emit(NotesStates(
+          pinnedNotes: state.pinnedNotes,
+          otherNotes: state.otherNotes,
+          gridViewMode: state.gridViewMode,
+          lightMode: state.lightMode,
+          notesSelected: state.notesSelected,
+          archiveSelected: state.archiveSelected,
+          trashSelected: state.trashSelected,
+          trashNotes: state.trashNotes,
+          archivedNotes: state.archivedNotes,
+          archiveSearchOn: state.archiveSearchOn,
+          homeSearchOn: event.homeSearchOn,
+        )));
   }
   final ApiService _apiService = ApiService();
 
@@ -47,16 +62,18 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     int index = trashNotes.indexWhere((element) => element.id == event.note.id);
     trashNotes.removeAt(index);
     emit(NotesDeleted(
-        pinnedNotes: state.pinnedNotes,
-        otherNotes: state.otherNotes,
-        gridViewMode: state.gridViewMode,
-        lightMode: state.lightMode,
-        notesSelected: state.notesSelected,
-        archiveSelected: state.archiveSelected,
-        trashSelected: state.trashSelected,
-        trashNotes: trashNotes,
-        archivedNotes: state.archivedNotes,
-        archiveSearchOn: state.archiveSearchOn));
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: state.otherNotes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      notesSelected: state.notesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: trashNotes,
+      archivedNotes: state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+    ));
   }
 
   Future<void> emptyTrash(EmptyTrashEvent event, Emitter emit) async {
@@ -73,6 +90,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       trashNotes: trashNotes,
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
     ));
   }
 
@@ -88,6 +106,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       trashNotes: state.trashNotes,
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
     ));
     Map<String, List<Note>> data = await _apiService.getNotes(
         userId: event.userId,
@@ -109,6 +128,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: state.trashNotes,
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     } else {
       List<Note> notes = data['notes']!;
@@ -124,6 +144,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: event.trashedNotes ? notes : state.trashNotes,
         archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     }
   }
@@ -153,6 +174,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       trashNotes: state.trashNotes,
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
     ));
   }
 
@@ -179,6 +201,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: trashNotes,
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     } else if (event.forArchive) {
       List<Note> notes = event.note.pinned
@@ -202,6 +225,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: state.trashNotes,
         archivedNotes: archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     } else if (event.forUnArchive) {
       List<Note> notes = List.from(state.archivedNotes);
@@ -227,7 +251,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
               trashSelected: state.trashSelected,
               trashNotes: state.trashNotes,
               archivedNotes: notes,
-              archiveSearchOn: state.archiveSearchOn)
+              archiveSearchOn: state.archiveSearchOn,
+              homeSearchOn: state.homeSearchOn,
+            )
           : NotesUnarchived(
               pinnedNotes:
                   event.pinnedUnarchive ? otherNotes : state.pinnedNotes,
@@ -240,7 +266,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
               trashSelected: state.trashSelected,
               trashNotes: state.trashNotes,
               archivedNotes: notes,
-              archiveSearchOn: state.archiveSearchOn));
+              archiveSearchOn: state.archiveSearchOn,
+              homeSearchOn: state.homeSearchOn,
+            ));
     } else {
       List<Note> notes = event.fromArchive
           ? List.from(state.archivedNotes)
@@ -269,6 +297,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: state.trashNotes,
         archivedNotes: event.fromArchive ? notes : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     }
   }
@@ -285,6 +314,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       trashNotes: state.trashNotes,
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
     ));
   }
 
@@ -312,6 +342,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: trashedNotes,
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     } else {
       emit(NotesStates(
@@ -325,6 +356,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashNotes: state.trashNotes,
         archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
       ));
     }
   }

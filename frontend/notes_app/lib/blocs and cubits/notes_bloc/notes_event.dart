@@ -81,4 +81,11 @@ class ArchiveSearchClickedEvent extends NotesEvent {
   List<Object?> get props => [archiveSearchOn];
 }
 
+class HomeSearchClickedEvent extends NotesEvent {
+  final bool homeSearchOn;
+  HomeSearchClickedEvent({required this.homeSearchOn});
+  @override
+  List<Object?> get props => [homeSearchOn];
+}
+
 class EmptyTrashEvent extends NotesEvent {}

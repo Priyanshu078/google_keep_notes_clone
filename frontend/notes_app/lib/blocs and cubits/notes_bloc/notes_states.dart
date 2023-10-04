@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:notes_app/data/note.dart';
 
 class NotesStates extends Equatable {
+  final bool homeSearchOn;
   final bool gridViewMode;
   final bool lightMode;
   final bool notesSelected;
@@ -24,6 +25,7 @@ class NotesStates extends Equatable {
     required this.trashNotes,
     required this.archivedNotes,
     required this.archiveSearchOn,
+    required this.homeSearchOn,
   });
 
   @override
@@ -38,6 +40,7 @@ class NotesStates extends Equatable {
         trashNotes,
         archivedNotes,
         archiveSearchOn,
+        homeSearchOn,
       ];
 }
 
@@ -53,6 +56,7 @@ class NotesLoading extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -68,6 +72,7 @@ class NotesDeleted extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -83,6 +88,7 @@ class NotesTrashed extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -98,6 +104,7 @@ class NotesRestored extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -113,6 +120,7 @@ class NotesArchived extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -128,6 +136,7 @@ class NotesUnarchived extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
 
@@ -143,5 +152,6 @@ class NotesPinnedUnarchived extends NotesStates {
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
+    required super.homeSearchOn,
   });
 }
