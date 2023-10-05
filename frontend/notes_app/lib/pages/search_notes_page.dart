@@ -13,9 +13,11 @@ class SearchNotesPage extends StatefulWidget {
 
 class _SearchNotesPageState extends State<SearchNotesPage> {
   final FocusNode focusNode = FocusNode();
+  SearchController searchController = SearchController();
+
   @override
   void initState() {
-    focusNode.requestFocus();
+    // focusNode.requestFocus();
     super.initState();
   }
 
@@ -53,7 +55,7 @@ class _SearchNotesPageState extends State<SearchNotesPage> {
             },
             suggestionsBuilder:
                 (BuildContext context, SearchController controller) {
-              return <Widget>[Icon(Icons.abc)];
+              return <Widget>[const Icon(Icons.abc)];
             }),
       ),
     );
