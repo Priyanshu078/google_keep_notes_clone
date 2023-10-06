@@ -33,6 +33,7 @@ class MyHomePage extends StatelessWidget {
         var state = context.read<NotesBloc>().state;
         if (state.notesSelected) {
           if (state.homeSearchOn) {
+            FocusScope.of(context).requestFocus(FocusNode());
             context
                 .read<NotesBloc>()
                 .add(HomeSearchClickedEvent(homeSearchOn: false));
@@ -79,6 +80,9 @@ class MyHomePage extends StatelessWidget {
                                   SliverPadding(
                                     padding: const EdgeInsets.all(8.0),
                                     sliver: SliverAppBar(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
                                       automaticallyImplyLeading: false,
                                       floating: true,
                                       flexibleSpace: SearchAnchor(
@@ -90,7 +94,7 @@ class MyHomePage extends StatelessWidget {
                                               },
                                               icon:
                                                   const Icon(Icons.arrow_back)),
-                                          searchController: searchController,
+                                          // searchController: searchController,
                                           isFullScreen: true,
                                           builder: (BuildContext context,
                                               SearchController controller) {
@@ -262,6 +266,10 @@ class MyHomePage extends StatelessWidget {
                               SliverPadding(
                                 padding: const EdgeInsets.all(8.0),
                                 sliver: SliverAppBar(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  automaticallyImplyLeading: false,
+                                  floating: true,
                                   flexibleSpace: SearchAnchor(
                                       viewLeading: IconButton(
                                           onPressed: () {
@@ -470,8 +478,7 @@ class MyHomePage extends StatelessWidget {
                                 ),
                               ),
                               SliverPadding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 sliver: NotesViewTrashArchived(
                                   height: height,
                                   inArchivedNotes: state.archiveSelected,
