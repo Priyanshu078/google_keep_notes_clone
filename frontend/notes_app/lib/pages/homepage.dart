@@ -16,12 +16,22 @@ import '../utils/my_painter.dart';
 import '../widgets/my_text_button.dart';
 import 'notes_view_home.dart';
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final focusNode = FocusNode();
-  final SearchController searchController = SearchController();
+
+  final SearchController controller1 = SearchController();
+
+  final SearchController controller2 = SearchController();
+
   final GlobalKey searchBarKey = GlobalKey();
 
   @override
@@ -86,20 +96,19 @@ class MyHomePage extends StatelessWidget {
                                       automaticallyImplyLeading: false,
                                       floating: true,
                                       flexibleSpace: SearchAnchor(
+                                          searchController: controller1,
                                           viewLeading: IconButton(
                                               onPressed: () {
-                                                searchController.closeView("");
+                                                controller1.closeView("");
                                                 FocusScope.of(context)
                                                     .requestFocus(FocusNode());
                                               },
                                               icon:
                                                   const Icon(Icons.arrow_back)),
-                                          // searchController: searchController,
                                           isFullScreen: true,
                                           builder: (BuildContext context,
                                               SearchController controller) {
                                             return SearchBar(
-                                              key: searchBarKey,
                                               padding:
                                                   const MaterialStatePropertyAll<
                                                       EdgeInsets>(
@@ -289,18 +298,17 @@ class MyHomePage extends StatelessWidget {
                                       : SearchAnchor(
                                           viewLeading: IconButton(
                                               onPressed: () {
-                                                searchController.closeView("");
+                                                controller2.closeView("");
                                                 FocusScope.of(context)
                                                     .requestFocus(FocusNode());
                                               },
                                               icon:
                                                   const Icon(Icons.arrow_back)),
-                                          searchController: searchController,
+                                          searchController: controller2,
                                           isFullScreen: true,
                                           builder: (BuildContext context,
                                               SearchController controller) {
                                             return SearchBar(
-                                              key: searchBarKey,
                                               padding:
                                                   const MaterialStatePropertyAll<
                                                       EdgeInsets>(
