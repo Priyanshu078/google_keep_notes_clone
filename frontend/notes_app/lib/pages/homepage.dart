@@ -75,457 +75,269 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: Colors.white,
             body: BlocBuilder<NotesBloc, NotesStates>(
               builder: (context, state) {
-                return state.homeSearchOn
-                    ? SearchNotesPage(
-                        height: height,
-                        width: width,
-                      )
-                    : state.notesSelected
-                        ? Stack(
-                            children: [
-                              BlocBuilder<NotesBloc, NotesStates>(
-                                  builder: (context, state) {
-                                return SafeArea(
-                                    child: CustomScrollView(slivers: [
-                                  SliverPadding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    sliver: SliverAppBar(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      automaticallyImplyLeading: false,
-                                      floating: true,
-                                      flexibleSpace: SearchAnchor(
-                                          searchController: controller1,
-                                          viewLeading: IconButton(
-                                              onPressed: () {
-                                                controller1.closeView("");
-                                                FocusScope.of(context)
-                                                    .requestFocus(FocusNode());
-                                              },
-                                              icon:
-                                                  const Icon(Icons.arrow_back)),
-                                          isFullScreen: true,
-                                          builder: (BuildContext context,
-                                              SearchController controller) {
-                                            return SearchBar(
-                                              padding:
-                                                  const MaterialStatePropertyAll<
-                                                      EdgeInsets>(
-                                                EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                ),
-                                              ),
-                                              hintText: "Search your notes",
-                                              hintStyle:
-                                                  const MaterialStatePropertyAll(
-                                                      TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color:
-                                                              Colors.black54)),
-                                              leading: IconButton(
-                                                icon: const Icon(Icons.menu),
-                                                onPressed: () {
-                                                  _scaffoldKey.currentState!
-                                                      .openDrawer();
-                                                },
-                                              ),
-                                              focusNode: focusNode,
-                                              shape: MaterialStatePropertyAll(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                              controller: controller,
-                                              onTap: () {
-                                                controller.openView();
-                                                FocusScope.of(context)
-                                                    .requestFocus(focusNode);
-                                              },
-                                              trailing: [
-                                                BlocBuilder<NotesBloc,
-                                                    NotesStates>(
-                                                  builder: (context, state) {
-                                                    return IconButton(
-                                                      onPressed: () {
-                                                        context
-                                                            .read<NotesBloc>()
-                                                            .add(
-                                                                ChangeViewEvent());
-                                                      },
-                                                      icon: state.gridViewMode
-                                                          ? const Icon(Icons
-                                                              .view_agenda_outlined)
-                                                          : const Icon(
-                                                              Icons
-                                                                  .grid_view_outlined,
-                                                            ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                          viewBuilder: (suggestions) {
-                                            return Container(
-                                              height: height,
-                                              width: width,
-                                              color: textFieldBackgoundColor,
-                                              child: const Center(
-                                                  child: Icon(
-                                                Icons.mood,
-                                                color: Colors.black,
-                                              )),
-                                            );
-                                          },
-                                          suggestionsBuilder:
-                                              (BuildContext context,
-                                                  SearchController controller) {
-                                            return <Widget>[
-                                              const Icon(Icons.abc)
-                                            ];
-                                          }),
-                                      // ),
-                                      // InkWell(
-                                      //   radius: 50,
-                                      //   onTap: () {
-                                      //     context.read<NotesBloc>().add(
-                                      //         HomeSearchClickedEvent(
-                                      //             homeSearchOn: true));
-                                      //   },
-                                      //   child: Transform.translate(
-                                      //     offset: const Offset(-30, -1),
-                                      //     child: const Align(
-                                      //       alignment: Alignment.center,
-                                      //       child: MyText(
-                                      //           text: "Search your notes",
-                                      //           fontSize: 16,
-                                      //           fontWeight: FontWeight.normal,
-                                      //           color: Colors.black54),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // title: const MyText(
-                                      //     text: "Search your notes",
-                                      //     fontSize: 16,
-                                      //     fontWeight: FontWeight.normal,
-                                      //     color: Colors.black54),
-                                      // TextField(
-                                      //   controller: searchController,
-                                      //   textAlignVertical:
-                                      //       TextAlignVertical.center,
-                                      //   decoration: InputDecoration(
-                                      //     hintText: "Search your notes",
-                                      //     isCollapsed: true,
-                                      //     border: OutlineInputBorder(
-                                      //         borderSide: BorderSide.none,
-                                      //         borderRadius:
-                                      //             BorderRadius.circular(30)),
-                                      //     filled: true,
-                                      //     fillColor: textFieldBackgoundColor,
-                                      //   ),
-                                      // ),
-                                    ),
-                                  ),
-                                  SliverPadding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8.0),
-                                    sliver: NotesViewHome(
-                                      height: height,
-                                      scaffoldKey: _scaffoldKey,
-                                    ),
-                                  )
-                                ]));
-                              }),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: Stack(children: [
-                                  ClipPath(
-                                    clipper:
-                                        MyClipper(height: height, width: width),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: bottomBannerColor,
-                                      ),
-                                      height: height * 0.055,
-                                      width: width,
-                                    ),
-                                  ),
-                                  CustomPaint(
-                                    painter: MyPainter(),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.transparent,
-                                      ),
-                                      height: height * 0.055,
-                                      width: width,
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                            ],
-                          )
-                        : SafeArea(
-                            child: CustomScrollView(slivers: [
+                return state.notesSelected
+                    ? Stack(
+                        children: [
+                          BlocBuilder<NotesBloc, NotesStates>(
+                              builder: (context, state) {
+                            return SafeArea(
+                                child: CustomScrollView(slivers: [
                               SliverPadding(
-                                padding: state.trashSelected
-                                    ? EdgeInsets.zero
-                                    : const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 sliver: SliverAppBar(
-                                  title: state.trashSelected
-                                      ? const MyText(
-                                          text: "Trash",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black)
-                                      : Container(),
-                                  shape: state.trashSelected
-                                      ? const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero)
-                                      : RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                  automaticallyImplyLeading:
-                                      state.trashSelected ? true : false,
-                                  floating: true,
-                                  flexibleSpace: state.trashSelected
-                                      ? Container()
-                                      : SearchAnchor(
-                                          viewLeading: IconButton(
-                                              onPressed: () {
-                                                controller2.closeView("");
-                                                FocusScope.of(context)
-                                                    .requestFocus(FocusNode());
-                                              },
-                                              icon:
-                                                  const Icon(Icons.arrow_back)),
-                                          searchController: controller2,
-                                          isFullScreen: true,
-                                          builder: (BuildContext context,
-                                              SearchController controller) {
-                                            return SearchBar(
-                                              padding:
-                                                  const MaterialStatePropertyAll<
-                                                      EdgeInsets>(
-                                                EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                ),
-                                              ),
-                                              hintText: "Search your notes",
-                                              hintStyle:
-                                                  const MaterialStatePropertyAll(
-                                                      TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color:
-                                                              Colors.black54)),
-                                              leading: IconButton(
-                                                icon: const Icon(Icons.menu),
-                                                onPressed: () {
-                                                  _scaffoldKey.currentState!
-                                                      .openDrawer();
-                                                },
-                                              ),
-                                              focusNode: focusNode,
-                                              shape: MaterialStatePropertyAll(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                              controller: controller,
-                                              onTap: () {
-                                                controller.openView();
-                                                FocusScope.of(context)
-                                                    .requestFocus(focusNode);
-                                              },
-                                              trailing: [
-                                                state.archiveSearchOn
-                                                    ? Container()
-                                                    : IconButton(
-                                                        icon: const Icon(
-                                                            Icons.search),
-                                                        onPressed: () {
-                                                          context
-                                                              .read<NotesBloc>()
-                                                              .add(ArchiveSearchClickedEvent(
-                                                                  archiveSearchOn:
-                                                                      true));
-                                                        },
-                                                      ),
-                                                BlocBuilder<NotesBloc,
-                                                    NotesStates>(
-                                                  builder: (context, state) {
-                                                    return IconButton(
-                                                      onPressed: () {
-                                                        context
-                                                            .read<NotesBloc>()
-                                                            .add(
-                                                                ChangeViewEvent());
-                                                      },
-                                                      icon: state.gridViewMode
-                                                          ? const Icon(Icons
-                                                              .view_agenda_outlined)
-                                                          : const Icon(
-                                                              Icons
-                                                                  .grid_view_outlined,
-                                                            ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                          viewBuilder: (suggestions) {
-                                            return Container(
-                                              height: height,
-                                              width: width,
-                                              color: textFieldBackgoundColor,
-                                              child: const Center(
-                                                  child: Icon(
-                                                Icons.mood,
-                                                color: Colors.black,
-                                              )),
-                                            );
-                                          },
-                                          suggestionsBuilder:
-                                              (BuildContext context,
-                                                  SearchController controller) {
-                                            return <Widget>[
-                                              const Icon(Icons.abc)
-                                            ];
-                                          }),
-                                  surfaceTintColor: state.trashSelected
-                                      ? Colors.white
-                                      : Colors.transparent,
-                                  backgroundColor: state.trashSelected
-                                      ? Colors.white
-                                      : Colors.transparent,
-                                  actions: [
-                                    (state.trashSelected &&
-                                            state.trashNotes.isNotEmpty)
-                                        ? IconButton(
-                                            onPressed: () {
-                                              showMenu(
-                                                  color:
-                                                      textFieldBackgoundColor,
-                                                  context: context,
-                                                  position: const RelativeRect
-                                                      .fromLTRB(100, 0, 0, 100),
-                                                  items: <PopupMenuEntry>[
-                                                    PopupMenuItem(
-                                                      onTap: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (_) =>
-                                                                    AlertDialog(
-                                                                      title: const MyText(
-                                                                          text:
-                                                                              "Empty Trash?",
-                                                                          fontSize:
-                                                                              20,
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color:
-                                                                              Colors.black),
-                                                                      content: const MyText(
-                                                                          text:
-                                                                              "All notes in Trash will be permanently deleted.",
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontWeight: FontWeight
-                                                                              .normal,
-                                                                          color:
-                                                                              Colors.black),
-                                                                      actions: [
-                                                                        MyTextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          text:
-                                                                              "Cancel",
-                                                                        ),
-                                                                        MyTextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            context.read<NotesBloc>().add(EmptyTrashEvent());
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          text:
-                                                                              "Empty Trash",
-                                                                        ),
-                                                                      ],
-                                                                    ));
-                                                      },
-                                                      child: const MyText(
-                                                        text: "Empty Trash",
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        color: Colors.black,
-                                                      ),
-                                                    )
-                                                  ]);
-                                            },
-                                            icon: const Icon(
-                                                Icons.more_vert_outlined),
-                                          )
-                                        : Container()
-                                  ],
-                                  // shape: RoundedRectangleBorder(
-                                  //     borderRadius: BorderRadius.circular(30)),
-                                  // title: state.archiveSearchOn
-                                  //     ? const MyText(
-                                  //         text: "Search your notes",
-                                  //         fontSize: 16,
-                                  //         fontWeight: FontWeight.normal,
-                                  //         color: Colors.black54)
-                                  // ? TextField(
-                                  //     controller: searchController,
-                                  //     textAlignVertical:
-                                  //         TextAlignVertical.center,
-                                  //     decoration: InputDecoration(
-                                  //       hintText: "Search your notes",
-                                  //       isCollapsed: true,
-                                  //       border: OutlineInputBorder(
-                                  //           borderSide: BorderSide.none,
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(30)),
-                                  //       filled: true,
-                                  //       fillColor: textFieldBackgoundColor,
-                                  //     ),
-                                  //   )
-                                  // : MyText(
-                                  //     text: state.archiveSelected
-                                  //         ? "Archive"
-                                  //         : "Trash",
-                                  //     fontSize: 16,
-                                  //     fontWeight: FontWeight.normal,
-                                  //     color: Colors.black,
-                                  //   ),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    automaticallyImplyLeading: false,
+                                    floating: true,
+                                    flexibleSpace: SearchNotesPage(
+                                      height: height,
+                                      width: width,
+                                      controller: controller1,
+                                      focusNode: focusNode,
+                                      scaffoldKey: _scaffoldKey,
+                                    )
+                                    // ),
+                                    // InkWell(
+                                    //   radius: 50,
+                                    //   onTap: () {
+                                    //     context.read<NotesBloc>().add(
+                                    //         HomeSearchClickedEvent(
+                                    //             homeSearchOn: true));
+                                    //   },
+                                    //   child: Transform.translate(
+                                    //     offset: const Offset(-30, -1),
+                                    //     child: const Align(
+                                    //       alignment: Alignment.center,
+                                    //       child: MyText(
+                                    //           text: "Search your notes",
+                                    //           fontSize: 16,
+                                    //           fontWeight: FontWeight.normal,
+                                    //           color: Colors.black54),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // title: const MyText(
+                                    //     text: "Search your notes",
+                                    //     fontSize: 16,
+                                    //     fontWeight: FontWeight.normal,
+                                    //     color: Colors.black54),
+                                    // TextField(
+                                    //   controller: searchController,
+                                    //   textAlignVertical:
+                                    //       TextAlignVertical.center,
+                                    //   decoration: InputDecoration(
+                                    //     hintText: "Search your notes",
+                                    //     isCollapsed: true,
+                                    //     border: OutlineInputBorder(
+                                    //         borderSide: BorderSide.none,
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(30)),
+                                    //     filled: true,
+                                    //     fillColor: textFieldBackgoundColor,
+                                    //   ),
+                                    // ),
+                                    ),
+                              ),
+                              SliverPadding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                sliver: NotesViewHome(
+                                  height: height,
+                                  scaffoldKey: _scaffoldKey,
+                                ),
+                              )
+                            ]));
+                          }),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Stack(children: [
+                              ClipPath(
+                                clipper:
+                                    MyClipper(height: height, width: width),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: bottomBannerColor,
+                                  ),
+                                  height: height * 0.055,
+                                  width: width,
                                 ),
                               ),
-                              SliverPadding(
-                                padding: state.trashSelected
-                                    ? const EdgeInsets.fromLTRB(
-                                        8.0, 0, 8.0, 8.0)
-                                    : const EdgeInsets.all(8.0),
-                                sliver: NotesViewTrashArchived(
-                                  height: height,
-                                  inArchivedNotes: state.archiveSelected,
-                                  inTrashedNotes: state.trashSelected,
+                              CustomPaint(
+                                painter: MyPainter(),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  height: height * 0.055,
+                                  width: width,
                                 ),
                               ),
                             ]),
-                          );
+                          ),
+                        ],
+                      )
+                    : SafeArea(
+                        child: CustomScrollView(slivers: [
+                          SliverPadding(
+                            padding: state.trashSelected
+                                ? EdgeInsets.zero
+                                : const EdgeInsets.all(8.0),
+                            sliver: SliverAppBar(
+                              title: state.trashSelected
+                                  ? const MyText(
+                                      text: "Trash",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black)
+                                  : Container(),
+                              shape: state.trashSelected
+                                  ? const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero)
+                                  : RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                              automaticallyImplyLeading:
+                                  state.trashSelected ? true : false,
+                              floating: true,
+                              flexibleSpace: state.trashSelected
+                                  ? Container()
+                                  : SearchNotesPage(
+                                      height: height,
+                                      width: width,
+                                      controller: controller2,
+                                      focusNode: focusNode,
+                                      scaffoldKey: _scaffoldKey),
+                              surfaceTintColor: state.trashSelected
+                                  ? Colors.white
+                                  : Colors.transparent,
+                              backgroundColor: state.trashSelected
+                                  ? Colors.white
+                                  : Colors.transparent,
+                              actions: [
+                                (state.trashSelected &&
+                                        state.trashNotes.isNotEmpty)
+                                    ? IconButton(
+                                        onPressed: () {
+                                          showMenu(
+                                              color: textFieldBackgoundColor,
+                                              context: context,
+                                              position:
+                                                  const RelativeRect.fromLTRB(
+                                                      100, 0, 0, 100),
+                                              items: <PopupMenuEntry>[
+                                                PopupMenuItem(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (_) => AlertDialog(
+                                                                  title: const MyText(
+                                                                      text:
+                                                                          "Empty Trash?",
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black),
+                                                                  content: const MyText(
+                                                                      text:
+                                                                          "All notes in Trash will be permanently deleted.",
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      color: Colors
+                                                                          .black),
+                                                                  actions: [
+                                                                    MyTextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      text:
+                                                                          "Cancel",
+                                                                    ),
+                                                                    MyTextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        context
+                                                                            .read<NotesBloc>()
+                                                                            .add(EmptyTrashEvent());
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      text:
+                                                                          "Empty Trash",
+                                                                    ),
+                                                                  ],
+                                                                ));
+                                                  },
+                                                  child: const MyText(
+                                                    text: "Empty Trash",
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                              ]);
+                                        },
+                                        icon: const Icon(
+                                            Icons.more_vert_outlined),
+                                      )
+                                    : Container()
+                              ],
+                              // shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(30)),
+                              // title: state.archiveSearchOn
+                              //     ? const MyText(
+                              //         text: "Search your notes",
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.normal,
+                              //         color: Colors.black54)
+                              // ? TextField(
+                              //     controller: searchController,
+                              //     textAlignVertical:
+                              //         TextAlignVertical.center,
+                              //     decoration: InputDecoration(
+                              //       hintText: "Search your notes",
+                              //       isCollapsed: true,
+                              //       border: OutlineInputBorder(
+                              //           borderSide: BorderSide.none,
+                              //           borderRadius:
+                              //               BorderRadius.circular(30)),
+                              //       filled: true,
+                              //       fillColor: textFieldBackgoundColor,
+                              //     ),
+                              //   )
+                              // : MyText(
+                              //     text: state.archiveSelected
+                              //         ? "Archive"
+                              //         : "Trash",
+                              //     fontSize: 16,
+                              //     fontWeight: FontWeight.normal,
+                              //     color: Colors.black,
+                              //   ),
+                            ),
+                          ),
+                          SliverPadding(
+                            padding: state.trashSelected
+                                ? const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0)
+                                : const EdgeInsets.all(8.0),
+                            sliver: NotesViewTrashArchived(
+                              height: height,
+                              inArchivedNotes: state.archiveSelected,
+                              inTrashedNotes: state.trashSelected,
+                            ),
+                          ),
+                        ]),
+                      );
               },
             ),
             drawer: MyDrawer(

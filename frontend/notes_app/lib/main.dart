@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
+import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
 import 'package:notes_app/notesbloc_observer.dart';
 import 'package:notes_app/pages/homepage.dart';
 
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
         ),
-        home: MyHomePage(),
+        home: BlocProvider(
+          create: (context) => SearchBloc(),
+          child: const MyHomePage(),
+        ),
       ),
     );
   }

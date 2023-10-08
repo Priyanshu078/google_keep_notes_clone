@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/pages/add_new_note.dart';
+import 'package:notes_app/widgets/my_note.dart';
 
 import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
@@ -120,56 +121,24 @@ class NotesViewHome extends StatelessWidget {
                             mainAxisSpacing: 8,
                           ),
                           itemBuilder: ((_, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                moveToUpdatePage(context, index, true);
-                              },
-                              onLongPress: () {
-                                context.read<NotesBloc>().add(TrashNote(
-                                    note: state.pinnedNotes[index],
-                                    addNotesPage: false));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: colors[
-                                        state.pinnedNotes[index].colorIndex],
-                                    border:
-                                        (state.pinnedNotes[index].colorIndex) ==
-                                                0
-                                            ? Border.all(color: Colors.grey)
-                                            : null,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      MyText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: state.pinnedNotes[index].title,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      SizedBox(
-                                        height: height * 0.005,
-                                      ),
-                                      MyText(
-                                        text: state.pinnedNotes[index].content,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
+                            return MyNote(
+                                onTap: () {
+                                  moveToUpdatePage(context, index, true);
+                                },
+                                onLongPress: () {
+                                  context.read<NotesBloc>().add(TrashNote(
+                                      note: state.pinnedNotes[index],
+                                      addNotesPage: false));
+                                },
+                                color:
+                                    colors[state.pinnedNotes[index].colorIndex],
+                                border:
+                                    (state.pinnedNotes[index].colorIndex) == 0
+                                        ? Border.all(color: Colors.grey)
+                                        : null,
+                                titleText: state.pinnedNotes[index].title,
+                                contentText: state.pinnedNotes[index].content,
+                                height: height);
                           }),
                         ),
                         (state.pinnedNotes.isNotEmpty &&
@@ -200,56 +169,24 @@ class NotesViewHome extends StatelessWidget {
                             mainAxisSpacing: 8,
                           ),
                           itemBuilder: ((_, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                moveToUpdatePage(context, index, false);
-                              },
-                              onLongPress: () {
-                                context.read<NotesBloc>().add(TrashNote(
-                                    note: state.otherNotes[index],
-                                    addNotesPage: false));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: colors[
-                                        state.otherNotes[index].colorIndex],
-                                    border:
-                                        (state.otherNotes[index].colorIndex) ==
-                                                0
-                                            ? Border.all(color: Colors.grey)
-                                            : null,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      MyText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: state.otherNotes[index].title,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      SizedBox(
-                                        height: height * 0.005,
-                                      ),
-                                      MyText(
-                                        text: state.otherNotes[index].content,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
+                            return MyNote(
+                                onTap: () {
+                                  moveToUpdatePage(context, index, false);
+                                },
+                                onLongPress: () {
+                                  context.read<NotesBloc>().add(TrashNote(
+                                      note: state.otherNotes[index],
+                                      addNotesPage: false));
+                                },
+                                color:
+                                    colors[state.otherNotes[index].colorIndex],
+                                border:
+                                    (state.otherNotes[index].colorIndex) == 0
+                                        ? Border.all(color: Colors.grey)
+                                        : null,
+                                titleText: state.otherNotes[index].title,
+                                contentText: state.otherNotes[index].content,
+                                height: height);
                           }),
                         ),
                       ],
@@ -280,54 +217,23 @@ class NotesViewHome extends StatelessWidget {
                       itemBuilder: ((_, index) {
                         return Padding(
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              moveToUpdatePage(context, index, true);
-                            },
-                            onLongPress: () {
-                              context.read<NotesBloc>().add(TrashNote(
-                                  note: state.pinnedNotes[index],
-                                  addNotesPage: false));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: colors[
-                                      state.pinnedNotes[index].colorIndex],
-                                  border:
-                                      (state.pinnedNotes[index].colorIndex) == 0
-                                          ? Border.all(color: Colors.grey)
-                                          : null,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MyText(
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        text: state.pinnedNotes[index].title,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                    SizedBox(
-                                      height: height * 0.005,
-                                    ),
-                                    MyText(
-                                      text: state.pinnedNotes[index].content,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: MyNote(
+                              onTap: () {
+                                moveToUpdatePage(context, index, true);
+                              },
+                              onLongPress: () {
+                                context.read<NotesBloc>().add(TrashNote(
+                                    note: state.pinnedNotes[index],
+                                    addNotesPage: false));
+                              },
+                              color:
+                                  colors[state.pinnedNotes[index].colorIndex],
+                              border: (state.pinnedNotes[index].colorIndex) == 0
+                                  ? Border.all(color: Colors.grey)
+                                  : null,
+                              titleText: state.pinnedNotes[index].title,
+                              contentText: state.pinnedNotes[index].content,
+                              height: height),
                         );
                       }),
                     ),
@@ -355,54 +261,22 @@ class NotesViewHome extends StatelessWidget {
                       itemBuilder: ((_, index) {
                         return Padding(
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              moveToUpdatePage(context, index, false);
-                            },
-                            onLongPress: () {
-                              context.read<NotesBloc>().add(TrashNote(
-                                  note: state.otherNotes[index],
-                                  addNotesPage: false));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: colors[
-                                      state.otherNotes[index].colorIndex],
-                                  border:
-                                      (state.otherNotes[index].colorIndex) == 0
-                                          ? Border.all(color: Colors.grey)
-                                          : null,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MyText(
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        text: state.otherNotes[index].title,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                    SizedBox(
-                                      height: height * 0.005,
-                                    ),
-                                    MyText(
-                                      text: state.otherNotes[index].content,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: MyNote(
+                              onTap: () {
+                                moveToUpdatePage(context, index, false);
+                              },
+                              onLongPress: () {
+                                context.read<NotesBloc>().add(TrashNote(
+                                    note: state.otherNotes[index],
+                                    addNotesPage: false));
+                              },
+                              color: colors[state.otherNotes[index].colorIndex],
+                              border: (state.otherNotes[index].colorIndex) == 0
+                                  ? Border.all(color: Colors.grey)
+                                  : null,
+                              titleText: state.otherNotes[index].title,
+                              contentText: state.otherNotes[index].content,
+                              height: height),
                         );
                       }),
                     ),
