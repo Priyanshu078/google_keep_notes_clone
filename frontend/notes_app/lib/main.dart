@@ -16,16 +16,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesBloc()
-        ..add(
-          FetchNotes(
-            userId: 'priyanshupaliwal',
-            notes: true,
-            trashedNotes: false,
-            archivedNotes: false,
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NotesBloc()
+            ..add(
+              FetchNotes(
+                userId: 'priyanshupaliwal',
+                notes: true,
+                trashedNotes: false,
+                archivedNotes: false,
+              ),
+            ),
         ),
+        BlocProvider(
+          create: (context) => SearchBloc(),
+        )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Notes App',
@@ -33,10 +40,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
         ),
-        home: BlocProvider(
-          create: (context) => SearchBloc(),
-          child: const MyHomePage(),
-        ),
+        home: const MyHomePage(),
       ),
     );
   }

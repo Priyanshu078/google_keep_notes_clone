@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
+import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/utils/utilities.dart';
@@ -163,6 +165,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   pinnedUnarchive: false,
                                   homeNotePinned: widget.pinnedNote,
                                 ));
+                            context
+                                .read<SearchBloc>()
+                                .add(RemoveNoteFromSearchEvent(note: note));
                           }
                         },
                         icon: state.inArchive
@@ -177,10 +182,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                           if (titleController.text != "") {
                             if (widget.isUpdate) {
                               Note updated = state.note.copyWith(
-                                  content: contentController.text,
-                                  title: titleController.text,
-                                  dateAdded: DateTime.now().toIso8601String(),
-                                  pinned: state.note.pinned);
+                                content: contentController.text,
+                                title: titleController.text,
+                                dateAdded: DateTime.now().toIso8601String(),
+                                pinned: state.note.pinned,
+                                colorIndex: state.colorIndex,
+                              );
                               context.read<NotesBloc>().add(UpdateNote(
                                     note: updated,
                                     fromTrash: false,
@@ -190,12 +197,17 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     pinnedUnarchive: false,
                                     homeNotePinned: widget.pinnedNote,
                                   ));
+                              context
+                                  .read<SearchBloc>()
+                                  .add(UpdateNoteInSearchEvent(note: updated));
                             } else if (widget.isArchiveUpdate) {
                               Note updated = state.note.copyWith(
-                                  content: contentController.text,
-                                  title: titleController.text,
-                                  dateAdded: DateTime.now().toIso8601String(),
-                                  pinned: state.note.pinned);
+                                content: contentController.text,
+                                title: titleController.text,
+                                dateAdded: DateTime.now().toIso8601String(),
+                                pinned: state.note.pinned,
+                                colorIndex: state.colorIndex,
+                              );
                               context.read<NotesBloc>().add(UpdateNote(
                                     note: updated,
                                     fromTrash: false,
@@ -505,6 +517,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                               note: state.note,
                                                               addNotesPage:
                                                                   true));
+                                                      context
+                                                          .read<SearchBloc>()
+                                                          .add(
+                                                              RemoveNoteFromSearchEvent(
+                                                                  note: state
+                                                                      .note));
                                                     }
                                                   } else {
                                                     _utilities.showSnackBar(

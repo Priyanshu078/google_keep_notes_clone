@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/addnotes_cubit/addnotes_cubit.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_states.dart';
 import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/blocs and cubits/search_bloc/search_state.dart';
+import 'package:notes_app/pages/add_new_note.dart';
+import 'package:notes_app/widgets/my_note.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
 class SearchNotesPage extends StatelessWidget {
@@ -24,110 +28,137 @@ class SearchNotesPage extends StatelessWidget {
   final FocusNode focusNode;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
+  void moveToUpdatePage(BuildContext context, int index) {
+    var state = context.read<SearchBloc>().state;
+    Navigator.of(context).push(MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => AddNotesCubit()
+                    ..setNoteData(
+                      note: state.searchedNotes[index],
+                      inTrash: false,
+                      inArchive: false,
+                    ))
+            ],
+            child: AddNewWidgetPage(
+              isUpdate: true,
+              isArchiveUpdate: false,
+              note: state.searchedNotes[index],
+              pinnedNote: state.searchedNotes[index].pinned,
+            ),
+          );
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NotesBloc, NotesStates>(
-      builder: (context, notesState) {
-        return BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, searchState) {
-            return SearchAnchor(
-                viewHintText: "Search your notes",
-                searchController: controller,
-                viewLeading: IconButton(
-                    onPressed: () {
-                      controller.closeView("");
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                    icon: const Icon(Icons.arrow_back)),
-                isFullScreen: true,
-                builder: (BuildContext context, SearchController controller) {
-                  return SearchBar(
-                    padding: const MaterialStatePropertyAll<EdgeInsets>(
-                      EdgeInsets.only(
-                        left: 8.0,
-                        right: 8.0,
-                      ),
-                    ),
-                    hintText: "Search your notes",
-                    hintStyle: const MaterialStatePropertyAll(TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black54)),
-                    leading: IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        scaffoldKey.currentState!.openDrawer();
-                      },
-                    ),
-                    focusNode: focusNode,
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                    controller: controller,
-                    onTap: () {
-                      controller.openView();
-                      FocusScope.of(context).requestFocus(focusNode);
-                    },
-                    onChanged: (value) {
-                      controller.openView();
-                    },
-                    trailing: [
-                      notesState.notesSelected
-                          ? BlocBuilder<NotesBloc, NotesStates>(
-                              builder: (context, state) {
-                                return IconButton(
-                                  onPressed: () {
-                                    context
-                                        .read<NotesBloc>()
-                                        .add(ChangeViewEvent());
-                                  },
-                                  icon: state.gridViewMode
-                                      ? const Icon(Icons.view_agenda_outlined)
-                                      : const Icon(
-                                          Icons.grid_view_outlined,
-                                        ),
-                                );
-                              },
-                            )
-                          : Container(),
-                      notesState.archiveSelected
-                          ? notesState.archiveSearchOn
-                              ? Container()
-                              : IconButton(
-                                  icon: const Icon(Icons.search),
-                                  onPressed: () {
-                                    context.read<NotesBloc>().add(
-                                        ArchiveSearchClickedEvent(
-                                            archiveSearchOn: true));
-                                  },
-                                )
-                          : Container(),
-                      notesState.archiveSelected
-                          ? BlocBuilder<NotesBloc, NotesStates>(
-                              builder: (context, state) {
-                                return IconButton(
-                                  onPressed: () {
-                                    context
-                                        .read<NotesBloc>()
-                                        .add(ChangeViewEvent());
-                                  },
-                                  icon: state.gridViewMode
-                                      ? const Icon(Icons.view_agenda_outlined)
-                                      : const Icon(
-                                          Icons.grid_view_outlined,
-                                        ),
-                                );
-                              },
-                            )
-                          : Container(),
-                    ],
-                  );
+    var notesState = context.read<NotesBloc>().state;
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (searchBlocContext, searchState) {
+        return SearchAnchor(
+            viewHintText: "Search your notes",
+            searchController: controller,
+            dividerColor: Colors.white,
+            viewLeading: IconButton(
+                onPressed: () {
+                  controller.closeView("");
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
-                viewBuilder: (suggestions) {
-                  return searchState is SearchInitial
+                icon: const Icon(Icons.arrow_back)),
+            isFullScreen: true,
+            builder: (BuildContext context, SearchController controller) {
+              return SearchBar(
+                padding: const MaterialStatePropertyAll<EdgeInsets>(
+                  EdgeInsets.only(
+                    left: 8.0,
+                    right: 8.0,
+                  ),
+                ),
+                hintText: "Search your notes",
+                hintStyle: const MaterialStatePropertyAll(TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black54)),
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    scaffoldKey.currentState!.openDrawer();
+                  },
+                ),
+                focusNode: focusNode,
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50))),
+                controller: controller,
+                onTap: () {
+                  controller.openView();
+                  FocusScope.of(context).requestFocus(focusNode);
+                },
+                onChanged: (value) {
+                  controller.openView();
+                },
+                trailing: [
+                  notesState.notesSelected
+                      ? BlocBuilder<NotesBloc, NotesStates>(
+                          builder: (context, state) {
+                            return IconButton(
+                              onPressed: () {
+                                context
+                                    .read<NotesBloc>()
+                                    .add(ChangeViewEvent());
+                              },
+                              icon: state.gridViewMode
+                                  ? const Icon(Icons.view_agenda_outlined)
+                                  : const Icon(
+                                      Icons.grid_view_outlined,
+                                    ),
+                            );
+                          },
+                        )
+                      : Container(),
+                  notesState.archiveSelected
+                      ? notesState.archiveSearchOn
+                          ? Container()
+                          : IconButton(
+                              icon: const Icon(Icons.search),
+                              onPressed: () {
+                                context.read<NotesBloc>().add(
+                                    ArchiveSearchClickedEvent(
+                                        archiveSearchOn: true));
+                              },
+                            )
+                      : Container(),
+                  notesState.archiveSelected
+                      ? BlocBuilder<NotesBloc, NotesStates>(
+                          builder: (context, state) {
+                            return IconButton(
+                              onPressed: () {
+                                context
+                                    .read<NotesBloc>()
+                                    .add(ChangeViewEvent());
+                              },
+                              icon: state.gridViewMode
+                                  ? const Icon(Icons.view_agenda_outlined)
+                                  : const Icon(
+                                      Icons.grid_view_outlined,
+                                    ),
+                            );
+                          },
+                        )
+                      : Container(),
+                ],
+              );
+            },
+            viewBuilder: (suggestions) {
+              return BlocBuilder<SearchBloc, SearchState>(
+                builder: (context, state) {
+                  return state is SearchInitial
                       ? Container(
                           height: height,
                           width: width,
-                          color: textFieldBackgoundColor,
+                          color: Colors.white,
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -153,21 +184,96 @@ class SearchNotesPage extends StatelessWidget {
                       : Container(
                           height: height,
                           width: width,
-                          color: textFieldBackgoundColor,
-                          child: const Center(
-                            child: Icon(
-                              Icons.mood,
-                              color: Colors.black,
-                            ),
-                          ),
-                        );
+                          color: Colors.white,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, right: 8.0),
+                            child: notesState.gridViewMode
+                                ? GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.searchedNotes.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                    ),
+                                    itemBuilder: ((_, index) {
+                                      return MyNote(
+                                          onTap: () {
+                                            moveToUpdatePage(context, index);
+                                          },
+                                          onLongPress: () {
+                                            context.read<NotesBloc>().add(
+                                                TrashNote(
+                                                    note: state
+                                                        .searchedNotes[index],
+                                                    addNotesPage: false));
+                                          },
+                                          color: colors[state
+                                              .searchedNotes[index].colorIndex],
+                                          border: (state.searchedNotes[index]
+                                                      .colorIndex) ==
+                                                  0
+                                              ? Border.all(color: Colors.grey)
+                                              : null,
+                                          titleText:
+                                              state.searchedNotes[index].title,
+                                          contentText: state
+                                              .searchedNotes[index].content,
+                                          height: height);
+                                    }),
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.searchedNotes.length,
+                                    itemBuilder: ((_, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            top: index == 0 ? 0 : 8.0),
+                                        child: MyNote(
+                                            onTap: () {
+                                              moveToUpdatePage(context, index);
+                                            },
+                                            onLongPress: () {
+                                              context.read<NotesBloc>().add(
+                                                  TrashNote(
+                                                      note: state
+                                                          .searchedNotes[index],
+                                                      addNotesPage: false));
+                                            },
+                                            color: colors[state
+                                                .searchedNotes[index]
+                                                .colorIndex],
+                                            border: (state.searchedNotes[index]
+                                                        .colorIndex) ==
+                                                    0
+                                                ? Border.all(color: Colors.grey)
+                                                : null,
+                                            titleText: state
+                                                .searchedNotes[index].title,
+                                            contentText: state
+                                                .searchedNotes[index].content,
+                                            height: height),
+                                      );
+                                    }),
+                                  ),
+                          ));
                 },
-                suggestionsBuilder:
-                    (BuildContext context, SearchController controller) {
-                  return <Widget>[const Icon(Icons.abc)];
-                });
-          },
-        );
+              );
+            },
+            suggestionsBuilder: (BuildContext suggestionBuildercontext,
+                SearchController controller) {
+              if (controller.text == "" || controller.text.isEmpty) {
+                searchBlocContext.read<SearchBloc>().add(SearchInitialEvent());
+              } else {
+                searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
+                    query: controller.text,
+                    pinnedNotes: notesState.pinnedNotes,
+                    otherNotes: notesState.otherNotes));
+              }
+              return <Widget>[Text(controller.text)];
+            });
       },
     );
   }
