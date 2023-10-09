@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       controller: controller1,
                                       focusNode: focusNode,
                                       scaffoldKey: _scaffoldKey,
+                                      notesBlocBuildContext: context,
                                     )
                                     // ),
                                     // InkWell(
@@ -208,7 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       width: width,
                                       controller: controller2,
                                       focusNode: focusNode,
-                                      scaffoldKey: _scaffoldKey),
+                                      scaffoldKey: _scaffoldKey,
+                                      notesBlocBuildContext: context,
+                                    ),
                               surfaceTintColor: state.trashSelected
                                   ? Colors.white
                                   : Colors.transparent,

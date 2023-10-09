@@ -20,6 +20,7 @@ class SearchNotesPage extends StatelessWidget {
     required this.controller,
     required this.focusNode,
     required this.scaffoldKey,
+    required this.notesBlocBuildContext,
   });
 
   final double height;
@@ -27,6 +28,7 @@ class SearchNotesPage extends StatelessWidget {
   final SearchController controller;
   final FocusNode focusNode;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final BuildContext notesBlocBuildContext;
 
   void moveToUpdatePage(BuildContext context, int index) {
     var state = context.read<SearchBloc>().state;
@@ -264,13 +266,14 @@ class SearchNotesPage extends StatelessWidget {
             },
             suggestionsBuilder: (BuildContext suggestionBuildercontext,
                 SearchController controller) {
+              var state = context.read<NotesBloc>().state;
               if (controller.text == "" || controller.text.isEmpty) {
                 searchBlocContext.read<SearchBloc>().add(SearchInitialEvent());
               } else {
                 searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
                     query: controller.text,
-                    pinnedNotes: notesState.pinnedNotes,
-                    otherNotes: notesState.otherNotes));
+                    pinnedNotes: state.pinnedNotes,
+                    otherNotes: state.otherNotes));
               }
               return <Widget>[Text(controller.text)];
             });
