@@ -40,12 +40,12 @@ class SearchNotesPage extends StatelessWidget {
                     ..setNoteData(
                       note: state.searchedNotes[index],
                       inTrash: false,
-                      inArchive: false,
+                      inArchive: !state.homeNotes,
                     ))
             ],
             child: AddNewWidgetPage(
-              isUpdate: true,
-              isArchiveUpdate: false,
+              isUpdate: state.homeNotes,
+              isArchiveUpdate: !state.homeNotes,
               note: state.searchedNotes[index],
               pinnedNote: state.searchedNotes[index].pinned,
             ),
@@ -266,26 +266,28 @@ class SearchNotesPage extends StatelessWidget {
                 if (controller.text == "" || controller.text.isEmpty) {
                   searchBlocContext
                       .read<SearchBloc>()
-                      .add(SearchInitialEvent());
+                      .add(SearchInitialEvent(homeSearch: true));
                 } else {
                   searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
                         query: controller.text,
                         pinnedNotes: state.pinnedNotes,
                         otherNotes: state.otherNotes,
                         archiveNotes: const [],
+                        homeSearch: true,
                       ));
                 }
               } else if (state.archiveSelected) {
                 if (controller.text == "" || controller.text.isEmpty) {
                   searchBlocContext
                       .read<SearchBloc>()
-                      .add(SearchInitialEvent());
+                      .add(SearchInitialEvent(homeSearch: false));
                 } else {
                   searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
                         query: controller.text,
                         pinnedNotes: const [],
                         otherNotes: const [],
                         archiveNotes: state.archivedNotes,
+                        homeSearch: false,
                       ));
                 }
               }

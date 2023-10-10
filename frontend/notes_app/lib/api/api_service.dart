@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/data/note.dart';
 
 class ApiService {
-  String baseUrl = "http://192.168.43.123:3000/api";
+  String baseUrl = "http://192.168.242.156:3000/api";
   final dio = Dio();
 
   Future<void> emptyTrash() async {

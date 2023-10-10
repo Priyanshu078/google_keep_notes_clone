@@ -7,12 +7,15 @@ class SearchEvent extends Equatable {
 }
 
 class SearchInitialEvent extends SearchEvent {
+  final bool homeSearch;
+  SearchInitialEvent({required this.homeSearch});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [homeSearch];
 }
 
 class SearchNotesEvent extends SearchEvent {
   final String query;
+  final bool homeSearch;
   final List<Note> pinnedNotes;
   final List<Note> otherNotes;
   final List<Note> archiveNotes;
@@ -22,21 +25,25 @@ class SearchNotesEvent extends SearchEvent {
     required this.pinnedNotes,
     required this.otherNotes,
     required this.archiveNotes,
+    required this.homeSearch,
   });
   @override
-  List<Object?> get props => [query, pinnedNotes, otherNotes, archiveNotes];
+  List<Object?> get props =>
+      [query, pinnedNotes, otherNotes, archiveNotes, homeSearch];
 }
 
 class RemoveNoteFromSearchEvent extends SearchEvent {
   final Note note;
-  RemoveNoteFromSearchEvent({required this.note});
+  final bool homeSearch;
+  RemoveNoteFromSearchEvent({required this.note, required this.homeSearch});
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [note, homeSearch];
 }
 
 class UpdateNoteInSearchEvent extends SearchEvent {
   final Note note;
-  UpdateNoteInSearchEvent({required this.note});
+  final bool homeSearch;
+  UpdateNoteInSearchEvent({required this.note, required this.homeSearch});
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [note, homeSearch];
 }
