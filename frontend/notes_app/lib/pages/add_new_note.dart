@@ -167,6 +167,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                               dateAdded: DateTime.now().toIso8601String(),
                               trashed: false,
                               archived: true,
+                              pinned: false,
                               colorIndex: state.colorIndex,
                             );
                             context.read<NotesBloc>().add(UpdateNote(
