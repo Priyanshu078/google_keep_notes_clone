@@ -15,13 +15,16 @@ class SearchNotesEvent extends SearchEvent {
   final String query;
   final List<Note> pinnedNotes;
   final List<Note> otherNotes;
+  final List<Note> archiveNotes;
 
-  SearchNotesEvent(
-      {required this.query,
-      required this.pinnedNotes,
-      required this.otherNotes});
+  SearchNotesEvent({
+    required this.query,
+    required this.pinnedNotes,
+    required this.otherNotes,
+    required this.archiveNotes,
+  });
   @override
-  List<Object?> get props => [query, pinnedNotes, otherNotes];
+  List<Object?> get props => [query, pinnedNotes, otherNotes, archiveNotes];
 }
 
 class RemoveNoteFromSearchEvent extends SearchEvent {

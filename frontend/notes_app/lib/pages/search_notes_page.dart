@@ -20,7 +20,6 @@ class SearchNotesPage extends StatelessWidget {
     required this.controller,
     required this.focusNode,
     required this.scaffoldKey,
-    required this.notesBlocBuildContext,
   });
 
   final double height;
@@ -28,7 +27,6 @@ class SearchNotesPage extends StatelessWidget {
   final SearchController controller;
   final FocusNode focusNode;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final BuildContext notesBlocBuildContext;
 
   void moveToUpdatePage(BuildContext context, int index) {
     var state = context.read<SearchBloc>().state;
@@ -95,61 +93,58 @@ class SearchNotesPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50))),
                 controller: controller,
                 onTap: () {
-                  controller.openView();
-                  FocusScope.of(context).requestFocus(focusNode);
+                  if (notesState.notesSelected) {
+                    controller.openView();
+                    FocusScope.of(context).requestFocus(focusNode);
+                  }
                 },
                 onChanged: (value) {
-                  controller.openView();
+                  if (notesState.notesSelected) {
+                    controller.openView();
+                  }
                 },
                 trailing: [
-                  notesState.notesSelected
-                      ? BlocBuilder<NotesBloc, NotesStates>(
-                          builder: (context, state) {
-                            return IconButton(
-                              onPressed: () {
-                                context
-                                    .read<NotesBloc>()
-                                    .add(ChangeViewEvent());
-                              },
-                              icon: state.gridViewMode
-                                  ? const Icon(Icons.view_agenda_outlined)
-                                  : const Icon(
-                                      Icons.grid_view_outlined,
-                                    ),
-                            );
+                  notesState.archiveSelected
+                      ? IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            controller.openView();
+                            FocusScope.of(context).requestFocus(focusNode);
                           },
                         )
                       : Container(),
-                  notesState.archiveSelected
-                      ? notesState.archiveSearchOn
-                          ? Container()
-                          : IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {
-                                context.read<NotesBloc>().add(
-                                    ArchiveSearchClickedEvent(
-                                        archiveSearchOn: true));
-                              },
-                            )
-                      : Container(),
-                  notesState.archiveSelected
-                      ? BlocBuilder<NotesBloc, NotesStates>(
-                          builder: (context, state) {
-                            return IconButton(
-                              onPressed: () {
-                                context
-                                    .read<NotesBloc>()
-                                    .add(ChangeViewEvent());
-                              },
-                              icon: state.gridViewMode
-                                  ? const Icon(Icons.view_agenda_outlined)
-                                  : const Icon(
-                                      Icons.grid_view_outlined,
-                                    ),
-                            );
-                          },
-                        )
-                      : Container(),
+                  BlocBuilder<NotesBloc, NotesStates>(
+                    builder: (context, state) {
+                      return IconButton(
+                        onPressed: () {
+                          context.read<NotesBloc>().add(ChangeViewEvent());
+                        },
+                        icon: state.gridViewMode
+                            ? const Icon(Icons.view_agenda_outlined)
+                            : const Icon(
+                                Icons.grid_view_outlined,
+                              ),
+                      );
+                    },
+                  ),
+                  // notesState.archiveSelected
+                  //     ? BlocBuilder<NotesBloc, NotesStates>(
+                  //         builder: (context, state) {
+                  //           return IconButton(
+                  //             onPressed: () {
+                  //               context
+                  //                   .read<NotesBloc>()
+                  //                   .add(ChangeViewEvent());
+                  //             },
+                  //             icon: state.gridViewMode
+                  //                 ? const Icon(Icons.view_agenda_outlined)
+                  //                 : const Icon(
+                  //                     Icons.grid_view_outlined,
+                  //                   ),
+                  //           );
+                  //         },
+                  //       )
+                  //     : Container(),
                 ],
               );
             },
@@ -267,13 +262,32 @@ class SearchNotesPage extends StatelessWidget {
             suggestionsBuilder: (BuildContext suggestionBuildercontext,
                 SearchController controller) {
               var state = context.read<NotesBloc>().state;
-              if (controller.text == "" || controller.text.isEmpty) {
-                searchBlocContext.read<SearchBloc>().add(SearchInitialEvent());
-              } else {
-                searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
-                    query: controller.text,
-                    pinnedNotes: state.pinnedNotes,
-                    otherNotes: state.otherNotes));
+              if (state.notesSelected) {
+                if (controller.text == "" || controller.text.isEmpty) {
+                  searchBlocContext
+                      .read<SearchBloc>()
+                      .add(SearchInitialEvent());
+                } else {
+                  searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
+                        query: controller.text,
+                        pinnedNotes: state.pinnedNotes,
+                        otherNotes: state.otherNotes,
+                        archiveNotes: const [],
+                      ));
+                }
+              } else if (state.archiveSelected) {
+                if (controller.text == "" || controller.text.isEmpty) {
+                  searchBlocContext
+                      .read<SearchBloc>()
+                      .add(SearchInitialEvent());
+                } else {
+                  searchBlocContext.read<SearchBloc>().add(SearchNotesEvent(
+                        query: controller.text,
+                        pinnedNotes: const [],
+                        otherNotes: const [],
+                        archiveNotes: state.archivedNotes,
+                      ));
+                }
               }
               return <Widget>[Text(controller.text)];
             });
