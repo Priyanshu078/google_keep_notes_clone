@@ -371,6 +371,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       isUpdate: false,
                                       isArchiveUpdate: false,
                                       pinnedNote: false,
+                                      isSearchUpdate: false,
                                     ),
                                   );
                                 }));

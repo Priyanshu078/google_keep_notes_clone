@@ -43,6 +43,7 @@ class NotesViewHome extends StatelessWidget {
                   ? state.pinnedNotes[index]
                   : state.otherNotes[index],
               pinnedNote: pinnedNotes,
+              isSearchUpdate: false,
             ),
           );
         }));

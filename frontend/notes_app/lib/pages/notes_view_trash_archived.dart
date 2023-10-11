@@ -45,6 +45,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                   ? state.archivedNotes[index]
                   : state.trashNotes[index],
               pinnedNote: false,
+              isSearchUpdate: false,
             ),
           );
         }));

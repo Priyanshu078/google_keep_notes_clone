@@ -48,6 +48,7 @@ class SearchNotesPage extends StatelessWidget {
               isArchiveUpdate: !state.homeNotes,
               note: state.searchedNotes[index],
               pinnedNote: state.searchedNotes[index].pinned,
+              isSearchUpdate: true,
             ),
           );
         }));

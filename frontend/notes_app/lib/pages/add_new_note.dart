@@ -24,11 +24,13 @@ class AddNewWidgetPage extends StatefulWidget {
     required this.isArchiveUpdate,
     required this.pinnedNote,
     this.note,
+    required this.isSearchUpdate,
   });
   final bool isUpdate;
   final Note? note;
   final bool isArchiveUpdate;
   final bool pinnedNote;
+  final bool isSearchUpdate;
 
   @override
   State<AddNewWidgetPage> createState() => _AddNewWidgetPageState();
@@ -120,10 +122,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                 ));
                             var notesBlocState =
                                 context.read<NotesBloc>().state;
-                            context.read<SearchBloc>().add(
-                                RemoveNoteFromSearchEvent(
-                                    note: note,
-                                    homeSearch: notesBlocState.notesSelected));
+                            if (widget.isSearchUpdate) {
+                              context.read<SearchBloc>().add(
+                                  RemoveNoteFromSearchEvent(
+                                      note: note,
+                                      homeSearch:
+                                          notesBlocState.notesSelected));
+                            }
                           }
                         },
                         icon: state.note.pinned
@@ -154,12 +159,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   pinnedUnarchive: false,
                                   homeNotePinned: widget.pinnedNote,
                                 ));
-                            context
-                                .read<SearchBloc>()
-                                .add(RemoveNoteFromSearchEvent(
-                                  note: note,
-                                  homeSearch: notesBlocState.notesSelected,
-                                ));
+                            if (widget.isSearchUpdate) {
+                              context
+                                  .read<SearchBloc>()
+                                  .add(RemoveNoteFromSearchEvent(
+                                    note: note,
+                                    homeSearch: notesBlocState.notesSelected,
+                                  ));
+                            }
                           } else {
                             Note note = state.note.copyWith(
                               title: titleController.text,
@@ -179,13 +186,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   pinnedUnarchive: false,
                                   homeNotePinned: widget.pinnedNote,
                                 ));
-
-                            context
-                                .read<SearchBloc>()
-                                .add(RemoveNoteFromSearchEvent(
-                                  note: note,
-                                  homeSearch: notesBlocState.notesSelected,
-                                ));
+                            if (widget.isSearchUpdate) {
+                              context
+                                  .read<SearchBloc>()
+                                  .add(RemoveNoteFromSearchEvent(
+                                    note: note,
+                                    homeSearch: notesBlocState.notesSelected,
+                                  ));
+                            }
                           }
                         },
                         icon: state.inArchive
@@ -216,12 +224,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     pinnedUnarchive: false,
                                     homeNotePinned: widget.pinnedNote,
                                   ));
-
-                              context.read<SearchBloc>().add(
-                                  UpdateNoteInSearchEvent(
-                                      note: updated,
-                                      homeSearch:
-                                          notesBlocState.notesSelected));
+                              if (widget.isSearchUpdate) {
+                                context.read<SearchBloc>().add(
+                                    UpdateNoteInSearchEvent(
+                                        note: updated,
+                                        homeSearch:
+                                            notesBlocState.notesSelected));
+                              }
                             } else if (widget.isArchiveUpdate) {
                               Note updated = state.note.copyWith(
                                 content: contentController.text,
@@ -239,11 +248,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     pinnedUnarchive: false,
                                     homeNotePinned: widget.pinnedNote,
                                   ));
-                              context.read<SearchBloc>().add(
-                                  UpdateNoteInSearchEvent(
-                                      note: updated,
-                                      homeSearch:
-                                          notesBlocState.notesSelected));
+                              if (widget.isSearchUpdate) {
+                                context.read<SearchBloc>().add(
+                                    UpdateNoteInSearchEvent(
+                                        note: updated,
+                                        homeSearch:
+                                            notesBlocState.notesSelected));
+                              }
                             } else {
                               Note newNote = state.note.copyWith(
                                 id: const Uuid().v1(),
@@ -548,12 +559,17 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                           context
                                                               .read<NotesBloc>()
                                                               .state;
-                                                      context.read<SearchBloc>().add(
-                                                          RemoveNoteFromSearchEvent(
-                                                              note: state.note,
-                                                              homeSearch:
-                                                                  notesBlocState
-                                                                      .notesSelected));
+                                                      if (widget
+                                                          .isSearchUpdate) {
+                                                        context
+                                                            .read<SearchBloc>()
+                                                            .add(RemoveNoteFromSearchEvent(
+                                                                note:
+                                                                    state.note,
+                                                                homeSearch:
+                                                                    notesBlocState
+                                                                        .notesSelected));
+                                                      }
                                                     }
                                                   } else {
                                                     _utilities.showSnackBar(
