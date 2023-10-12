@@ -89,3 +89,10 @@ class HomeSearchClickedEvent extends NotesEvent {
 }
 
 class EmptyTrashEvent extends NotesEvent {}
+
+class PinNoteEvent extends NotesEvent {
+  final Note note;
+  PinNoteEvent({required this.note});
+  @override
+  List<Object?> get props => [note];
+}

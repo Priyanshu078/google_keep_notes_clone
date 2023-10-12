@@ -159,6 +159,11 @@ class NotesViewHome extends StatelessWidget {
                                 ),
                               )
                             : Container(),
+                        state.pinnedNotes.isEmpty
+                            ? SizedBox(
+                                height: height * 0.01,
+                              )
+                            : Container(),
                         GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -253,6 +258,11 @@ class NotesViewHome extends StatelessWidget {
                                     color: Colors.black),
                               ),
                             ),
+                          )
+                        : Container(),
+                    state.pinnedNotes.isEmpty
+                        ? SizedBox(
+                            height: height * 0.01,
                           )
                         : Container(),
                     ListView.builder(

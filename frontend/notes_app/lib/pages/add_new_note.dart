@@ -129,6 +129,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                       homeSearch:
                                           notesBlocState.notesSelected));
                             }
+                          } else if (widget.isUpdate || widget.isSearchUpdate) {
+                            // var noteState = context.read<AddNotesCubit>().state;
+                            // Note updated = noteState.note.copyWith(
+                            //     pinned: noteState.note.pinned,
+                            //     dateAdded: DateTime.now().toIso8601String());
+                            // context
+                            //     .read<NotesBloc>()
+                            //     .add(PinNoteEvent(note: updated));
                           }
                         },
                         icon: state.note.pinned

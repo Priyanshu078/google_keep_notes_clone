@@ -27,6 +27,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<TrashNote>((event, emit) => trashNotes(event, emit));
     on<EmptyTrashEvent>((event, emit) => emptyTrash(event, emit));
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
+    on<PinNoteEvent>((event, emit) => pinNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -55,6 +56,37 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         )));
   }
   final ApiService _apiService = ApiService();
+
+  Future<void> pinNotes(PinNoteEvent event, Emitter emit) async {
+    await _apiService.updateNotes(event.note);
+    List<Note> pinnedNotes = List.from(state.pinnedNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    if (event.note.pinned) {
+      int index =
+          otherNotes.indexWhere((element) => element.id == event.note.id);
+      otherNotes.removeAt(index);
+      pinnedNotes.add(event.note);
+      pinnedNotes = sortNotes(pinnedNotes);
+    } else {
+      int index =
+          pinnedNotes.indexWhere((element) => element.id == event.note.id);
+      pinnedNotes.removeAt(index);
+      otherNotes.add(event.note);
+      otherNotes = sortNotes(otherNotes);
+    }
+    emit(NotesStates(
+        pinnedNotes: pinnedNotes,
+        otherNotes: otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        notesSelected: state.notesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn));
+  }
 
   Future<void> deleteNotes(DeleteNote event, Emitter emit) async {
     await _apiService.deleteNotes(event.note);
@@ -269,33 +301,74 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
               archiveSearchOn: state.archiveSearchOn,
               homeSearchOn: state.homeSearchOn,
             ));
-    } else {
-      List<Note> notes = event.fromArchive
-          ? List.from(state.archivedNotes)
-          : event.homeNotePinned
-              ? List.from(state.pinnedNotes)
-              : List.from(state.otherNotes);
+    } else if (event.fromArchive) {
+      List<Note> notes = List.from(state.archivedNotes);
+      // : event.homeNotePinned
+      //     ? List.from(state.pinnedNotes)
+      //     : List.from(state.otherNotes);
       int index = notes.indexWhere((note) => note.id == event.note.id);
       notes[index] = event.note;
       notes = sortNotes(notes);
       emit(NotesStates(
-        pinnedNotes: event.fromArchive
-            ? state.pinnedNotes
-            : event.homeNotePinned
-                ? notes
-                : state.pinnedNotes,
-        otherNotes: event.fromArchive
-            ? state.otherNotes
-            : !event.homeNotePinned
-                ? notes
-                : state.otherNotes,
+        pinnedNotes: state.pinnedNotes,
+        // : event.homeNotePinned
+        //     ? notes
+        //     : state.pinnedNotes,
+        otherNotes: state.otherNotes,
+        // : !event.homeNotePinned
+        //     ? notes
+        //     : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
         trashNotes: state.trashNotes,
-        archivedNotes: event.fromArchive ? notes : state.archivedNotes,
+        archivedNotes: notes,
+        // : state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+      ));
+    } else {
+      List<Note> pinnedNotes = List.from(state.pinnedNotes);
+      List<Note> otherNotes = List.from(state.otherNotes);
+      if (event.homeNotePinned) {
+        if (event.note.pinned) {
+          int index =
+              pinnedNotes.indexWhere((element) => element.id == event.note.id);
+          pinnedNotes[index] = event.note;
+          pinnedNotes = sortNotes(pinnedNotes);
+        } else {
+          int index =
+              pinnedNotes.indexWhere((element) => element.id == event.note.id);
+          pinnedNotes.removeAt(index);
+          otherNotes.add(event.note);
+          otherNotes = sortNotes(otherNotes);
+        }
+      } else {
+        if (event.note.pinned) {
+          int index =
+              otherNotes.indexWhere((element) => element.id == event.note.id);
+          otherNotes.removeAt(index);
+          pinnedNotes.add(event.note);
+          pinnedNotes = sortNotes(pinnedNotes);
+        } else {
+          int index =
+              otherNotes.indexWhere((element) => element.id == event.note.id);
+          otherNotes[index] = event.note;
+          otherNotes = sortNotes(otherNotes);
+        }
+      }
+      emit(NotesStates(
+        pinnedNotes: pinnedNotes,
+        otherNotes: otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        notesSelected: state.notesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
       ));
