@@ -303,21 +303,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
             ));
     } else if (event.fromArchive) {
       List<Note> notes = List.from(state.archivedNotes);
-      // : event.homeNotePinned
-      //     ? List.from(state.pinnedNotes)
-      //     : List.from(state.otherNotes);
       int index = notes.indexWhere((note) => note.id == event.note.id);
       notes[index] = event.note;
       notes = sortNotes(notes);
       emit(NotesStates(
         pinnedNotes: state.pinnedNotes,
-        // : event.homeNotePinned
-        //     ? notes
-        //     : state.pinnedNotes,
         otherNotes: state.otherNotes,
-        // : !event.homeNotePinned
-        //     ? notes
-        //     : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
@@ -325,7 +316,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         trashSelected: state.trashSelected,
         trashNotes: state.trashNotes,
         archivedNotes: notes,
-        // : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
       ));
