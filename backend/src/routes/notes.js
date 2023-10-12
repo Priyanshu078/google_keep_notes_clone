@@ -84,6 +84,7 @@ router.post('/trashNotes', async (req, res) => {
     const update = {
       pinned : false,
       trashed : true,
+      archived: false,
       dateAdded : req.body.dateAdded,
     }
     await doc.updateOne(update);

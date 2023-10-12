@@ -202,11 +202,11 @@ class SearchNotesPage extends StatelessWidget {
                                             moveToUpdatePage(context, index);
                                           },
                                           onLongPress: () {
-                                            context.read<NotesBloc>().add(
-                                                TrashNote(
-                                                    note: state
-                                                        .searchedNotes[index],
-                                                    addNotesPage: false));
+                                            // context.read<NotesBloc>().add(
+                                            //     TrashNote(
+                                            //         note: state
+                                            //             .searchedNotes[index],
+                                            //         addNotesPage: false));
                                           },
                                           color: colors[state
                                               .searchedNotes[index].colorIndex],
@@ -234,11 +234,11 @@ class SearchNotesPage extends StatelessWidget {
                                               moveToUpdatePage(context, index);
                                             },
                                             onLongPress: () {
-                                              context.read<NotesBloc>().add(
-                                                  TrashNote(
-                                                      note: state
-                                                          .searchedNotes[index],
-                                                      addNotesPage: false));
+                                              // context.read<NotesBloc>().add(
+                                              //     TrashNote(
+                                              //         note: state
+                                              //             .searchedNotes[index],
+                                              //         addNotesPage: false));
                                             },
                                             color: colors[state
                                                 .searchedNotes[index]

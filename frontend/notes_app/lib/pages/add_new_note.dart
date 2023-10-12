@@ -562,7 +562,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                           .add(TrashNote(
                                                               note: state.note,
                                                               addNotesPage:
-                                                                  true));
+                                                                  true,
+                                                              fromArchive: widget
+                                                                  .isArchiveUpdate));
                                                       var notesBlocState =
                                                           context
                                                               .read<NotesBloc>()

@@ -383,27 +383,41 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
 
   Future<void> trashNotes(TrashNote event, Emitter emit) async {
     await _apiService.trashNotes(event.note);
-    List<Note> notes = event.note.pinned
-        ? List.from(state.pinnedNotes)
-        : List.from(state.otherNotes);
+    List<Note> notes = event.fromArchive
+        ? state.archivedNotes
+        : event.note.pinned
+            ? List.from(state.pinnedNotes)
+            : List.from(state.otherNotes);
     int index = notes.indexWhere((element) => element.id == event.note.id);
     List<Note> trashedNotes = List.from(state.trashNotes);
-    trashedNotes.add(
-        notes[index].copyWith(dateAdded: DateTime.now().toIso8601String()));
+    Note note = event.note.copyWith(
+        trashed: true,
+        pinned: false,
+        archived: false,
+        dateAdded: DateTime.now().toIso8601String());
+    trashedNotes.add(note);
     trashedNotes = sortNotes(trashedNotes);
     notes.removeAt(index);
     notes = sortNotes(notes);
     if (event.addNotesPage) {
       emit(NotesTrashed(
-        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
-        otherNotes: !event.note.pinned ? notes : state.otherNotes,
+        pinnedNotes: event.fromArchive
+            ? state.pinnedNotes
+            : event.note.pinned
+                ? notes
+                : state.pinnedNotes,
+        otherNotes: event.fromArchive
+            ? state.otherNotes
+            : !event.note.pinned
+                ? notes
+                : state.otherNotes,
         gridViewMode: state.gridViewMode,
         lightMode: state.lightMode,
         notesSelected: state.notesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
         trashNotes: trashedNotes,
-        archivedNotes: state.archivedNotes,
+        archivedNotes: event.fromArchive ? notes : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
       ));

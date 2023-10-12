@@ -4,7 +4,6 @@ import 'package:notes_app/pages/add_new_note.dart';
 
 import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
-import '../blocs and cubits/notes_bloc/notes_event.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
 import '../widgets/mytext.dart';
@@ -118,11 +117,11 @@ class NotesViewTrashArchived extends StatelessWidget {
                           moveToUpdatePage(context, index);
                         },
                         onLongPress: () {
-                          context.read<NotesBloc>().add(TrashNote(
-                              note: inArchivedNotes
-                                  ? state.archivedNotes[index]
-                                  : state.trashNotes[index],
-                              addNotesPage: false));
+                          // context.read<NotesBloc>().add(TrashNote(
+                          //     note: inArchivedNotes
+                          //         ? state.archivedNotes[index]
+                          //         : state.trashNotes[index],
+                          //     addNotesPage: false));
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -186,11 +185,12 @@ class NotesViewTrashArchived extends StatelessWidget {
                             moveToUpdatePage(context, index);
                           },
                           onLongPress: () {
-                            context.read<NotesBloc>().add(TrashNote(
-                                note: inArchivedNotes
-                                    ? state.archivedNotes[index]
-                                    : state.trashNotes[index],
-                                addNotesPage: false));
+                            // context.read<NotesBloc>().add(TrashNote(
+                            //     note: inArchivedNotes
+                            //         ? state.archivedNotes[index]
+                            //         : state.trashNotes[index],
+                            //     addNotesPage: false,
+                            //     ));
                           },
                           child: Container(
                             decoration: BoxDecoration(
