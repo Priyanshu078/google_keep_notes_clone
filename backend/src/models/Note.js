@@ -20,18 +20,21 @@ const noteSchema = mongoose.Schema({
   dateAdded: {
     type: String,
   },
-  pinned:{
+  pinned: {
     type: Boolean,
   },
-  colorIndex:{
+  colorIndex: {
     type: Number
   },
-  trashed : {
-    type : Boolean
+  trashed: {
+    type: Boolean
   },
-  archived : {
-    type : Boolean
-  }
+  archived: {
+    type: Boolean
+  },
+  selected: {
+    type: Boolean
+  },
 });
 
 module.exports = mongoose.model("Note", noteSchema);

@@ -51,6 +51,7 @@ class ApiService {
             colorIndex: data[i]["colorIndex"],
             trashed: data[i]['trashed'],
             archived: data[i]['archived'],
+            selected: data[i]['selected'],
           ),
         );
       }
@@ -71,6 +72,7 @@ class ApiService {
       "trashed": note.trashed,
       "archived": note.archived,
       "dateAdded": note.dateAdded,
+      "selected": note.selected,
     });
     debugPrint(response.data.toString());
   }
@@ -106,6 +108,7 @@ class ApiService {
       "trashed": note.trashed,
       "archived": note.archived,
       "dateAdded": note.dateAdded,
+      "selected": note.selected,
     });
     debugPrint(response.data.toString());
   }

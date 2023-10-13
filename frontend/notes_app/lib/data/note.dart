@@ -8,6 +8,7 @@ class Note {
   final int colorIndex;
   final bool trashed;
   final bool archived;
+  final bool selected;
 
   Note({
     required this.id,
@@ -19,6 +20,7 @@ class Note {
     required this.colorIndex,
     required this.trashed,
     required this.archived,
+    required this.selected,
   });
 
   Note.temp({
@@ -31,6 +33,7 @@ class Note {
     this.colorIndex = 0,
     this.trashed = false,
     this.archived = false,
+    this.selected = false,
   });
 
   factory Note.fromJson(Map<String, dynamic> json) {
@@ -44,6 +47,7 @@ class Note {
       colorIndex: json['colorIndex'],
       trashed: json['trashed'],
       archived: json['archived'],
+      selected: json['selected'],
     );
   }
 
@@ -57,6 +61,7 @@ class Note {
     int? colorIndex,
     bool? trashed,
     bool? archived,
+    bool? selected,
   }) {
     return Note(
       id: id ?? this.id,
@@ -68,6 +73,7 @@ class Note {
       colorIndex: colorIndex ?? this.colorIndex,
       trashed: trashed ?? this.trashed,
       archived: archived ?? this.archived,
+      selected: selected ?? this.selected,
     );
   }
 
@@ -82,6 +88,7 @@ class Note {
       "colorIndex": colorIndex,
       "trashed": trashed,
       "archived": archived,
+      "selected": selected,
     };
   }
 }

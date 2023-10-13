@@ -38,7 +38,8 @@ router.post("/addNotes", async (req, res) => {
     colorIndex: req.body.colorIndex,
     trashed: req.body.trashed,
     archived: req.body.archived,
-    dateAdded: req.body.dateAdded
+    dateAdded: req.body.dateAdded,
+    selected: req.body.selected,
   });
   try {
     await newNote.save();
@@ -63,6 +64,7 @@ router.post("/updateNotes", async (req, res) => {
       trashed: req.body.trashed,
       archived: req.body.archived,
       dateAdded : req.body.dateAdded,
+      selected : req.body.selected,
     };
     await doc.updateOne(update);
     res.send({ status: 200, message: "document updated succussfully" });
