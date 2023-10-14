@@ -29,7 +29,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<EmptyTrashEvent>((event, emit) => emptyTrash(event, emit));
     on<DeleteNote>((event, emit) => deleteNotes(event, emit));
     on<PinNoteEvent>((event, emit) => pinNotes(event, emit));
-    on<SelectNoteEvent>((event, emit) => selectNode(event, emit));
+    on<SelectNoteEvent>((event, emit) => selectNote(event, emit));
+    on<UnselectAllNotesEvent>((event, emit) => unselectAllNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -61,7 +62,53 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   }
   final ApiService _apiService = ApiService();
 
-  Future<void> selectNode(SelectNoteEvent event, Emitter emit) async {
+  Future<void> unselectAllNotes(
+      UnselectAllNotesEvent event, Emitter emit) async {
+    List<Note> pinnednotes = List.from(state.pinnedNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    List<Note> archivedNotes = List.from(state.archivedNotes);
+    List<Note> trashNotes = List.from(state.trashNotes);
+    if (event.homeNotesSelected) {
+      for (int i = 0; i < pinnednotes.length; i++) {
+        if (pinnednotes[i].selected) {
+          pinnednotes[i] = pinnednotes[i].copyWith(selected: false);
+        }
+      }
+      for (int i = 0; i < otherNotes.length; i++) {
+        if (otherNotes[i].selected) {
+          otherNotes[i] = otherNotes[i].copyWith(selected: false);
+        }
+      }
+    } else if (event.archivedSelected) {
+      for (int i = 0; i < archivedNotes.length; i++) {
+        if (archivedNotes[i].selected) {
+          archivedNotes[i] = archivedNotes[i].copyWith(selected: false);
+        }
+      }
+    } else if (event.trashSelected) {
+      for (int i = 0; i < trashNotes.length; i++) {
+        if (trashNotes[i].selected) {
+          trashNotes[i] = trashNotes[i].copyWith(selected: false);
+        }
+      }
+    }
+    emit(NotesStates(
+        pinnedNotes: event.homeNotesSelected ? pinnednotes : state.pinnedNotes,
+        otherNotes: event.homeNotesSelected ? otherNotes : state.otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        homeNotesSelected: state.homeNotesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: event.trashSelected ? trashNotes : state.trashNotes,
+        archivedNotes:
+            event.archivedSelected ? archivedNotes : state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+        selectedNotes: const []));
+  }
+
+  Future<void> selectNote(SelectNoteEvent event, Emitter emit) async {
     List<Note> notes = List.from(event.homeNotes
         ? event.note.pinned
             ? state.pinnedNotes

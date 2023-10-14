@@ -84,9 +84,19 @@ class SearchNotesPage extends StatelessWidget {
                     fontWeight: FontWeight.normal,
                     color: Colors.black54)),
                 leading: IconButton(
-                  icon: const Icon(Icons.menu),
+                  icon: notesState is NotesSelected
+                      ? const Icon(Icons.close)
+                      : const Icon(Icons.menu),
                   onPressed: () {
-                    scaffoldKey.currentState!.openDrawer();
+                    if (notesState is NotesSelected) {
+                      context.read<NotesBloc>().add(UnselectAllNotesEvent(
+                            homeNotesSelected: notesState.homeNotesSelected,
+                            archivedSelected: notesState.archiveSelected,
+                            trashSelected: notesState.trashSelected,
+                          ));
+                    } else {
+                      scaffoldKey.currentState!.openDrawer();
+                    }
                   },
                 ),
                 focusNode: focusNode,

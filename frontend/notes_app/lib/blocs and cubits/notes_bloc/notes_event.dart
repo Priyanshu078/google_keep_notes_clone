@@ -114,3 +114,16 @@ class SelectNoteEvent extends NotesEvent {
   @override
   List<Object?> get props => [note, homeNotes, archivedNotes, trashNotes];
 }
+
+class UnselectAllNotesEvent extends NotesEvent {
+  final bool homeNotesSelected;
+  final bool archivedSelected;
+  final bool trashSelected;
+  UnselectAllNotesEvent(
+      {required this.homeNotesSelected,
+      required this.archivedSelected,
+      required this.trashSelected});
+  @override
+  List<Object?> get props =>
+      [homeNotesSelected, archivedSelected, trashSelected];
+}
