@@ -4,6 +4,7 @@ import 'package:notes_app/pages/add_new_note.dart';
 
 import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
+import '../blocs and cubits/notes_bloc/notes_event.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
 import '../widgets/mytext.dart';
@@ -117,25 +118,33 @@ class NotesViewTrashArchived extends StatelessWidget {
                           moveToUpdatePage(context, index);
                         },
                         onLongPress: () {
-                          // context.read<NotesBloc>().add(TrashNote(
-                          //     note: inArchivedNotes
-                          //         ? state.archivedNotes[index]
-                          //         : state.trashNotes[index],
-                          //     addNotesPage: false));
+                          context.read<NotesBloc>().add(SelectNoteEvent(
+                                note: state.archiveSelected
+                                    ? state.archivedNotes[index]
+                                    : state.trashNotes[index],
+                                homeNotes: false,
+                                archivedNotes: state.archiveSelected,
+                                trashNotes: !state.archiveSelected,
+                              ));
                         },
                         child: Container(
                           decoration: BoxDecoration(
                               color: colors[inArchivedNotes
                                   ? state.archivedNotes[index].colorIndex
                                   : state.trashNotes[index].colorIndex],
-                              border: (inArchivedNotes
-                                          ? state
-                                              .archivedNotes[index].colorIndex
-                                          : state
-                                              .trashNotes[index].colorIndex) ==
-                                      0
-                                  ? Border.all(color: Colors.grey)
-                                  : null,
+                              border: (state.archiveSelected
+                                      ? state.archivedNotes[index].selected
+                                      : state.trashNotes[index].selected)
+                                  ? Border.all(
+                                      color: selectedBorderColor, width: 3)
+                                  : (inArchivedNotes
+                                              ? state.archivedNotes[index]
+                                                  .colorIndex
+                                              : state.trashNotes[index]
+                                                  .colorIndex) ==
+                                          0
+                                      ? Border.all(color: Colors.grey)
+                                      : null,
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -185,26 +194,33 @@ class NotesViewTrashArchived extends StatelessWidget {
                             moveToUpdatePage(context, index);
                           },
                           onLongPress: () {
-                            // context.read<NotesBloc>().add(TrashNote(
-                            //     note: inArchivedNotes
-                            //         ? state.archivedNotes[index]
-                            //         : state.trashNotes[index],
-                            //     addNotesPage: false,
-                            //     ));
+                            context.read<NotesBloc>().add(SelectNoteEvent(
+                                  note: state.archiveSelected
+                                      ? state.archivedNotes[index]
+                                      : state.trashNotes[index],
+                                  homeNotes: false,
+                                  archivedNotes: state.archiveSelected,
+                                  trashNotes: !state.archiveSelected,
+                                ));
                           },
                           child: Container(
                             decoration: BoxDecoration(
                                 color: colors[inArchivedNotes
                                     ? state.archivedNotes[index].colorIndex
                                     : state.trashNotes[index].colorIndex],
-                                border: (inArchivedNotes
-                                            ? state
-                                                .archivedNotes[index].colorIndex
-                                            : state.trashNotes[index]
-                                                .colorIndex) ==
-                                        0
-                                    ? Border.all(color: Colors.grey)
-                                    : null,
+                                border: (state.archiveSelected
+                                        ? state.archivedNotes[index].selected
+                                        : state.trashNotes[index].selected)
+                                    ? Border.all(
+                                        color: selectedBorderColor, width: 3)
+                                    : (inArchivedNotes
+                                                ? state.archivedNotes[index]
+                                                    .colorIndex
+                                                : state.trashNotes[index]
+                                                    .colorIndex) ==
+                                            0
+                                        ? Border.all(color: Colors.grey)
+                                        : null,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

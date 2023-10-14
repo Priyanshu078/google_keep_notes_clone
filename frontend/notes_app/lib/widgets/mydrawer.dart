@@ -37,7 +37,7 @@ class MyDrawer extends StatelessWidget {
                   Image.asset("assets/google-keep-logo.png"),
                   GestureDetector(
                     onTap: () {
-                      if (!state.notesSelected) {
+                      if (!state.homeNotesSelected) {
                         context.read<NotesBloc>().add(
                               FetchNotes(
                                 userId: 'priyanshupaliwal',
@@ -54,12 +54,13 @@ class MyDrawer extends StatelessWidget {
                       child: DrawerListTile(
                         icon: Icons.lightbulb_outline_rounded,
                         text: "Notes",
-                        textColor: state.notesSelected
+                        textColor: state.homeNotesSelected
                             ? selectedTextColor
                             : Colors.black,
-                        backgroundColor:
-                            state.notesSelected ? selectedColor : Colors.white,
-                        iconColor: state.notesSelected
+                        backgroundColor: state.homeNotesSelected
+                            ? selectedColor
+                            : Colors.white,
+                        iconColor: state.homeNotesSelected
                             ? selectedTextColor
                             : Colors.black,
                         height: height * 0.07,

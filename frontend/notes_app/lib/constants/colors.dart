@@ -16,6 +16,7 @@ Color dividerColor = const Color(0xffdae5f4);
 Color rippleColor = const Color(0xffe6eef9);
 Color selectedColor = const Color(0xffc3e7ff);
 Color selectedTextColor = const Color(0xff124b99);
+Color selectedBorderColor = const Color(0xff00658b);
 
 const List<Color> colors = [
   Color(0xffFFFFFF),

@@ -94,13 +94,13 @@ class SearchNotesPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50))),
                 controller: controller,
                 onTap: () {
-                  if (notesState.notesSelected) {
+                  if (notesState.homeNotesSelected) {
                     controller.openView();
                     FocusScope.of(context).requestFocus(focusNode);
                   }
                 },
                 onChanged: (value) {
-                  if (notesState.notesSelected) {
+                  if (notesState.homeNotesSelected) {
                     controller.openView();
                   }
                 },
@@ -263,7 +263,7 @@ class SearchNotesPage extends StatelessWidget {
             suggestionsBuilder: (BuildContext suggestionBuildercontext,
                 SearchController controller) {
               var state = context.read<NotesBloc>().state;
-              if (state.notesSelected) {
+              if (state.homeNotesSelected) {
                 if (controller.text == "" || controller.text.isEmpty) {
                   searchBlocContext
                       .read<SearchBloc>()

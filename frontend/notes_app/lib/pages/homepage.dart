@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: () async {
         var state = context.read<NotesBloc>().state;
-        if (state.notesSelected) {
+        if (state.homeNotesSelected) {
           if (state.homeSearchOn) {
             FocusScope.of(context).requestFocus(FocusNode());
             context
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: Colors.white,
             body: BlocBuilder<NotesBloc, NotesStates>(
               builder: (context, state) {
-                return state.notesSelected
+                return state.homeNotesSelected
                     ? Stack(
                         children: [
                           BlocBuilder<NotesBloc, NotesStates>(
@@ -348,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             floatingActionButton: BlocBuilder<NotesBloc, NotesStates>(
               builder: (context, state) {
-                return state.notesSelected
+                return state.homeNotesSelected
                     ? Padding(
                         padding:
                             const EdgeInsets.only(bottom: 8.0, right: 16.0),

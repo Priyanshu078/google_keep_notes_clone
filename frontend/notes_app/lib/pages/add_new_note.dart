@@ -127,7 +127,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   RemoveNoteFromSearchEvent(
                                       note: note,
                                       homeSearch:
-                                          notesBlocState.notesSelected));
+                                          notesBlocState.homeNotesSelected));
                             }
                           } else if (widget.isUpdate || widget.isSearchUpdate) {
                             // var noteState = context.read<AddNotesCubit>().state;
@@ -172,7 +172,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   .read<SearchBloc>()
                                   .add(RemoveNoteFromSearchEvent(
                                     note: note,
-                                    homeSearch: notesBlocState.notesSelected,
+                                    homeSearch:
+                                        notesBlocState.homeNotesSelected,
                                   ));
                             }
                           } else {
@@ -199,7 +200,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                   .read<SearchBloc>()
                                   .add(RemoveNoteFromSearchEvent(
                                     note: note,
-                                    homeSearch: notesBlocState.notesSelected,
+                                    homeSearch:
+                                        notesBlocState.homeNotesSelected,
                                   ));
                             }
                           }
@@ -237,7 +239,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     UpdateNoteInSearchEvent(
                                         note: updated,
                                         homeSearch:
-                                            notesBlocState.notesSelected));
+                                            notesBlocState.homeNotesSelected));
                               }
                             } else if (widget.isArchiveUpdate) {
                               Note updated = state.note.copyWith(
@@ -261,7 +263,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     UpdateNoteInSearchEvent(
                                         note: updated,
                                         homeSearch:
-                                            notesBlocState.notesSelected));
+                                            notesBlocState.homeNotesSelected));
                               }
                             } else {
                               Note newNote = state.note.copyWith(
@@ -578,7 +580,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                     state.note,
                                                                 homeSearch:
                                                                     notesBlocState
-                                                                        .notesSelected));
+                                                                        .homeNotesSelected));
                                                       }
                                                     }
                                                   } else {

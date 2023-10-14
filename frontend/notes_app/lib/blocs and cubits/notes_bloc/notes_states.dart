@@ -5,7 +5,7 @@ class NotesStates extends Equatable {
   final bool homeSearchOn;
   final bool gridViewMode;
   final bool lightMode;
-  final bool notesSelected;
+  final bool homeNotesSelected;
   final bool archiveSelected;
   final bool trashSelected;
   final List<Note> pinnedNotes;
@@ -13,19 +13,21 @@ class NotesStates extends Equatable {
   final List<Note> trashNotes;
   final List<Note> archivedNotes;
   final bool archiveSearchOn;
+  final List<Note> selectedNotes;
 
   const NotesStates({
     required this.pinnedNotes,
     required this.otherNotes,
     required this.gridViewMode,
     required this.lightMode,
-    required this.notesSelected,
+    required this.homeNotesSelected,
     required this.archiveSelected,
     required this.trashSelected,
     required this.trashNotes,
     required this.archivedNotes,
     required this.archiveSearchOn,
     required this.homeSearchOn,
+    required this.selectedNotes,
   });
 
   @override
@@ -34,14 +36,32 @@ class NotesStates extends Equatable {
         otherNotes,
         gridViewMode,
         lightMode,
-        notesSelected,
+        homeNotesSelected,
         archiveSelected,
         trashSelected,
         trashNotes,
         archivedNotes,
         archiveSearchOn,
         homeSearchOn,
+        selectedNotes,
       ];
+}
+
+class NotesSelected extends NotesStates {
+  const NotesSelected({
+    required super.pinnedNotes,
+    required super.otherNotes,
+    required super.gridViewMode,
+    required super.lightMode,
+    required super.homeNotesSelected,
+    required super.archiveSelected,
+    required super.trashSelected,
+    required super.trashNotes,
+    required super.archivedNotes,
+    required super.archiveSearchOn,
+    required super.homeSearchOn,
+    required super.selectedNotes,
+  });
 }
 
 class NotesLoading extends NotesStates {
@@ -50,13 +70,14 @@ class NotesLoading extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -66,13 +87,14 @@ class NotesDeleted extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -82,13 +104,14 @@ class NotesTrashed extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -98,13 +121,14 @@ class NotesRestored extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -114,13 +138,14 @@ class NotesArchived extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -130,13 +155,14 @@ class NotesUnarchived extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }
 
@@ -146,12 +172,13 @@ class NotesPinnedUnarchived extends NotesStates {
     required super.otherNotes,
     required super.gridViewMode,
     required super.lightMode,
-    required super.notesSelected,
+    required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
     required super.trashNotes,
     required super.archivedNotes,
     required super.archiveSearchOn,
     required super.homeSearchOn,
+    required super.selectedNotes,
   });
 }

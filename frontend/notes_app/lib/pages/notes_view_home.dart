@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/widgets/my_note.dart';
 
@@ -126,14 +127,19 @@ class NotesViewHome extends StatelessWidget {
                                   moveToUpdatePage(context, index, true);
                                 },
                                 onLongPress: () {
-                                  // context.read<NotesBloc>().add(TrashNote(
-                                  //     note: state.pinnedNotes[index],
-                                  //     addNotesPage: false));
+                                  context.read<NotesBloc>().add(SelectNoteEvent(
+                                        note: state.pinnedNotes[index],
+                                        homeNotes: true,
+                                        archivedNotes: false,
+                                        trashNotes: false,
+                                      ));
                                 },
                                 color:
                                     colors[state.pinnedNotes[index].colorIndex],
-                                border:
-                                    (state.pinnedNotes[index].colorIndex) == 0
+                                border: state.pinnedNotes[index].selected
+                                    ? Border.all(
+                                        color: selectedBorderColor, width: 3)
+                                    : (state.pinnedNotes[index].colorIndex) == 0
                                         ? Border.all(color: Colors.grey)
                                         : null,
                                 titleText: state.pinnedNotes[index].title,
@@ -179,14 +185,19 @@ class NotesViewHome extends StatelessWidget {
                                   moveToUpdatePage(context, index, false);
                                 },
                                 onLongPress: () {
-                                  // context.read<NotesBloc>().add(TrashNote(
-                                  //     note: state.otherNotes[index],
-                                  //     addNotesPage: false));
+                                  context.read<NotesBloc>().add(SelectNoteEvent(
+                                        note: state.otherNotes[index],
+                                        homeNotes: true,
+                                        archivedNotes: false,
+                                        trashNotes: false,
+                                      ));
                                 },
                                 color:
                                     colors[state.otherNotes[index].colorIndex],
-                                border:
-                                    (state.otherNotes[index].colorIndex) == 0
+                                border: state.otherNotes[index].selected
+                                    ? Border.all(
+                                        color: selectedBorderColor, width: 3)
+                                    : (state.otherNotes[index].colorIndex) == 0
                                         ? Border.all(color: Colors.grey)
                                         : null,
                                 titleText: state.otherNotes[index].title,
@@ -227,15 +238,21 @@ class NotesViewHome extends StatelessWidget {
                                 moveToUpdatePage(context, index, true);
                               },
                               onLongPress: () {
-                                // context.read<NotesBloc>().add(TrashNote(
-                                //     note: state.pinnedNotes[index],
-                                //     addNotesPage: false));
+                                context.read<NotesBloc>().add(SelectNoteEvent(
+                                      note: state.pinnedNotes[index],
+                                      homeNotes: true,
+                                      archivedNotes: false,
+                                      trashNotes: false,
+                                    ));
                               },
                               color:
                                   colors[state.pinnedNotes[index].colorIndex],
-                              border: (state.pinnedNotes[index].colorIndex) == 0
-                                  ? Border.all(color: Colors.grey)
-                                  : null,
+                              border: state.pinnedNotes[index].selected
+                                  ? Border.all(
+                                      color: selectedBorderColor, width: 3)
+                                  : (state.pinnedNotes[index].colorIndex) == 0
+                                      ? Border.all(color: Colors.grey)
+                                      : null,
                               titleText: state.pinnedNotes[index].title,
                               contentText: state.pinnedNotes[index].content,
                               height: height),
@@ -276,14 +293,20 @@ class NotesViewHome extends StatelessWidget {
                                 moveToUpdatePage(context, index, false);
                               },
                               onLongPress: () {
-                                // context.read<NotesBloc>().add(TrashNote(
-                                //     note: state.otherNotes[index],
-                                //     addNotesPage: false));
+                                context.read<NotesBloc>().add(SelectNoteEvent(
+                                      note: state.otherNotes[index],
+                                      homeNotes: true,
+                                      archivedNotes: false,
+                                      trashNotes: false,
+                                    ));
                               },
                               color: colors[state.otherNotes[index].colorIndex],
-                              border: (state.otherNotes[index].colorIndex) == 0
-                                  ? Border.all(color: Colors.grey)
-                                  : null,
+                              border: state.otherNotes[index].selected
+                                  ? Border.all(
+                                      color: selectedBorderColor, width: 3)
+                                  : (state.otherNotes[index].colorIndex) == 0
+                                      ? Border.all(color: Colors.grey)
+                                      : null,
                               titleText: state.otherNotes[index].title,
                               contentText: state.otherNotes[index].content,
                               height: height),

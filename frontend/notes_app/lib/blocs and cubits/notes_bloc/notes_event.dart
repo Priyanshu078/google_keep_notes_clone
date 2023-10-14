@@ -100,3 +100,17 @@ class PinNoteEvent extends NotesEvent {
   @override
   List<Object?> get props => [note];
 }
+
+class SelectNoteEvent extends NotesEvent {
+  final Note note;
+  final bool homeNotes;
+  final bool archivedNotes;
+  final bool trashNotes;
+  SelectNoteEvent(
+      {required this.note,
+      required this.homeNotes,
+      required this.archivedNotes,
+      required this.trashNotes});
+  @override
+  List<Object?> get props => [note, homeNotes, archivedNotes, trashNotes];
+}
