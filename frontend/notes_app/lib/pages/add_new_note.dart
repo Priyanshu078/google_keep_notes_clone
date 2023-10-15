@@ -553,7 +553,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                               "Delete",
                                                                           onPressed:
                                                                               () {
-                                                                            context.read<NotesBloc>().add(DeleteNote(noteslist: <Note>[
+                                                                            context.read<NotesBloc>().add(DeleteNote(fromSelectedNotes: false, noteslist: <Note>[
                                                                                   state.note
                                                                                 ]));
                                                                             Navigator.of(context).pop();

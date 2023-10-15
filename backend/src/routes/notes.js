@@ -4,16 +4,16 @@ const Note = require("../models/Note");
 
 router.post("/getNotes", async (req, res) => {
   const notes = await Note.find({ userid: req.body.userid, trashed: req.body.trashed, archived: req.body.archived });
-  if ((req.body.trashed == false)&& (req.body.archived == false)) {
+  if ((req.body.trashed == false) && (req.body.archived == false)) {
     // let pinnedNotes = await Note.find({ userid: req.body.userid, trashed: req.body.trashed, archived: req.body.archived, pinned: true });
     // let otherNotes = await Note.find({ userid: req.body.userid, trashed: req.body.trashed, archived: req.body.archived, pinned: false })
     let pinnedNotes = [];
     let otherNotes = [];
-    for(var i = 0;i<notes.length;i++){
-      if(notes[i]['pinned'] == true){
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i]['pinned'] == true) {
         pinnedNotes.push(notes[i]);
       }
-      else{
+      else {
         otherNotes.push(notes[i]);
       }
     }
@@ -23,7 +23,7 @@ router.post("/getNotes", async (req, res) => {
     });
   }
   else {
-    
+
     res.json(notes);
   }
 });
@@ -63,8 +63,8 @@ router.post("/updateNotes", async (req, res) => {
       colorIndex: req.body.colorIndex,
       trashed: req.body.trashed,
       archived: req.body.archived,
-      dateAdded : req.body.dateAdded,
-      selected : req.body.selected,
+      dateAdded: req.body.dateAdded,
+      selected: req.body.selected,
     };
     await doc.updateOne(update);
     res.send({ status: 200, message: "document updated succussfully" });
@@ -82,12 +82,12 @@ router.post('/trashNotes', async (req, res) => {
     // await Note.deleteOne({ id: req.body.id });
     // res.send({ status: 200, message: "document deleted succussfully" });
 
-    const doc = await Note.findOne({id : req.body.id});
+    const doc = await Note.findOne({ id: req.body.id });
     const update = {
-      pinned : false,
-      trashed : true,
+      pinned: false,
+      trashed: true,
       archived: false,
-      dateAdded : req.body.dateAdded,
+      dateAdded: req.body.dateAdded,
     }
     await doc.updateOne(update);
     res.send({ status: 200, message: "document moved to trash succussfully" });
@@ -115,12 +115,36 @@ router.post('/emptyTrash', async (req, res) => {
   }
 });
 
-router.post('/deleteNotes', async(req,res)=>{
-  try{
-    await Note.deleteMany({ id: { $in: req.body.ids} });
+router.post('/deleteNotes', async (req, res) => {
+  try {
+    await Note.deleteMany({ id: { $in: req.body.ids } });
     res.send({ status: 200, message: "document deleted succussfully" });
   }
-  catch(e){
+  catch (e) {
+    res.send({
+      status: 400,
+      message: "Something Went Wrong",
+      error: e.toString(),
+    });
+  }
+});
+
+router.post('/restoreNotes', async (req, res) => {
+  try {
+    var list = req.body.notesList;
+    for (var i = 0; i < list.length; i++) {
+      const doc = await Note.findOne({ id: list[i]['id'] });
+      const update = {
+        pinned: false,
+        trashed: false,
+        archived: false,
+        dateAdded: list[i]['dateAdded'],
+      }
+      await doc.updateOne(update);
+    }
+    res.send({ status: 200, message: "documents restored succussfully" });
+  }
+  catch (e) {
     res.send({
       status: 400,
       message: "Something Went Wrong",

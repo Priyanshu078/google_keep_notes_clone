@@ -311,9 +311,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                           () {
                                                                         if (state
                                                                             is NotesSelected) {
-                                                                          context
-                                                                              .read<NotesBloc>()
-                                                                              .add(DeleteNote(noteslist: state.selectedNotes));
+                                                                          context.read<NotesBloc>().add(DeleteNote(
+                                                                              fromSelectedNotes: true,
+                                                                              noteslist: state.selectedNotes));
                                                                           Navigator.of(context)
                                                                               .pop();
                                                                         } else {

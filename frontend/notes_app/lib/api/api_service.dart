@@ -112,4 +112,12 @@ class ApiService {
     });
     debugPrint(response.data.toString());
   }
+
+  Future<void> restoreNotes(List<Note> notesList) async {
+    String endPoint = '/restoreNotes';
+    String url = baseUrl + endPoint;
+    var response = await dio.post(url,
+        data: {"notesList": notesList.map((note) => note.toJson()).toList()});
+    debugPrint(response.data.toString());
+  }
 }

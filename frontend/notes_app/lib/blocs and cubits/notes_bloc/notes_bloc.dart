@@ -63,7 +63,39 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   }
   final ApiService _apiService = ApiService();
 
-  Future<void> restoreNotes(RestoreNotes event, Emitter emit) async {}
+  Future<void> restoreNotes(RestoreNotes event, Emitter emit) async {
+    await _apiService.restoreNotes(event.notesList);
+    List<Note> trashNotes = List.from(state.trashNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    List<Note> selectedNotes = event.notesList;
+    for (int i = 0; i < selectedNotes.length; i++) {
+      int trashNotesIndex =
+          trashNotes.indexWhere((element) => element.id == selectedNotes[i].id);
+      trashNotes.removeAt(trashNotesIndex);
+      Note note = selectedNotes[i].copyWith(
+        dateAdded: DateTime.now().toIso8601String(),
+        pinned: false,
+        archived: false,
+        trashed: false,
+        selected: false,
+      );
+      otherNotes.add(note);
+    }
+    otherNotes = sortNotes(otherNotes);
+    emit(NotesRestored(
+        pinnedNotes: state.pinnedNotes,
+        otherNotes: otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        homeNotesSelected: state.homeNotesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: trashNotes,
+        archivedNotes: state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+        selectedNotes: const []));
+  }
 
   Future<void> unselectAllNotes(
       UnselectAllNotesEvent event, Emitter emit) async {
@@ -223,7 +255,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archivedNotes: state.archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
-      selectedNotes: state.selectedNotes,
+      selectedNotes: event.fromSelectedNotes ? [] : state.selectedNotes,
     ));
   }
 
