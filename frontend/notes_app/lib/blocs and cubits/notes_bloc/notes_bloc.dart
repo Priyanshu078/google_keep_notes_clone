@@ -130,22 +130,41 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       selectedNotes.add(note);
       notes[index] = note;
     }
-    emit(NotesSelected(
-      pinnedNotes:
-          (event.homeNotes && event.note.pinned) ? notes : state.pinnedNotes,
-      otherNotes:
-          (event.homeNotes && !event.note.pinned) ? notes : state.otherNotes,
-      gridViewMode: state.gridViewMode,
-      lightMode: state.lightMode,
-      homeNotesSelected: state.homeNotesSelected,
-      archiveSelected: state.archiveSelected,
-      trashSelected: state.trashSelected,
-      trashNotes: event.trashNotes ? notes : state.trashNotes,
-      archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
-      archiveSearchOn: state.archiveSearchOn,
-      homeSearchOn: state.homeSearchOn,
-      selectedNotes: selectedNotes,
-    ));
+    if (selectedNotes.isEmpty) {
+      emit(NotesStates(
+        pinnedNotes:
+            (event.homeNotes && event.note.pinned) ? notes : state.pinnedNotes,
+        otherNotes:
+            (event.homeNotes && !event.note.pinned) ? notes : state.otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        homeNotesSelected: state.homeNotesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: event.trashNotes ? notes : state.trashNotes,
+        archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+        selectedNotes: selectedNotes,
+      ));
+    } else {
+      emit(NotesSelected(
+        pinnedNotes:
+            (event.homeNotes && event.note.pinned) ? notes : state.pinnedNotes,
+        otherNotes:
+            (event.homeNotes && !event.note.pinned) ? notes : state.otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        homeNotesSelected: state.homeNotesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: event.trashNotes ? notes : state.trashNotes,
+        archivedNotes: event.archivedNotes ? notes : state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+        selectedNotes: selectedNotes,
+      ));
+    }
   }
 
   Future<void> pinNotes(PinNoteEvent event, Emitter emit) async {

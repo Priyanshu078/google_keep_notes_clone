@@ -115,7 +115,19 @@ class NotesViewTrashArchived extends StatelessWidget {
                     itemBuilder: ((_, index) {
                       return GestureDetector(
                         onTap: () {
-                          moveToUpdatePage(context, index);
+                          var state = context.read<NotesBloc>().state;
+                          if (state is NotesSelected) {
+                            context.read<NotesBloc>().add(SelectNoteEvent(
+                                  note: state.archiveSelected
+                                      ? state.archivedNotes[index]
+                                      : state.trashNotes[index],
+                                  homeNotes: false,
+                                  archivedNotes: state.archiveSelected,
+                                  trashNotes: !state.archiveSelected,
+                                ));
+                          } else {
+                            moveToUpdatePage(context, index);
+                          }
                         },
                         onLongPress: () {
                           context.read<NotesBloc>().add(SelectNoteEvent(
@@ -191,7 +203,18 @@ class NotesViewTrashArchived extends StatelessWidget {
                         padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                         child: GestureDetector(
                           onTap: () {
-                            moveToUpdatePage(context, index);
+                            if (state is NotesSelected) {
+                              context.read<NotesBloc>().add(SelectNoteEvent(
+                                    note: state.archiveSelected
+                                        ? state.archivedNotes[index]
+                                        : state.trashNotes[index],
+                                    homeNotes: false,
+                                    archivedNotes: state.archiveSelected,
+                                    trashNotes: !state.archiveSelected,
+                                  ));
+                            } else {
+                              moveToUpdatePage(context, index);
+                            }
                           },
                           onLongPress: () {
                             context.read<NotesBloc>().add(SelectNoteEvent(

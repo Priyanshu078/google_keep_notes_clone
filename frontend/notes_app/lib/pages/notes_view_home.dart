@@ -124,7 +124,18 @@ class NotesViewHome extends StatelessWidget {
                           itemBuilder: ((_, index) {
                             return MyNote(
                                 onTap: () {
-                                  moveToUpdatePage(context, index, true);
+                                  if (state is NotesSelected) {
+                                    context
+                                        .read<NotesBloc>()
+                                        .add(SelectNoteEvent(
+                                          note: state.pinnedNotes[index],
+                                          homeNotes: true,
+                                          archivedNotes: false,
+                                          trashNotes: false,
+                                        ));
+                                  } else {
+                                    moveToUpdatePage(context, index, true);
+                                  }
                                 },
                                 onLongPress: () {
                                   context.read<NotesBloc>().add(SelectNoteEvent(
@@ -182,7 +193,18 @@ class NotesViewHome extends StatelessWidget {
                           itemBuilder: ((_, index) {
                             return MyNote(
                                 onTap: () {
-                                  moveToUpdatePage(context, index, false);
+                                  if (state is NotesSelected) {
+                                    context
+                                        .read<NotesBloc>()
+                                        .add(SelectNoteEvent(
+                                          note: state.otherNotes[index],
+                                          homeNotes: true,
+                                          archivedNotes: false,
+                                          trashNotes: false,
+                                        ));
+                                  } else {
+                                    moveToUpdatePage(context, index, false);
+                                  }
                                 },
                                 onLongPress: () {
                                   context.read<NotesBloc>().add(SelectNoteEvent(
@@ -235,7 +257,16 @@ class NotesViewHome extends StatelessWidget {
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                           child: MyNote(
                               onTap: () {
-                                moveToUpdatePage(context, index, true);
+                                if (state is NotesSelected) {
+                                  context.read<NotesBloc>().add(SelectNoteEvent(
+                                        note: state.pinnedNotes[index],
+                                        homeNotes: true,
+                                        archivedNotes: false,
+                                        trashNotes: false,
+                                      ));
+                                } else {
+                                  moveToUpdatePage(context, index, true);
+                                }
                               },
                               onLongPress: () {
                                 context.read<NotesBloc>().add(SelectNoteEvent(
@@ -290,7 +321,16 @@ class NotesViewHome extends StatelessWidget {
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                           child: MyNote(
                               onTap: () {
-                                moveToUpdatePage(context, index, false);
+                                if (state is NotesSelected) {
+                                  context.read<NotesBloc>().add(SelectNoteEvent(
+                                        note: state.otherNotes[index],
+                                        homeNotes: true,
+                                        archivedNotes: false,
+                                        trashNotes: false,
+                                      ));
+                                } else {
+                                  moveToUpdatePage(context, index, false);
+                                }
                               },
                               onLongPress: () {
                                 context.read<NotesBloc>().add(SelectNoteEvent(
