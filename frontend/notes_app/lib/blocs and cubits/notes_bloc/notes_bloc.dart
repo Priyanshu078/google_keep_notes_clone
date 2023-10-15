@@ -31,6 +31,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<PinNoteEvent>((event, emit) => pinNotes(event, emit));
     on<SelectNoteEvent>((event, emit) => selectNote(event, emit));
     on<UnselectAllNotesEvent>((event, emit) => unselectAllNotes(event, emit));
+    on<RestoreNotes>((event, emit) => restoreNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -61,6 +62,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         )));
   }
   final ApiService _apiService = ApiService();
+
+  Future<void> restoreNotes(RestoreNotes event, Emitter emit) async {}
 
   Future<void> unselectAllNotes(
       UnselectAllNotesEvent event, Emitter emit) async {
@@ -201,10 +204,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   }
 
   Future<void> deleteNotes(DeleteNote event, Emitter emit) async {
-    await _apiService.deleteNotes(event.note);
+    await _apiService.deleteNotes(event.noteslist);
     List<Note> trashNotes = List.from(state.trashNotes);
-    int index = trashNotes.indexWhere((element) => element.id == event.note.id);
-    trashNotes.removeAt(index);
+    for (int i = 0; i < event.noteslist.length; i++) {
+      int index = trashNotes
+          .indexWhere((element) => element.id == event.noteslist[i].id);
+      trashNotes.removeAt(index);
+    }
     emit(NotesDeleted(
       pinnedNotes: state.pinnedNotes,
       otherNotes: state.otherNotes,

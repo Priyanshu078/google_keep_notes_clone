@@ -55,10 +55,10 @@ class TrashNote extends NotesEvent {
 }
 
 class DeleteNote extends NotesEvent {
-  final Note note;
-  DeleteNote({required this.note});
+  final List<Note> noteslist;
+  DeleteNote({required this.noteslist});
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [noteslist];
 }
 
 class FetchNotes extends NotesEvent {
@@ -126,4 +126,11 @@ class UnselectAllNotesEvent extends NotesEvent {
   @override
   List<Object?> get props =>
       [homeNotesSelected, archivedSelected, trashSelected];
+}
+
+class RestoreNotes extends NotesEvent {
+  final List<Note> notesList;
+  RestoreNotes({required this.notesList});
+  @override
+  List<Object?> get props => [notesList];
 }

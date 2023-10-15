@@ -117,7 +117,7 @@ router.post('/emptyTrash', async (req, res) => {
 
 router.post('/deleteNotes', async(req,res)=>{
   try{
-    await Note.deleteOne({ id: req.body.id });
+    await Note.deleteMany({ id: { $in: req.body.ids} });
     res.send({ status: 200, message: "document deleted succussfully" });
   }
   catch(e){

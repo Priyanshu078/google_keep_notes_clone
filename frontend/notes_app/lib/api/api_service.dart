@@ -77,11 +77,11 @@ class ApiService {
     debugPrint(response.data.toString());
   }
 
-  Future<void> deleteNotes(Note note) async {
+  Future<void> deleteNotes(List<Note> notes) async {
     String endPoint = '/deleteNotes';
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
-      "id": note.id,
+      "ids": notes.map((note) => note.id).toList(),
     });
     debugPrint(response.data.toString());
   }

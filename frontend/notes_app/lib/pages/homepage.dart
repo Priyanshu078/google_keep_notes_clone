@@ -187,11 +187,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                 : const EdgeInsets.all(8.0),
                             sliver: SliverAppBar(
                               title: state.trashSelected
-                                  ? const MyText(
-                                      text: "Trash",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black)
+                                  ? state is NotesSelected
+                                      ? MyText(
+                                          text: state.selectedNotes.length
+                                              .toString(),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black)
+                                      : const MyText(
+                                          text: "Trash",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black)
                                   : Container(),
                               shape: state.trashSelected
                                   ? const RoundedRectangleBorder(
@@ -238,6 +245,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ? Colors.white
                                   : Colors.transparent,
                               actions: [
+                                (state is NotesSelected &&
+                                        (state.trashSelected &&
+                                            state.trashNotes.isNotEmpty))
+                                    ? IconButton(
+                                        onPressed: () {
+                                          context.read<NotesBloc>().add(
+                                              RestoreNotes(
+                                                  notesList:
+                                                      state.selectedNotes));
+                                        },
+                                        icon: const Icon(Icons.restore))
+                                    : Container(),
                                 (state.trashSelected &&
                                         state.trashNotes.isNotEmpty)
                                     ? IconButton(
@@ -255,9 +274,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         context: context,
                                                         builder:
                                                             (_) => AlertDialog(
-                                                                  title: const MyText(
-                                                                      text:
-                                                                          "Empty Trash?",
+                                                                  title: MyText(
+                                                                      text: state is NotesSelected
+                                                                          ? "Delete notes forever?"
+                                                                          : "Empty Trash?",
                                                                       fontSize:
                                                                           20,
                                                                       fontWeight:
@@ -265,9 +285,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                               .w500,
                                                                       color: Colors
                                                                           .black),
-                                                                  content: const MyText(
-                                                                      text:
-                                                                          "All notes in Trash will be permanently deleted.",
+                                                                  content: MyText(
+                                                                      text: state is NotesSelected
+                                                                          ? ""
+                                                                          : "All notes in Trash will be permanently deleted.",
                                                                       fontSize:
                                                                           12,
                                                                       fontWeight:
@@ -288,20 +309,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     MyTextButton(
                                                                       onPressed:
                                                                           () {
-                                                                        context
-                                                                            .read<NotesBloc>()
-                                                                            .add(EmptyTrashEvent());
-                                                                        Navigator.of(context)
-                                                                            .pop();
+                                                                        if (state
+                                                                            is NotesSelected) {
+                                                                          context
+                                                                              .read<NotesBloc>()
+                                                                              .add(DeleteNote(noteslist: state.selectedNotes));
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        } else {
+                                                                          context
+                                                                              .read<NotesBloc>()
+                                                                              .add(EmptyTrashEvent());
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        }
                                                                       },
-                                                                      text:
-                                                                          "Empty Trash",
+                                                                      text: state
+                                                                              is NotesSelected
+                                                                          ? "Delete"
+                                                                          : "Empty Trash",
                                                                     ),
                                                                   ],
                                                                 ));
                                                   },
-                                                  child: const MyText(
-                                                    text: "Empty Trash",
+                                                  child: MyText(
+                                                    text: state is NotesSelected
+                                                        ? "Delete Forever"
+                                                        : "Empty Trash",
                                                     fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.normal,
@@ -367,6 +401,14 @@ class _MyHomePageState extends State<MyHomePage> {
               width: width,
               scaffoldKey: _scaffoldKey,
             ),
+            onDrawerChanged: (value) {
+              var state = context.read<NotesBloc>().state;
+              context.read<NotesBloc>().add(UnselectAllNotesEvent(
+                    homeNotesSelected: state.homeNotesSelected,
+                    archivedSelected: state.archiveSelected,
+                    trashSelected: state.trashSelected,
+                  ));
+            },
             floatingActionButton: BlocBuilder<NotesBloc, NotesStates>(
               builder: (context, state) {
                 return state.homeNotesSelected
