@@ -198,8 +198,29 @@ class _MyHomePageState extends State<MyHomePage> {
                                       borderRadius: BorderRadius.zero)
                                   : RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
-                              automaticallyImplyLeading:
-                                  state.trashSelected ? true : false,
+                              automaticallyImplyLeading: false,
+                              leading: state.trashSelected
+                                  ? IconButton(
+                                      icon: state is NotesSelected
+                                          ? const Icon(Icons.close)
+                                          : const Icon(Icons.menu),
+                                      onPressed: () {
+                                        if (state is NotesSelected) {
+                                          context.read<NotesBloc>().add(
+                                              UnselectAllNotesEvent(
+                                                  homeNotesSelected:
+                                                      state.homeNotesSelected,
+                                                  archivedSelected:
+                                                      state.archiveSelected,
+                                                  trashSelected:
+                                                      state.trashSelected));
+                                        } else {
+                                          _scaffoldKey.currentState!
+                                              .openDrawer();
+                                        }
+                                      },
+                                    )
+                                  : null,
                               floating: true,
                               flexibleSpace: state.trashSelected
                                   ? Container()
