@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/addnotes_cubit/addnotes_cubit.dart';
@@ -78,11 +79,18 @@ class SearchNotesPage extends StatelessWidget {
                     right: 8.0,
                   ),
                 ),
-                hintText: "Search your notes",
-                hintStyle: const MaterialStatePropertyAll(TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black54)),
+                hintText: notesState is NotesSelected
+                    ? "${notesState.selectedNotes.length}"
+                    : "Search your notes",
+                hintStyle: notesState is NotesSelected
+                    ? const MaterialStatePropertyAll(TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black87))
+                    : const MaterialStatePropertyAll(TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black54)),
                 leading: IconButton(
                   icon: notesState is NotesSelected
                       ? const Icon(Icons.close)
@@ -104,18 +112,63 @@ class SearchNotesPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50))),
                 controller: controller,
                 onTap: () {
-                  if (notesState.homeNotesSelected) {
-                    controller.openView();
-                    FocusScope.of(context).requestFocus(focusNode);
+                  if (notesState is! NotesSelected) {
+                    if (notesState.homeNotesSelected) {
+                      controller.openView();
+                      FocusScope.of(context).requestFocus(focusNode);
+                    }
                   }
                 },
                 onChanged: (value) {
-                  if (notesState.homeNotesSelected) {
-                    controller.openView();
+                  if (notesState is! NotesSelected) {
+                    if (notesState.homeNotesSelected) {
+                      controller.openView();
+                    }
                   }
                 },
                 trailing: [
-                  notesState.archiveSelected
+                  notesState is NotesSelected
+                      ? IconButton(
+                          icon: const Icon(CupertinoIcons.pin),
+                          onPressed: () {},
+                        )
+                      : Container(),
+                  notesState is NotesSelected
+                      ? IconButton(
+                          icon: const Icon(Icons.color_lens_outlined),
+                          onPressed: () {},
+                        )
+                      : Container(),
+                  notesState is NotesSelected
+                      ? IconButton(
+                          icon: const Icon(Icons.more_vert_outlined),
+                          onPressed: () {
+                            showMenu(
+                                context: context,
+                                position:
+                                    const RelativeRect.fromLTRB(100, 0, 0, 0),
+                                items: [
+                                  PopupMenuItem(
+                                      onTap: () {},
+                                      child: MyText(
+                                          text: notesState.homeNotesSelected
+                                              ? "Archive"
+                                              : "Unrchive",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black)),
+                                  PopupMenuItem(
+                                      onTap: () {},
+                                      child: const MyText(
+                                          text: "Delete",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black)),
+                                ]);
+                          },
+                        )
+                      : Container(),
+                  notesState.archiveSelected && notesState is! NotesSelected
                       ? IconButton(
                           icon: const Icon(Icons.search),
                           onPressed: () {
@@ -124,20 +177,24 @@ class SearchNotesPage extends StatelessWidget {
                           },
                         )
                       : Container(),
-                  BlocBuilder<NotesBloc, NotesStates>(
-                    builder: (context, state) {
-                      return IconButton(
-                        onPressed: () {
-                          context.read<NotesBloc>().add(ChangeViewEvent());
-                        },
-                        icon: state.gridViewMode
-                            ? const Icon(Icons.view_agenda_outlined)
-                            : const Icon(
-                                Icons.grid_view_outlined,
-                              ),
-                      );
-                    },
-                  ),
+                  notesState is NotesSelected
+                      ? Container()
+                      : BlocBuilder<NotesBloc, NotesStates>(
+                          builder: (context, state) {
+                            return IconButton(
+                              onPressed: () {
+                                context
+                                    .read<NotesBloc>()
+                                    .add(ChangeViewEvent());
+                              },
+                              icon: state.gridViewMode
+                                  ? const Icon(Icons.view_agenda_outlined)
+                                  : const Icon(
+                                      Icons.grid_view_outlined,
+                                    ),
+                            );
+                          },
+                        ),
                   // notesState.archiveSelected
                   //     ? BlocBuilder<NotesBloc, NotesStates>(
                   //         builder: (context, state) {
