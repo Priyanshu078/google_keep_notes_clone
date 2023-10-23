@@ -36,6 +36,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<UnselectAllNotesEvent>((event, emit) => unselectAllNotes(event, emit));
     on<RestoreNotes>((event, emit) => restoreNotes(event, emit));
     on<PinUnpinEvent>((event, emit) => pinUnpinNotes(event, emit));
+    on<BulkUpdateNotes>((event, emit) => _bulkUpdateNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -769,5 +770,43 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       selectedOtherNotes: const [],
       selectedPinnedNotes: const [],
     ));
+  }
+
+  Future<void> _bulkUpdateNotes(BulkUpdateNotes event, Emitter emit) async {
+    List<Note> notesList = List.from(event.notesList);
+    List<Note> pinnedNotes = List.from(state.pinnedNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    for (int i = 0; i < notesList.length; i++) {
+      if (notesList[i].pinned) {
+        int index =
+            pinnedNotes.indexWhere((element) => element.id == notesList[i].id);
+        pinnedNotes[index] = pinnedNotes[index]
+            .copyWith(colorIndex: event.colorIndex, selected: false);
+      } else {
+        int index =
+            otherNotes.indexWhere((element) => element.id == notesList[i].id);
+        otherNotes[index] = otherNotes[index]
+            .copyWith(colorIndex: event.colorIndex, selected: false);
+      }
+      notesList[i] =
+          notesList[i].copyWith(colorIndex: event.colorIndex, selected: false);
+    }
+    await _apiService.bulkUpdateNotes(notesList);
+    emit(NotesStates(
+        pinnedNotes: pinnedNotes,
+        otherNotes: otherNotes,
+        gridViewMode: state.gridViewMode,
+        lightMode: state.lightMode,
+        homeNotesSelected: state.homeNotesSelected,
+        archiveSelected: state.archiveSelected,
+        trashSelected: state.trashSelected,
+        trashNotes: state.trashNotes,
+        archivedNotes: state.archivedNotes,
+        archiveSearchOn: state.archiveSearchOn,
+        homeSearchOn: state.homeSearchOn,
+        selectedNotes: const [],
+        pinSelectedNotes: false,
+        selectedOtherNotes: const [],
+        selectedPinnedNotes: const []));
   }
 }

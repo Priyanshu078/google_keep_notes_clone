@@ -146,7 +146,53 @@ class SearchNotesPage extends StatelessWidget {
                   notesState is NotesSelected
                       ? IconButton(
                           icon: const Icon(Icons.color_lens_outlined),
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                      title: const MyText(
+                                          text: "Note Color",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                      content: GridView(
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 4),
+                                        children: List.generate(
+                                            colors.length,
+                                            (index) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 8.0),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      context
+                                                          .read<NotesBloc>()
+                                                          .add(
+                                                            BulkUpdateNotes(
+                                                                notesList:
+                                                                    notesState
+                                                                        .selectedNotes,
+                                                                colorIndex:
+                                                                    index),
+                                                          );
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: colors[index],
+                                                          shape:
+                                                              BoxShape.circle),
+                                                      height: height * 0.1,
+                                                      width: height * 0.1,
+                                                    ),
+                                                  ),
+                                                )).toList(),
+                                      ),
+                                    ));
+                          },
                         )
                       : Container(),
                   notesState is NotesSelected

@@ -143,3 +143,11 @@ class PinUnpinEvent extends NotesEvent {
   @override
   List<Object?> get props => [notesList, pinNotes];
 }
+
+class BulkUpdateNotes extends NotesEvent {
+  final List<Note> notesList;
+  final int colorIndex;
+  BulkUpdateNotes({required this.notesList, required this.colorIndex});
+  @override
+  List<Object?> get props => [notesList, colorIndex];
+}
