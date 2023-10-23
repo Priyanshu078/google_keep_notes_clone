@@ -20,6 +20,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           archiveSearchOn: false,
           homeSearchOn: false,
           selectedNotes: [],
+          pinSelectedNotes: false,
+          selectedPinnedNotes: [],
+          selectedOtherNotes: [],
         )) {
     on<FetchNotes>((event, emit) => fetchNotes(event, emit));
     on<AddNote>((event, emit) => addNotes(event, emit));
@@ -32,6 +35,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<SelectNoteEvent>((event, emit) => selectNote(event, emit));
     on<UnselectAllNotesEvent>((event, emit) => unselectAllNotes(event, emit));
     on<RestoreNotes>((event, emit) => restoreNotes(event, emit));
+    on<PinUnpinEvent>((event, emit) => pinUnpinNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -45,6 +49,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           archiveSearchOn: event.archiveSearchOn,
           homeSearchOn: state.homeSearchOn,
           selectedNotes: state.selectedNotes,
+          pinSelectedNotes: false,
+          selectedPinnedNotes: const [],
+          selectedOtherNotes: const [],
         ))));
     on<HomeSearchClickedEvent>((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
@@ -59,6 +66,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           archiveSearchOn: state.archiveSearchOn,
           homeSearchOn: event.homeSearchOn,
           selectedNotes: state.selectedNotes,
+          pinSelectedNotes: false,
+          selectedPinnedNotes: const [],
+          selectedOtherNotes: const [],
         )));
   }
   final ApiService _apiService = ApiService();
@@ -83,18 +93,22 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     }
     otherNotes = sortNotes(otherNotes);
     emit(NotesRestored(
-        pinnedNotes: state.pinnedNotes,
-        otherNotes: otherNotes,
-        gridViewMode: state.gridViewMode,
-        lightMode: state.lightMode,
-        homeNotesSelected: state.homeNotesSelected,
-        archiveSelected: state.archiveSelected,
-        trashSelected: state.trashSelected,
-        trashNotes: trashNotes,
-        archivedNotes: state.archivedNotes,
-        archiveSearchOn: state.archiveSearchOn,
-        homeSearchOn: state.homeSearchOn,
-        selectedNotes: const []));
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: otherNotes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      homeNotesSelected: state.homeNotesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: trashNotes,
+      archivedNotes: state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+      selectedNotes: const [],
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
+    ));
   }
 
   Future<void> unselectAllNotes(
@@ -128,19 +142,23 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       }
     }
     emit(NotesStates(
-        pinnedNotes: event.homeNotesSelected ? pinnednotes : state.pinnedNotes,
-        otherNotes: event.homeNotesSelected ? otherNotes : state.otherNotes,
-        gridViewMode: state.gridViewMode,
-        lightMode: state.lightMode,
-        homeNotesSelected: state.homeNotesSelected,
-        archiveSelected: state.archiveSelected,
-        trashSelected: state.trashSelected,
-        trashNotes: event.trashSelected ? trashNotes : state.trashNotes,
-        archivedNotes:
-            event.archivedSelected ? archivedNotes : state.archivedNotes,
-        archiveSearchOn: state.archiveSearchOn,
-        homeSearchOn: state.homeSearchOn,
-        selectedNotes: const []));
+      pinnedNotes: event.homeNotesSelected ? pinnednotes : state.pinnedNotes,
+      otherNotes: event.homeNotesSelected ? otherNotes : state.otherNotes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      homeNotesSelected: state.homeNotesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: event.trashSelected ? trashNotes : state.trashNotes,
+      archivedNotes:
+          event.archivedSelected ? archivedNotes : state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+      selectedNotes: const [],
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
+    ));
   }
 
   Future<void> selectNote(SelectNoteEvent event, Emitter emit) async {
@@ -152,19 +170,50 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
             ? state.archivedNotes
             : state.trashNotes);
     List<Note> selectedNotes = List.from(state.selectedNotes);
+    List<Note> selectedPinnedNotes = List.from(state.selectedPinnedNotes);
+    List<Note> selectedOtherNotes = List.from(state.selectedOtherNotes);
     // index of selected note from selected notes list
     int selectedNoteIndex =
         selectedNotes.indexWhere((element) => element.id == event.note.id);
     // index of actual notes which is being selected now
     int index = notes.indexWhere((element) => element.id == event.note.id);
+
     if (selectedNoteIndex != -1) {
       selectedNotes.removeAt(selectedNoteIndex);
       notes[index] = event.note.copyWith(selected: false);
+      if (event.note.pinned) {
+        int selectedPinnedNoteIndex = selectedPinnedNotes
+            .indexWhere((element) => element.id == event.note.id);
+        selectedPinnedNotes.removeAt(selectedPinnedNoteIndex);
+      } else {
+        int selectedPinnedNoteIndex = selectedOtherNotes
+            .indexWhere((element) => element.id == event.note.id);
+        selectedOtherNotes.removeAt(selectedPinnedNoteIndex);
+      }
     } else {
       Note note = event.note.copyWith(selected: true);
       selectedNotes.add(note);
       notes[index] = note;
+      if (note.pinned) {
+        selectedPinnedNotes.add(note);
+      } else {
+        selectedOtherNotes.add(note);
+      }
     }
+
+    // case1 when all selected notes are pinned then we will unpin all of these notes.
+    // case2 when all selected notes are unpinnede then we will pinn these notes.
+    // case3 when some are pinned and some are unpinned these notes will be pinned.
+    bool pinStatus = state.pinSelectedNotes;
+
+    if (selectedPinnedNotes.isEmpty) {
+      pinStatus = false;
+    } else if (selectedOtherNotes.isEmpty) {
+      pinStatus = true;
+    } else {
+      pinStatus = false;
+    }
+
     if (selectedNotes.isEmpty) {
       emit(NotesStates(
         pinnedNotes:
@@ -181,6 +230,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else {
       emit(NotesSelected(
@@ -198,6 +250,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: selectedNotes,
+        pinSelectedNotes: pinStatus,
+        selectedPinnedNotes: (state.archiveSelected || state.trashSelected)
+            ? []
+            : selectedPinnedNotes,
+        selectedOtherNotes: (state.archiveSelected || state.trashSelected)
+            ? []
+            : selectedOtherNotes,
       ));
     }
   }
@@ -232,6 +291,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
   }
 
@@ -256,6 +318,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: event.fromSelectedNotes ? [] : state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
   }
 
@@ -275,6 +340,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
   }
 
@@ -292,6 +360,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
     Map<String, List<Note>> data = await _apiService.getNotes(
         userId: event.userId,
@@ -315,6 +386,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else {
       List<Note> notes = data['notes']!;
@@ -332,6 +406,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     }
   }
@@ -363,6 +440,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
   }
 
@@ -391,6 +471,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else if (event.forArchive) {
       List<Note> notes = event.note.pinned
@@ -416,6 +499,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else if (event.forUnArchive) {
       List<Note> notes = List.from(state.archivedNotes);
@@ -444,6 +530,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
               archiveSearchOn: state.archiveSearchOn,
               homeSearchOn: state.homeSearchOn,
               selectedNotes: state.selectedNotes,
+              pinSelectedNotes: false,
+              selectedPinnedNotes: const [],
+              selectedOtherNotes: const [],
             )
           : NotesUnarchived(
               pinnedNotes:
@@ -460,6 +549,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
               archiveSearchOn: state.archiveSearchOn,
               homeSearchOn: state.homeSearchOn,
               selectedNotes: state.selectedNotes,
+              pinSelectedNotes: false,
+              selectedPinnedNotes: const [],
+              selectedOtherNotes: const [],
             ));
     } else if (event.fromArchive) {
       List<Note> notes = List.from(state.archivedNotes);
@@ -479,6 +571,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else {
       List<Note> pinnedNotes = List.from(state.pinnedNotes);
@@ -523,6 +618,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     }
   }
@@ -541,6 +639,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
     ));
   }
 
@@ -584,6 +685,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     } else {
       emit(NotesStates(
@@ -599,7 +703,71 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: state.selectedNotes,
+        pinSelectedNotes: false,
+        selectedPinnedNotes: const [],
+        selectedOtherNotes: const [],
       ));
     }
+  }
+
+  Future<void> pinUnpinNotes(PinUnpinEvent event, Emitter emit) async {
+    List<Note> pinnedNotes = List.from(state.pinnedNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    List<Note> selectedNotes = List.from(state.selectedNotes);
+
+    if (!event.pinNotes) {
+      for (int i = 0; i < selectedNotes.length; i++) {
+        Note note = selectedNotes[i];
+        if (!note.pinned) {
+          int index = otherNotes.indexWhere((element) => element.id == note.id);
+          otherNotes.removeAt(index);
+          Note updatedNote = selectedNotes[i].copyWith(
+              pinned: true,
+              trashed: false,
+              archived: false,
+              selected: false,
+              dateAdded: DateTime.now().toIso8601String());
+          selectedNotes[i] = updatedNote;
+          pinnedNotes.add(updatedNote);
+        }
+      }
+      pinnedNotes = sortNotes(pinnedNotes);
+    } else {
+      for (int i = 0; i < selectedNotes.length; i++) {
+        Note note = selectedNotes[i];
+        if (note.pinned) {
+          int index =
+              pinnedNotes.indexWhere((element) => element.id == note.id);
+          pinnedNotes.removeAt(index);
+          Note updatedNote = selectedNotes[i].copyWith(
+              pinned: false,
+              trashed: false,
+              archived: false,
+              selected: false,
+              dateAdded: DateTime.now().toIso8601String());
+          selectedNotes[i] = updatedNote;
+          otherNotes.add(updatedNote);
+        }
+      }
+      otherNotes = sortNotes(otherNotes);
+    }
+    await _apiService.pinUnpinNotes(selectedNotes, event.pinNotes);
+    emit(NotesStates(
+      pinnedNotes: pinnedNotes,
+      otherNotes: otherNotes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      homeNotesSelected: state.homeNotesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+      selectedNotes: const [],
+      pinSelectedNotes: false,
+      selectedOtherNotes: const [],
+      selectedPinnedNotes: const [],
+    ));
   }
 }

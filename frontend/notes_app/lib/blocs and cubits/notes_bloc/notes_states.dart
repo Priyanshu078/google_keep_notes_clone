@@ -14,6 +14,9 @@ class NotesStates extends Equatable {
   final List<Note> archivedNotes;
   final bool archiveSearchOn;
   final List<Note> selectedNotes;
+  final bool pinSelectedNotes;
+  final List<Note> selectedPinnedNotes;
+  final List<Note> selectedOtherNotes;
 
   const NotesStates({
     required this.pinnedNotes,
@@ -28,6 +31,9 @@ class NotesStates extends Equatable {
     required this.archiveSearchOn,
     required this.homeSearchOn,
     required this.selectedNotes,
+    required this.pinSelectedNotes,
+    required this.selectedOtherNotes,
+    required this.selectedPinnedNotes,
   });
 
   @override
@@ -44,6 +50,9 @@ class NotesStates extends Equatable {
         archiveSearchOn,
         homeSearchOn,
         selectedNotes,
+        pinSelectedNotes,
+        selectedPinnedNotes,
+        selectedOtherNotes,
       ];
 }
 
@@ -61,6 +70,9 @@ class NotesSelected extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -78,6 +90,9 @@ class NotesLoading extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -95,6 +110,9 @@ class NotesDeleted extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -112,6 +130,9 @@ class NotesTrashed extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -129,6 +150,9 @@ class NotesRestored extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -146,6 +170,9 @@ class NotesArchived extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -163,6 +190,9 @@ class NotesUnarchived extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }
 
@@ -180,5 +210,8 @@ class NotesPinnedUnarchived extends NotesStates {
     required super.archiveSearchOn,
     required super.homeSearchOn,
     required super.selectedNotes,
+    required super.pinSelectedNotes,
+    required super.selectedPinnedNotes,
+    required super.selectedOtherNotes,
   });
 }

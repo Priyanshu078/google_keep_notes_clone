@@ -135,3 +135,11 @@ class RestoreNotes extends NotesEvent {
   @override
   List<Object?> get props => [notesList];
 }
+
+class PinUnpinEvent extends NotesEvent {
+  final List<Note> notesList;
+  final bool pinNotes;
+  PinUnpinEvent({required this.notesList, required this.pinNotes});
+  @override
+  List<Object?> get props => [notesList, pinNotes];
+}

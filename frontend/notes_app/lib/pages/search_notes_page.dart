@@ -129,8 +129,18 @@ class SearchNotesPage extends StatelessWidget {
                 trailing: [
                   notesState is NotesSelected
                       ? IconButton(
-                          icon: const Icon(CupertinoIcons.pin),
-                          onPressed: () {},
+                          icon: notesState.pinSelectedNotes
+                              ? const Icon(CupertinoIcons.pin_fill)
+                              : const Icon(CupertinoIcons.pin),
+                          onPressed: () {
+                            var state = context.read<NotesBloc>().state;
+                            context.read<NotesBloc>().add(
+                                  PinUnpinEvent(
+                                    notesList: state.selectedNotes,
+                                    pinNotes: state.pinSelectedNotes,
+                                  ),
+                                );
+                          },
                         )
                       : Container(),
                   notesState is NotesSelected

@@ -120,4 +120,14 @@ class ApiService {
         data: {"notesList": notesList.map((note) => note.toJson()).toList()});
     debugPrint(response.data.toString());
   }
+
+  Future<void> pinUnpinNotes(List<Note> notesList, bool pinNotes) async {
+    String endPoint = '/pinUnpinNotes';
+    String url = baseUrl + endPoint;
+    var response = await dio.post(url, data: {
+      "notesList": notesList.map((note) => note.toJson()).toList(),
+      'pinNotes': !pinNotes,
+    });
+    debugPrint(response.data.toString());
+  }
 }
