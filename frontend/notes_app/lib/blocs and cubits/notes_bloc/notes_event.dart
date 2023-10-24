@@ -151,3 +151,11 @@ class BulkUpdateNotes extends NotesEvent {
   @override
   List<Object?> get props => [notesList, colorIndex];
 }
+
+class BulkArchiveUnarchiveEvent extends NotesEvent {
+  final List<Note> notesList;
+  final bool archive;
+  BulkArchiveUnarchiveEvent({required this.notesList, required this.archive});
+  @override
+  List<Object?> get props => [notesList, archive];
+}

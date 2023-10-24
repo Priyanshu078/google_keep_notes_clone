@@ -181,7 +181,6 @@ router.post('/pinUnpinNotes', async (req, res) => {
 router.post('/bulkUpdateNotes', async (req, res) => {
   try {
     var list = req.body.notesList;
-    var pinNotes = req.body.pinNotes;
     for (var i = 0; i < list.length; i++) {
       const doc = await Note.findOne({ id: list[i]['id'] });
       const update = {
@@ -189,6 +188,24 @@ router.post('/bulkUpdateNotes', async (req, res) => {
         dateAdded: list[i]['dateAdded'],
       }
       await doc.updateOne(update);
+    }
+    res.send({ status: 200, message: "documents updated succussfully" });
+  }
+  catch (e) {
+    res.send({
+      status: 400,
+      message: "Something Went Wrong",
+      error: e.toString(),
+    });
+  }
+});
+
+router.post('/bulkArchiveUnarchiveNotes', async (req, res) => {
+  try {
+    var list = req.body.notesList;
+    for (var i = 0; i < list.length; i++) {
+      const doc = await Note.findOne({ id: list[i]['id'] });
+      await doc.updateOne(list[i]);
     }
     res.send({ status: 200, message: "documents updated succussfully" });
   }

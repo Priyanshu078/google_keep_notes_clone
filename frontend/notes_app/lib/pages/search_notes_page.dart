@@ -156,6 +156,7 @@ class SearchNotesPage extends StatelessWidget {
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black),
                                       content: GridView(
+                                        shrinkWrap: true,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 4),
@@ -205,7 +206,16 @@ class SearchNotesPage extends StatelessWidget {
                                     const RelativeRect.fromLTRB(100, 0, 0, 0),
                                 items: [
                                   PopupMenuItem(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context
+                                            .read<NotesBloc>()
+                                            .add(BulkArchiveUnarchiveEvent(
+                                              notesList:
+                                                  notesState.selectedNotes,
+                                              archive:
+                                                  notesState.homeNotesSelected,
+                                            ));
+                                      },
                                       child: MyText(
                                           text: notesState.homeNotesSelected
                                               ? "Archive"
