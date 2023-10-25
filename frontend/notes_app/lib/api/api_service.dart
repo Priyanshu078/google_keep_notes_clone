@@ -121,12 +121,14 @@ class ApiService {
     debugPrint(response.data.toString());
   }
 
-  Future<void> pinUnpinNotes(List<Note> notesList, bool pinNotes) async {
+  Future<void> pinUnpinNotes(
+      List<Note> notesList, bool pinNotes, bool archivedNotes) async {
     String endPoint = '/pinUnpinNotes';
     String url = baseUrl + endPoint;
     var response = await dio.post(url, data: {
       "notesList": notesList.map((note) => note.toJson()).toList(),
       'pinNotes': !pinNotes,
+      'archivedNotes': archivedNotes,
     });
     debugPrint(response.data.toString());
   }
@@ -140,12 +142,12 @@ class ApiService {
     debugPrint(response.data.toString());
   }
 
-  Future<void> bulkArchiveUnarchiveNotes(List<Note> notesList) async {
-    String endPoint = '/bulkArchiveUnarchiveNotes';
-    String url = baseUrl + endPoint;
-    var response = await dio.post(url, data: {
-      "notesList": notesList.map((note) => note.toJson()).toList(),
-    });
-    debugPrint(response.data.toString());
-  }
+  // Future<void> bulkArchiveUnarchiveNotes(List<Note> notesList) async {
+  //   String endPoint = '/bulkArchiveUnarchiveNotes';
+  //   String url = baseUrl + endPoint;
+  //   var response = await dio.post(url, data: {
+  //     "notesList": notesList.map((note) => note.toJson()).toList(),
+  //   });
+  //   debugPrint(response.data.toString());
+  // }
 }

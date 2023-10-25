@@ -138,6 +138,7 @@ class SearchNotesPage extends StatelessWidget {
                                   PinUnpinEvent(
                                     notesList: state.selectedNotes,
                                     pinNotes: state.pinSelectedNotes,
+                                    fromArchiveNotes: state.archiveSelected,
                                   ),
                                 );
                           },
@@ -224,7 +225,14 @@ class SearchNotesPage extends StatelessWidget {
                                           fontWeight: FontWeight.normal,
                                           color: Colors.black)),
                                   PopupMenuItem(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context
+                                            .read<NotesBloc>()
+                                            .add(BulkTrashEvent(
+                                              notesList:
+                                                  notesState.selectedNotes,
+                                            ));
+                                      },
                                       child: const MyText(
                                           text: "Delete",
                                           fontSize: 16,

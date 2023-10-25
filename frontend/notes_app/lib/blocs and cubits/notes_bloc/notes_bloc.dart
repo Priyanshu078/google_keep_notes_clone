@@ -39,6 +39,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     on<BulkUpdateNotes>((event, emit) => _bulkUpdateColorNotes(event, emit));
     on<BulkArchiveUnarchiveEvent>(
         (event, emit) => _bulkArchiveUnarchiveNotes(event, emit));
+    on<BulkTrashEvent>((event, emit) => _bulkTrashNotes(event, emit));
     on<ArchiveSearchClickedEvent>(((event, emit) => emit(NotesStates(
           pinnedNotes: state.pinnedNotes,
           otherNotes: state.otherNotes,
@@ -75,6 +76,59 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         )));
   }
   final ApiService _apiService = ApiService();
+
+  Future<void> _bulkTrashNotes(BulkTrashEvent event, Emitter emit) async {
+    List<Note> notesList = List.from(event.notesList);
+    List<Note> pinnedNotes = List.from(state.pinnedNotes);
+    List<Note> otherNotes = List.from(state.otherNotes);
+    List<Note> trashNotes = List.from(state.trashNotes);
+    List<Note> archivedNotes = List.from(state.archivedNotes);
+    for (int i = 0; i < notesList.length; i++) {
+      if (state.homeNotesSelected) {
+        if (notesList[i].pinned) {
+          int index = pinnedNotes
+              .indexWhere((element) => element.id == notesList[i].id);
+          pinnedNotes.removeAt(index);
+        } else {
+          int index =
+              otherNotes.indexWhere((element) => element.id == notesList[i].id);
+          otherNotes.removeAt(index);
+        }
+      } else if (state.archiveSelected) {
+        int index = archivedNotes
+            .indexWhere((element) => element.id == notesList[i].id);
+        archivedNotes.removeAt(index);
+      }
+      Note note = notesList[i].copyWith(
+        dateAdded: DateTime.now().toIso8601String(),
+        pinned: false,
+        archived: false,
+        trashed: true,
+        selected: false,
+      );
+      trashNotes.add(note);
+      trashNotes = sortNotes(trashNotes);
+      notesList[i] = note;
+    }
+    await _apiService.bulkUpdateNotes(notesList);
+    emit(NotesStates(
+      pinnedNotes: pinnedNotes,
+      otherNotes: otherNotes,
+      gridViewMode: state.gridViewMode,
+      lightMode: state.lightMode,
+      homeNotesSelected: state.homeNotesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: trashNotes,
+      archivedNotes: archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+      selectedNotes: const [],
+      pinSelectedNotes: false,
+      selectedOtherNotes: const [],
+      selectedPinnedNotes: const [],
+    ));
+  }
 
   Future<void> _bulkArchiveUnarchiveNotes(
       BulkArchiveUnarchiveEvent event, Emitter emit) async {
@@ -121,7 +175,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     } else {
       otherNotes = sortNotes(otherNotes);
     }
-    await _apiService.bulkArchiveUnarchiveNotes(notesList);
+    await _apiService.bulkUpdateNotes(notesList);
     emit(NotesStates(
       pinnedNotes: pinnedNotes,
       otherNotes: otherNotes,
@@ -782,44 +836,69 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     List<Note> pinnedNotes = List.from(state.pinnedNotes);
     List<Note> otherNotes = List.from(state.otherNotes);
     List<Note> selectedNotes = List.from(state.selectedNotes);
+    List<Note> archivedNotes = List.from(state.archivedNotes);
 
-    if (!event.pinNotes) {
+    if (event.fromArchiveNotes) {
       for (int i = 0; i < selectedNotes.length; i++) {
-        Note note = selectedNotes[i];
-        if (!note.pinned) {
-          int index = otherNotes.indexWhere((element) => element.id == note.id);
-          otherNotes.removeAt(index);
-          Note updatedNote = selectedNotes[i].copyWith(
-              pinned: true,
-              trashed: false,
-              archived: false,
-              selected: false,
-              dateAdded: DateTime.now().toIso8601String());
-          selectedNotes[i] = updatedNote;
-          pinnedNotes.add(updatedNote);
-        }
+        Note note = selectedNotes[i].copyWith(
+            selected: false,
+            pinned: true,
+            trashed: false,
+            archived: false,
+            dateAdded: DateTime.now().toIso8601String());
+        pinnedNotes.add(note);
+        int index =
+            archivedNotes.indexWhere((element) => element.id == note.id);
+        archivedNotes.removeAt(index);
+        selectedNotes[i] = note;
       }
       pinnedNotes = sortNotes(pinnedNotes);
+      await _apiService.pinUnpinNotes(
+        selectedNotes,
+        false,
+        event.fromArchiveNotes,
+      );
     } else {
-      for (int i = 0; i < selectedNotes.length; i++) {
-        Note note = selectedNotes[i];
-        if (note.pinned) {
-          int index =
-              pinnedNotes.indexWhere((element) => element.id == note.id);
-          pinnedNotes.removeAt(index);
-          Note updatedNote = selectedNotes[i].copyWith(
-              pinned: false,
-              trashed: false,
-              archived: false,
-              selected: false,
-              dateAdded: DateTime.now().toIso8601String());
-          selectedNotes[i] = updatedNote;
-          otherNotes.add(updatedNote);
+      if (!event.pinNotes) {
+        for (int i = 0; i < selectedNotes.length; i++) {
+          Note note = selectedNotes[i];
+          if (!note.pinned) {
+            int index =
+                otherNotes.indexWhere((element) => element.id == note.id);
+            otherNotes.removeAt(index);
+            Note updatedNote = selectedNotes[i].copyWith(
+                pinned: true,
+                trashed: false,
+                archived: false,
+                selected: false,
+                dateAdded: DateTime.now().toIso8601String());
+            selectedNotes[i] = updatedNote;
+            pinnedNotes.add(updatedNote);
+          }
         }
+        pinnedNotes = sortNotes(pinnedNotes);
+      } else {
+        for (int i = 0; i < selectedNotes.length; i++) {
+          Note note = selectedNotes[i];
+          if (note.pinned) {
+            int index =
+                pinnedNotes.indexWhere((element) => element.id == note.id);
+            pinnedNotes.removeAt(index);
+            Note updatedNote = selectedNotes[i].copyWith(
+                pinned: false,
+                trashed: false,
+                archived: false,
+                selected: false,
+                dateAdded: DateTime.now().toIso8601String());
+            selectedNotes[i] = updatedNote;
+            otherNotes.add(updatedNote);
+          }
+        }
+        otherNotes = sortNotes(otherNotes);
       }
-      otherNotes = sortNotes(otherNotes);
+      await _apiService.pinUnpinNotes(
+          selectedNotes, event.pinNotes, event.fromArchiveNotes);
     }
-    await _apiService.pinUnpinNotes(selectedNotes, event.pinNotes);
     emit(NotesStates(
       pinnedNotes: pinnedNotes,
       otherNotes: otherNotes,
@@ -829,7 +908,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archiveSelected: state.archiveSelected,
       trashSelected: state.trashSelected,
       trashNotes: state.trashNotes,
-      archivedNotes: state.archivedNotes,
+      archivedNotes: archivedNotes,
       archiveSearchOn: state.archiveSearchOn,
       homeSearchOn: state.homeSearchOn,
       selectedNotes: const [],
@@ -856,8 +935,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         otherNotes[index] = otherNotes[index]
             .copyWith(colorIndex: event.colorIndex, selected: false);
       }
-      notesList[i] =
-          notesList[i].copyWith(colorIndex: event.colorIndex, selected: false);
+      notesList[i] = notesList[i].copyWith(
+        colorIndex: event.colorIndex,
+        selected: false,
+      );
     }
     await _apiService.bulkUpdateNotes(notesList);
     emit(NotesStates(

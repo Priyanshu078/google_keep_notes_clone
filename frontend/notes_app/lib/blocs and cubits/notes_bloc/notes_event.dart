@@ -139,9 +139,13 @@ class RestoreNotes extends NotesEvent {
 class PinUnpinEvent extends NotesEvent {
   final List<Note> notesList;
   final bool pinNotes;
-  PinUnpinEvent({required this.notesList, required this.pinNotes});
+  final bool fromArchiveNotes;
+  PinUnpinEvent(
+      {required this.notesList,
+      required this.pinNotes,
+      required this.fromArchiveNotes});
   @override
-  List<Object?> get props => [notesList, pinNotes];
+  List<Object?> get props => [notesList, pinNotes, fromArchiveNotes];
 }
 
 class BulkUpdateNotes extends NotesEvent {
@@ -158,4 +162,11 @@ class BulkArchiveUnarchiveEvent extends NotesEvent {
   BulkArchiveUnarchiveEvent({required this.notesList, required this.archive});
   @override
   List<Object?> get props => [notesList, archive];
+}
+
+class BulkTrashEvent extends NotesEvent {
+  final List<Note> notesList;
+  BulkTrashEvent({required this.notesList});
+  @override
+  List<Object?> get props => [notesList];
 }
