@@ -303,23 +303,27 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     if (selectedNoteIndex != -1) {
       selectedNotes.removeAt(selectedNoteIndex);
       notes[index] = event.note.copyWith(selected: false);
-      if (event.note.pinned) {
-        int selectedPinnedNoteIndex = selectedPinnedNotes
-            .indexWhere((element) => element.id == event.note.id);
-        selectedPinnedNotes.removeAt(selectedPinnedNoteIndex);
-      } else {
-        int selectedPinnedNoteIndex = selectedOtherNotes
-            .indexWhere((element) => element.id == event.note.id);
-        selectedOtherNotes.removeAt(selectedPinnedNoteIndex);
+      if (state.homeNotesSelected) {
+        if (event.note.pinned) {
+          int selectedPinnedNoteIndex = selectedPinnedNotes
+              .indexWhere((element) => element.id == event.note.id);
+          selectedPinnedNotes.removeAt(selectedPinnedNoteIndex);
+        } else {
+          int selectedPinnedNoteIndex = selectedOtherNotes
+              .indexWhere((element) => element.id == event.note.id);
+          selectedOtherNotes.removeAt(selectedPinnedNoteIndex);
+        }
       }
     } else {
       Note note = event.note.copyWith(selected: true);
       selectedNotes.add(note);
       notes[index] = note;
-      if (note.pinned) {
-        selectedPinnedNotes.add(note);
-      } else {
-        selectedOtherNotes.add(note);
+      if (state.homeNotesSelected) {
+        if (note.pinned) {
+          selectedPinnedNotes.add(note);
+        } else {
+          selectedOtherNotes.add(note);
+        }
       }
     }
 
