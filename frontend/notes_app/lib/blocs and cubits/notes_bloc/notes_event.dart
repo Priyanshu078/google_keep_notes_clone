@@ -1,9 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:notes_app/data/note.dart';
 
+import '../../widgets/mydrawer.dart';
+
 class NotesEvent extends Equatable {
   @override
   List<Object?> get props => [];
+}
+
+class ChangeTheme extends NotesEvent{
+  final Theme theme;
+  ChangeTheme({required this.theme});
+  @override
+  List<Object?> get props => [theme];
 }
 
 class AddNote extends NotesEvent {

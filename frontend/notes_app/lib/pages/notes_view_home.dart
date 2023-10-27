@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
+import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/widgets/my_note.dart';
-
 import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
-import '../constants/colors.dart';
 import '../widgets/mytext.dart';
 
 class NotesViewHome extends StatelessWidget {
@@ -146,7 +145,7 @@ class NotesViewHome extends StatelessWidget {
                                       ));
                                 },
                                 color:
-                                    colors[state.pinnedNotes[index].colorIndex],
+                                    colorsLightMode[state.pinnedNotes[index].colorIndex],
                                 border: state.pinnedNotes[index].selected
                                     ? Border.all(
                                         color: selectedBorderColor, width: 3)
@@ -215,7 +214,7 @@ class NotesViewHome extends StatelessWidget {
                                       ));
                                 },
                                 color:
-                                    colors[state.otherNotes[index].colorIndex],
+                                    colorsLightMode[state.otherNotes[index].colorIndex],
                                 border: state.otherNotes[index].selected
                                     ? Border.all(
                                         color: selectedBorderColor, width: 3)
@@ -277,7 +276,7 @@ class NotesViewHome extends StatelessWidget {
                                     ));
                               },
                               color:
-                                  colors[state.pinnedNotes[index].colorIndex],
+                                  colorsLightMode[state.pinnedNotes[index].colorIndex],
                               border: state.pinnedNotes[index].selected
                                   ? Border.all(
                                       color: selectedBorderColor, width: 3)
@@ -340,7 +339,7 @@ class NotesViewHome extends StatelessWidget {
                                       trashNotes: false,
                                     ));
                               },
-                              color: colors[state.otherNotes[index].colorIndex],
+                              color: colorsLightMode[state.otherNotes[index].colorIndex],
                               border: state.otherNotes[index].selected
                                   ? Border.all(
                                       color: selectedBorderColor, width: 3)

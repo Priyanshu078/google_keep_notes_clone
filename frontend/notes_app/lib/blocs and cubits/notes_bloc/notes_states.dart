@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:notes_app/data/note.dart';
+import '../../widgets/mydrawer.dart';
 
 class NotesStates extends Equatable {
   final bool homeSearchOn;
   final bool gridViewMode;
-  final bool lightMode;
+  final Theme theme;
   final bool homeNotesSelected;
   final bool archiveSelected;
   final bool trashSelected;
@@ -22,7 +23,7 @@ class NotesStates extends Equatable {
     required this.pinnedNotes,
     required this.otherNotes,
     required this.gridViewMode,
-    required this.lightMode,
+    required this.theme,
     required this.homeNotesSelected,
     required this.archiveSelected,
     required this.trashSelected,
@@ -41,7 +42,7 @@ class NotesStates extends Equatable {
         pinnedNotes,
         otherNotes,
         gridViewMode,
-        lightMode,
+        theme,
         homeNotesSelected,
         archiveSelected,
         trashSelected,
@@ -61,7 +62,7 @@ class NotesSelected extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -81,7 +82,7 @@ class NotesLoading extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -101,7 +102,7 @@ class NotesDeleted extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -121,7 +122,7 @@ class NotesTrashed extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -141,7 +142,7 @@ class NotesRestored extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -161,7 +162,7 @@ class NotesArchived extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -181,7 +182,7 @@ class NotesUnarchived extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,
@@ -201,7 +202,7 @@ class NotesPinnedUnarchived extends NotesStates {
     required super.pinnedNotes,
     required super.otherNotes,
     required super.gridViewMode,
-    required super.lightMode,
+    required super.theme,
     required super.homeNotesSelected,
     required super.archiveSelected,
     required super.trashSelected,

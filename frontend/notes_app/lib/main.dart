@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
+import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_states.dart';
 import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
 import 'package:notes_app/constants/themes.dart';
 import 'package:notes_app/notesbloc_observer.dart';
 import 'package:notes_app/pages/homepage.dart';
+import 'package:notes_app/widgets/mydrawer.dart' as drawer;
 
 void main() {
   Bloc.observer = NotesBlocObserver();
@@ -34,18 +36,21 @@ class MyApp extends StatelessWidget {
           create: (context) => SearchBloc(),
         )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Notes App',
-        theme: MyThemes.lightTheme,
-        darkTheme: MyThemes.darkTheme,
-        // theme: ThemeData(
-        //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        //   useMaterial3: true,
-        // ),
-        // darkTheme: ThemeData(),
-        themeMode: ThemeMode.system,
-        home: const MyHomePage(),
+      child: BlocBuilder<NotesBloc, NotesStates>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Notes App',
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            themeMode: state.theme == drawer.Theme.systemDefault
+                ? ThemeMode.system
+                : state.theme == drawer.Theme.lightMode
+                    ? ThemeMode.light
+                    : ThemeMode.dark,
+            home: const MyHomePage(),
+          );
+        },
       ),
     );
   }

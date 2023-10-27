@@ -162,7 +162,7 @@ class SearchNotesPage extends StatelessWidget {
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 4),
                                         children: List.generate(
-                                            colors.length,
+                                            colorsLightMode.length,
                                             (index) => Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -184,7 +184,7 @@ class SearchNotesPage extends StatelessWidget {
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                          color: colors[index],
+                                                          color: colorsLightMode[index],
                                                           shape:
                                                               BoxShape.circle),
                                                       height: height * 0.1,
@@ -349,7 +349,7 @@ class SearchNotesPage extends StatelessWidget {
                                             //             .searchedNotes[index],
                                             //         addNotesPage: false));
                                           },
-                                          color: colors[state
+                                          color: colorsLightMode[state
                                               .searchedNotes[index].colorIndex],
                                           border: (state.searchedNotes[index]
                                                       .colorIndex) ==
@@ -381,7 +381,7 @@ class SearchNotesPage extends StatelessWidget {
                                               //             .searchedNotes[index],
                                               //         addNotesPage: false));
                                             },
-                                            color: colors[state
+                                            color: colorsLightMode[state
                                                 .searchedNotes[index]
                                                 .colorIndex],
                                             border: (state.searchedNotes[index]

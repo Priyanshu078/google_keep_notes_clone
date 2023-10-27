@@ -63,8 +63,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
     return BlocBuilder<AddNotesCubit, AddNotesState>(builder: (context, state) {
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          systemNavigationBarColor: colors[state.colorIndex],
-          statusBarColor: colors[state.colorIndex],
+          systemNavigationBarColor: colorsLightMode[state.colorIndex],
+          statusBarColor: colorsLightMode[state.colorIndex],
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
@@ -91,10 +91,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             }
           },
           child: Scaffold(
-            backgroundColor: colors[state.colorIndex],
+            backgroundColor: colorsLightMode[state.colorIndex],
             appBar: AppBar(
               iconTheme: const IconThemeData(color: Colors.black),
-              backgroundColor: colors[state.colorIndex],
+              backgroundColor: colorsLightMode[state.colorIndex],
               actions: [
                 state.inTrash
                     ? Container()
@@ -362,7 +362,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                     const EdgeInsets.all(16.0),
                                                 height: height * 0.2,
                                                 width: double.infinity,
-                                                color: colors[state.colorIndex],
+                                                color: colorsLightMode[state.colorIndex],
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -385,7 +385,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                         scrollDirection:
                                                             Axis.horizontal,
                                                         children: List.generate(
-                                                            colors.length,
+                                                            colorsLightMode.length,
                                                             (index) => Padding(
                                                                   padding:
                                                                       const EdgeInsets
@@ -406,7 +406,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                         children: [
                                                                           Container(
                                                                             decoration:
-                                                                                BoxDecoration(color: colors[index], shape: BoxShape.circle),
+                                                                                BoxDecoration(color: colorsLightMode[index], shape: BoxShape.circle),
                                                                             height:
                                                                                 height * 0.1,
                                                                             width:
@@ -461,7 +461,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                         AddNotesState>(
                                       builder: (context, state) {
                                         return Container(
-                                          color: colors[state.colorIndex],
+                                          color: colorsLightMode[state.colorIndex],
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8),
                                           height: state.inTrash

@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/widgets/drawer_listtile.dart';
+import 'package:notes_app/widgets/mytext.dart';
 
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
+
+enum Theme { darkMode, lightMode, systemDefault }
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -145,20 +148,90 @@ class MyDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    child: DrawerListTile(
-                      icon: Icons.format_paint_outlined,
-                      text: "Theme",
-                      textColor: Colors.black,
-                      backgroundColor: Colors.white,
-                      iconColor: Colors.black,
-                      height: height * 0.07,
-                      width: width,
-                      isTheme: true,
-                      themeText: "Light",
-                    ),
-                  ),
+                  BlocBuilder<NotesBloc, NotesStates>(
+                      builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                                  title: const MyText(
+                                      text: "Choose Theme",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      RadioListTile(
+                                        value: Theme.darkMode,
+                                        groupValue: state.theme,
+                                        onChanged: (val) {
+                                          context.read<NotesBloc>().add(
+                                              ChangeTheme(
+                                                  theme: Theme.darkMode));
+                                          Navigator.of(context).pop();
+                                        },
+                                        title: const MyText(
+                                            text: "Dark Mode",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                      RadioListTile(
+                                        value: Theme.lightMode,
+                                        groupValue: state.theme,
+                                        onChanged: (val) {
+                                          context.read<NotesBloc>().add(
+                                              ChangeTheme(
+                                                  theme: Theme.lightMode));
+                                          Navigator.of(context).pop();
+                                        },
+                                        title: const MyText(
+                                            text: "Light Mode",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                      RadioListTile(
+                                        value: Theme.systemDefault,
+                                        groupValue: state.theme,
+                                        onChanged: (val) {
+                                          context.read<NotesBloc>().add(
+                                              ChangeTheme(
+                                                  theme: Theme.systemDefault));
+                                          Navigator.of(context).pop();
+                                        },
+                                        title: const MyText(
+                                            text: "System default",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: DrawerListTile(
+                          icon: Icons.format_paint_outlined,
+                          text: "Theme",
+                          textColor: Colors.black,
+                          backgroundColor: Colors.white,
+                          iconColor: Colors.black,
+                          height: height * 0.07,
+                          width: width,
+                          isTheme: true,
+                          themeText: state.theme == Theme.lightMode
+                              ? "Light"
+                              : state.theme == Theme.darkMode
+                                  ? "Dark"
+                                  : "System default",
+                        ),
+                      ),
+                    );
+                  }),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: DrawerListTile(

@@ -141,7 +141,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: colors[inArchivedNotes
+                              color: colorsLightMode[inArchivedNotes
                                   ? state.archivedNotes[index].colorIndex
                                   : state.trashNotes[index].colorIndex],
                               border: (state.archiveSelected
@@ -228,7 +228,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                color: colors[inArchivedNotes
+                                color: colorsLightMode[inArchivedNotes
                                     ? state.archivedNotes[index].colorIndex
                                     : state.trashNotes[index].colorIndex],
                                 border: (state.archiveSelected

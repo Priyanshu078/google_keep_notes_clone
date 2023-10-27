@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Scaffold(
             key: _scaffoldKey,
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
             body: BlocBuilder<NotesBloc, NotesStates>(
               builder: (context, state) {
                 return state.homeNotesSelected
