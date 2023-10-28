@@ -63,393 +63,416 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         return true;
       },
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          systemNavigationBarColor: bottomBannerColor,
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarIconBrightness: Brightness.dark,
-        ),
-        child: Scaffold(
-            key: _scaffoldKey,
-            // backgroundColor: Colors.white,
-            body: BlocBuilder<NotesBloc, NotesStates>(
-              builder: (context, state) {
-                return state.homeNotesSelected
-                    ? Stack(
-                        children: [
-                          BlocBuilder<NotesBloc, NotesStates>(
-                              builder: (context, state) {
-                            return SafeArea(
-                                child: CustomScrollView(slivers: [
-                              SliverPadding(
-                                padding: const EdgeInsets.all(8.0),
-                                sliver: SliverAppBar(
-                                    shape: RoundedRectangleBorder(
+      child:
+          BlocBuilder<NotesBloc, NotesStates>(builder: (context, notesState) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            systemNavigationBarColor:
+                Theme.of(context).brightness == Brightness.dark
+                    ? notesState.homeNotesSelected
+                        ? themeColorDarkMode
+                        : darkModeScaffoldColor
+                    : bottomBannerColor,
+            statusBarColor: Theme.of(context).brightness == Brightness.dark
+                ? darkModeScaffoldColor
+                : Colors.white,
+            statusBarIconBrightness:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Brightness.light
+                    : Brightness.dark,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+              key: _scaffoldKey,
+              body: BlocBuilder<NotesBloc, NotesStates>(
+                builder: (context, state) {
+                  return state.homeNotesSelected
+                      ? Stack(
+                          children: [
+                            BlocBuilder<NotesBloc, NotesStates>(
+                                builder: (context, state) {
+                              return SafeArea(
+                                  child: CustomScrollView(slivers: [
+                                SliverPadding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  sliver: SliverAppBar(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      automaticallyImplyLeading: false,
+                                      floating: true,
+                                      flexibleSpace: SearchNotesPage(
+                                        height: height,
+                                        width: width,
+                                        controller: controller1,
+                                        focusNode: focusNode,
+                                        scaffoldKey: _scaffoldKey,
+                                      )
+                                      // ),
+                                      // InkWell(
+                                      //   radius: 50,
+                                      //   onTap: () {
+                                      //     context.read<NotesBloc>().add(
+                                      //         HomeSearchClickedEvent(
+                                      //             homeSearchOn: true));
+                                      //   },
+                                      //   child: Transform.translate(
+                                      //     offset: const Offset(-30, -1),
+                                      //     child: const Align(
+                                      //       alignment: Alignment.center,
+                                      //       child: MyText(
+                                      //           text: "Search your notes",
+                                      //           fontSize: 16,
+                                      //           fontWeight: FontWeight.normal,
+                                      //           color: Colors.black54),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // title: const MyText(
+                                      //     text: "Search your notes",
+                                      //     fontSize: 16,
+                                      //     fontWeight: FontWeight.normal,
+                                      //     color: Colors.black54),
+                                      // TextField(
+                                      //   controller: searchController,
+                                      //   textAlignVertical:
+                                      //       TextAlignVertical.center,
+                                      //   decoration: InputDecoration(
+                                      //     hintText: "Search your notes",
+                                      //     isCollapsed: true,
+                                      //     border: OutlineInputBorder(
+                                      //         borderSide: BorderSide.none,
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(30)),
+                                      //     filled: true,
+                                      //     fillColor: textFieldBackgoundColor,
+                                      //   ),
+                                      // ),
+                                      ),
+                                ),
+                                SliverPadding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8.0),
+                                  sliver: NotesViewHome(
+                                    height: height,
+                                    scaffoldKey: _scaffoldKey,
+                                  ),
+                                )
+                              ]));
+                            }),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Stack(children: [
+                                ClipPath(
+                                  clipper:
+                                      MyClipper(height: height, width: width),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? themeColorDarkMode
+                                          : bottomBannerColor,
+                                    ),
+                                    height: height * 0.055,
+                                    width: width,
+                                  ),
+                                ),
+                                CustomPaint(
+                                  painter: MyPainter(context: context),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    height: height * 0.055,
+                                    width: width,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ],
+                        )
+                      : SafeArea(
+                          child: CustomScrollView(slivers: [
+                            SliverPadding(
+                              padding: state.trashSelected
+                                  ? EdgeInsets.zero
+                                  : const EdgeInsets.all(8.0),
+                              sliver: SliverAppBar(
+                                title: state.trashSelected
+                                    ? state is NotesSelected
+                                        ? MyText(
+                                            text: state.selectedNotes.length
+                                                .toString(),
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium,
+                                          )
+                                        : MyText(
+                                            text: "Trash",
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium,
+                                          )
+                                    : Container(),
+                                shape: state.trashSelected
+                                    ? const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.zero)
+                                    : RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(50)),
-                                    automaticallyImplyLeading: false,
-                                    floating: true,
-                                    flexibleSpace: SearchNotesPage(
-                                      height: height,
-                                      width: width,
-                                      controller: controller1,
-                                      focusNode: focusNode,
-                                      scaffoldKey: _scaffoldKey,
-                                    )
-                                    // ),
-                                    // InkWell(
-                                    //   radius: 50,
-                                    //   onTap: () {
-                                    //     context.read<NotesBloc>().add(
-                                    //         HomeSearchClickedEvent(
-                                    //             homeSearchOn: true));
-                                    //   },
-                                    //   child: Transform.translate(
-                                    //     offset: const Offset(-30, -1),
-                                    //     child: const Align(
-                                    //       alignment: Alignment.center,
-                                    //       child: MyText(
-                                    //           text: "Search your notes",
-                                    //           fontSize: 16,
-                                    //           fontWeight: FontWeight.normal,
-                                    //           color: Colors.black54),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // title: const MyText(
-                                    //     text: "Search your notes",
-                                    //     fontSize: 16,
-                                    //     fontWeight: FontWeight.normal,
-                                    //     color: Colors.black54),
-                                    // TextField(
-                                    //   controller: searchController,
-                                    //   textAlignVertical:
-                                    //       TextAlignVertical.center,
-                                    //   decoration: InputDecoration(
-                                    //     hintText: "Search your notes",
-                                    //     isCollapsed: true,
-                                    //     border: OutlineInputBorder(
-                                    //         borderSide: BorderSide.none,
-                                    //         borderRadius:
-                                    //             BorderRadius.circular(30)),
-                                    //     filled: true,
-                                    //     fillColor: textFieldBackgoundColor,
-                                    //   ),
-                                    // ),
-                                    ),
-                              ),
-                              SliverPadding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0),
-                                sliver: NotesViewHome(
-                                  height: height,
-                                  scaffoldKey: _scaffoldKey,
-                                ),
-                              )
-                            ]));
-                          }),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Stack(children: [
-                              ClipPath(
-                                clipper:
-                                    MyClipper(height: height, width: width),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: bottomBannerColor,
-                                  ),
-                                  height: height * 0.055,
-                                  width: width,
-                                ),
-                              ),
-                              CustomPaint(
-                                painter: MyPainter(),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                  height: height * 0.055,
-                                  width: width,
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ],
-                      )
-                    : SafeArea(
-                        child: CustomScrollView(slivers: [
-                          SliverPadding(
-                            padding: state.trashSelected
-                                ? EdgeInsets.zero
-                                : const EdgeInsets.all(8.0),
-                            sliver: SliverAppBar(
-                              title: state.trashSelected
-                                  ? state is NotesSelected
-                                      ? MyText(
-                                          text: state.selectedNotes.length
-                                              .toString(),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black)
-                                      : const MyText(
-                                          text: "Trash",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black)
-                                  : Container(),
-                              shape: state.trashSelected
-                                  ? const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.zero)
-                                  : RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                              automaticallyImplyLeading: false,
-                              leading: state.trashSelected
-                                  ? IconButton(
-                                      icon: state is NotesSelected
-                                          ? const Icon(Icons.close)
-                                          : const Icon(Icons.menu),
-                                      onPressed: () {
-                                        if (state is NotesSelected) {
-                                          context.read<NotesBloc>().add(
-                                              UnselectAllNotesEvent(
-                                                  homeNotesSelected:
-                                                      state.homeNotesSelected,
-                                                  archivedSelected:
-                                                      state.archiveSelected,
-                                                  trashSelected:
-                                                      state.trashSelected));
-                                        } else {
-                                          _scaffoldKey.currentState!
-                                              .openDrawer();
-                                        }
-                                      },
-                                    )
-                                  : null,
-                              floating: true,
-                              flexibleSpace: state.trashSelected
-                                  ? Container()
-                                  : SearchNotesPage(
-                                      height: height,
-                                      width: width,
-                                      controller: controller2,
-                                      focusNode: focusNode,
-                                      scaffoldKey: _scaffoldKey,
-                                    ),
-                              surfaceTintColor: state.trashSelected
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              backgroundColor: state.trashSelected
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              actions: [
-                                (state is NotesSelected &&
-                                        (state.trashSelected &&
-                                            state.trashNotes.isNotEmpty))
+                                automaticallyImplyLeading: false,
+                                leading: state.trashSelected
                                     ? IconButton(
+                                        icon: state is NotesSelected
+                                            ? const Icon(Icons.close)
+                                            : const Icon(Icons.menu),
                                         onPressed: () {
-                                          context.read<NotesBloc>().add(
-                                              RestoreNotes(
-                                                  notesList:
-                                                      state.selectedNotes));
+                                          if (state is NotesSelected) {
+                                            context.read<NotesBloc>().add(
+                                                UnselectAllNotesEvent(
+                                                    homeNotesSelected:
+                                                        state.homeNotesSelected,
+                                                    archivedSelected:
+                                                        state.archiveSelected,
+                                                    trashSelected:
+                                                        state.trashSelected));
+                                          } else {
+                                            _scaffoldKey.currentState!
+                                                .openDrawer();
+                                          }
                                         },
-                                        icon: const Icon(Icons.restore))
-                                    : Container(),
-                                (state.trashSelected &&
-                                        state.trashNotes.isNotEmpty)
-                                    ? IconButton(
-                                        onPressed: () {
-                                          showMenu(
-                                              color: textFieldBackgroundColor,
-                                              context: context,
-                                              position:
-                                                  const RelativeRect.fromLTRB(
-                                                      100, 0, 0, 100),
-                                              items: <PopupMenuEntry>[
-                                                PopupMenuItem(
-                                                  onTap: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder:
-                                                            (_) => AlertDialog(
-                                                                  title: MyText(
-                                                                      text: state is NotesSelected
-                                                                          ? "Delete notes forever?"
-                                                                          : "Empty Trash?",
-                                                                      fontSize:
-                                                                          20,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black),
-                                                                  content: MyText(
-                                                                      text: state is NotesSelected
-                                                                          ? ""
-                                                                          : "All notes in Trash will be permanently deleted.",
-                                                                      fontSize:
-                                                                          12,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                      color: Colors
-                                                                          .black),
-                                                                  actions: [
-                                                                    MyTextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      text:
-                                                                          "Cancel",
-                                                                    ),
-                                                                    MyTextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        if (state
-                                                                            is NotesSelected) {
-                                                                          context.read<NotesBloc>().add(DeleteNote(
-                                                                              fromSelectedNotes: true,
-                                                                              noteslist: state.selectedNotes));
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        } else {
-                                                                          context
-                                                                              .read<NotesBloc>()
-                                                                              .add(EmptyTrashEvent());
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        }
-                                                                      },
+                                      )
+                                    : null,
+                                floating: true,
+                                flexibleSpace: state.trashSelected
+                                    ? Container()
+                                    : SearchNotesPage(
+                                        height: height,
+                                        width: width,
+                                        controller: controller2,
+                                        focusNode: focusNode,
+                                        scaffoldKey: _scaffoldKey,
+                                      ),
+                                surfaceTintColor: state.trashSelected
+                                    ? Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? darkModeScaffoldColor
+                                        : Colors.white
+                                    : Colors.transparent,
+                                backgroundColor: state.trashSelected
+                                    ? Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? darkModeScaffoldColor
+                                        : Colors.white
+                                    : Colors.transparent,
+
+                                actions: [
+                                  (state is NotesSelected &&
+                                          (state.trashSelected &&
+                                              state.trashNotes.isNotEmpty))
+                                      ? IconButton(
+                                          onPressed: () {
+                                            context.read<NotesBloc>().add(
+                                                RestoreNotes(
+                                                    notesList:
+                                                        state.selectedNotes));
+                                          },
+                                          icon: const Icon(Icons.restore))
+                                      : Container(),
+                                  (state.trashSelected &&
+                                          state.trashNotes.isNotEmpty)
+                                      ? IconButton(
+                                          onPressed: () {
+                                            showMenu(
+                                                color: textFieldBackgroundColor,
+                                                context: context,
+                                                position:
+                                                    const RelativeRect.fromLTRB(
+                                                        100, 0, 0, 100),
+                                                items: <PopupMenuEntry>[
+                                                  PopupMenuItem(
+                                                    onTap: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (_) =>
+                                                                  AlertDialog(
+                                                                    title:
+                                                                        MyText(
                                                                       text: state
                                                                               is NotesSelected
-                                                                          ? "Delete"
-                                                                          : "Empty Trash",
+                                                                          ? "Delete notes forever?"
+                                                                          : "Empty Trash?",
+                                                                      textStyle: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .headlineMedium,
                                                                     ),
-                                                                  ],
-                                                                ));
-                                                  },
-                                                  child: MyText(
-                                                    text: state is NotesSelected
-                                                        ? "Delete Forever"
-                                                        : "Empty Trash",
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                  ),
-                                                )
-                                              ]);
-                                        },
-                                        icon: const Icon(
-                                            Icons.more_vert_outlined),
-                                      )
-                                    : Container()
-                              ],
-                              // shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(30)),
-                              // title: state.archiveSearchOn
-                              //     ? const MyText(
-                              //         text: "Search your notes",
-                              //         fontSize: 16,
-                              //         fontWeight: FontWeight.normal,
-                              //         color: Colors.black54)
-                              // ? TextField(
-                              //     controller: searchController,
-                              //     textAlignVertical:
-                              //         TextAlignVertical.center,
-                              //     decoration: InputDecoration(
-                              //       hintText: "Search your notes",
-                              //       isCollapsed: true,
-                              //       border: OutlineInputBorder(
-                              //           borderSide: BorderSide.none,
-                              //           borderRadius:
-                              //               BorderRadius.circular(30)),
-                              //       filled: true,
-                              //       fillColor: textFieldBackgoundColor,
-                              //     ),
-                              //   )
-                              // : MyText(
-                              //     text: state.archiveSelected
-                              //         ? "Archive"
-                              //         : "Trash",
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeight.normal,
-                              //     color: Colors.black,
-                              //   ),
+                                                                    content:
+                                                                        MyText(
+                                                                      text: state
+                                                                              is NotesSelected
+                                                                          ? ""
+                                                                          : "All notes in Trash will be permanently deleted.",
+                                                                      textStyle: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .displayMedium,
+                                                                    ),
+                                                                    actions: [
+                                                                      MyTextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        text:
+                                                                            "Cancel",
+                                                                      ),
+                                                                      MyTextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          if (state
+                                                                              is NotesSelected) {
+                                                                            context.read<NotesBloc>().add(DeleteNote(
+                                                                                fromSelectedNotes: true,
+                                                                                noteslist: state.selectedNotes));
+                                                                            Navigator.of(context).pop();
+                                                                          } else {
+                                                                            context.read<NotesBloc>().add(EmptyTrashEvent());
+                                                                            Navigator.of(context).pop();
+                                                                          }
+                                                                        },
+                                                                        text: state
+                                                                                is NotesSelected
+                                                                            ? "Delete"
+                                                                            : "Empty Trash",
+                                                                      ),
+                                                                    ],
+                                                                  ));
+                                                    },
+                                                    child: MyText(
+                                                      text:
+                                                          state is NotesSelected
+                                                              ? "Delete Forever"
+                                                              : "Empty Trash",
+                                                      textStyle:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .displayMedium,
+                                                    ),
+                                                  )
+                                                ]);
+                                          },
+                                          icon: const Icon(
+                                              Icons.more_vert_outlined),
+                                        )
+                                      : Container()
+                                ],
+                                // shape: RoundedRectangleBorder(
+                                //     borderRadius: BorderRadius.circular(30)),
+                                // title: state.archiveSearchOn
+                                //     ? const MyText(
+                                //         text: "Search your notes",
+                                //         fontSize: 16,
+                                //         fontWeight: FontWeight.normal,
+                                //         color: Colors.black54)
+                                // ? TextField(
+                                //     controller: searchController,
+                                //     textAlignVertical:
+                                //         TextAlignVertical.center,
+                                //     decoration: InputDecoration(
+                                //       hintText: "Search your notes",
+                                //       isCollapsed: true,
+                                //       border: OutlineInputBorder(
+                                //           borderSide: BorderSide.none,
+                                //           borderRadius:
+                                //               BorderRadius.circular(30)),
+                                //       filled: true,
+                                //       fillColor: textFieldBackgoundColor,
+                                //     ),
+                                //   )
+                                // : MyText(
+                                //     text: state.archiveSelected
+                                //         ? "Archive"
+                                //         : "Trash",
+                                //     fontSize: 16,
+                                //     fontWeight: FontWeight.normal,
+                                //     color: Colors.black,
+                                //   ),
+                              ),
+                            ),
+                            SliverPadding(
+                              padding: state.trashSelected
+                                  ? const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0)
+                                  : const EdgeInsets.all(8.0),
+                              sliver: NotesViewTrashArchived(
+                                height: height,
+                                inArchivedNotes: state.archiveSelected,
+                                inTrashedNotes: state.trashSelected,
+                              ),
+                            ),
+                          ]),
+                        );
+                },
+              ),
+              drawer: MyDrawer(
+                height: height,
+                width: width,
+                scaffoldKey: _scaffoldKey,
+              ),
+              onDrawerChanged: (value) {
+                var state = context.read<NotesBloc>().state;
+                context.read<NotesBloc>().add(UnselectAllNotesEvent(
+                      homeNotesSelected: state.homeNotesSelected,
+                      archivedSelected: state.archiveSelected,
+                      trashSelected: state.trashSelected,
+                    ));
+              },
+              floatingActionButton: BlocBuilder<NotesBloc, NotesStates>(
+                builder: (context, state) {
+                  return state.homeNotesSelected
+                      ? Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 8.0, right: 16.0),
+                          child: FloatingActionButton(
+                            backgroundColor: bottomBannerColor,
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  fullscreenDialog: true,
+                                  builder: (_) {
+                                    return MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider(
+                                          create: (context) => AddNotesCubit(),
+                                        ),
+                                        BlocProvider.value(
+                                          value: context.read<NotesBloc>(),
+                                        ),
+                                      ],
+                                      child: const AddNewWidgetPage(
+                                        isUpdate: false,
+                                        isArchiveUpdate: false,
+                                        pinnedNote: false,
+                                        isSearchUpdate: false,
+                                      ),
+                                    );
+                                  }));
+                            },
+                            tooltip: 'Increment',
+                            child: const Icon(
+                              Icons.add,
+                              size: 35,
                             ),
                           ),
-                          SliverPadding(
-                            padding: state.trashSelected
-                                ? const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0)
-                                : const EdgeInsets.all(8.0),
-                            sliver: NotesViewTrashArchived(
-                              height: height,
-                              inArchivedNotes: state.archiveSelected,
-                              inTrashedNotes: state.trashSelected,
-                            ),
-                          ),
-                        ]),
-                      );
-              },
-            ),
-            drawer: MyDrawer(
-              height: height,
-              width: width,
-              scaffoldKey: _scaffoldKey,
-            ),
-            onDrawerChanged: (value) {
-              var state = context.read<NotesBloc>().state;
-              context.read<NotesBloc>().add(UnselectAllNotesEvent(
-                    homeNotesSelected: state.homeNotesSelected,
-                    archivedSelected: state.archiveSelected,
-                    trashSelected: state.trashSelected,
-                  ));
-            },
-            floatingActionButton: BlocBuilder<NotesBloc, NotesStates>(
-              builder: (context, state) {
-                return state.homeNotesSelected
-                    ? Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: 8.0, right: 16.0),
-                        child: FloatingActionButton(
-                          backgroundColor: bottomBannerColor,
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (_) {
-                                  return MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider(
-                                        create: (context) => AddNotesCubit(),
-                                      ),
-                                      BlocProvider.value(
-                                        value: context.read<NotesBloc>(),
-                                      ),
-                                    ],
-                                    child: const AddNewWidgetPage(
-                                      isUpdate: false,
-                                      isArchiveUpdate: false,
-                                      pinnedNote: false,
-                                      isSearchUpdate: false,
-                                    ),
-                                  );
-                                }));
-                          },
-                          tooltip: 'Increment',
-                          child: const Icon(
-                            Icons.add,
-                            size: 35,
-                          ),
-                        ),
-                      )
-                    : Container();
-              },
-            )),
-      ),
+                        )
+                      : Container();
+                },
+              )),
+        );
+      }),
     );
   }
 }

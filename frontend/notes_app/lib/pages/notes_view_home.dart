@@ -80,11 +80,10 @@ class NotesViewHome extends StatelessWidget {
                           SizedBox(
                             height: height * 0.02,
                           ),
-                          const MyText(
+                          MyText(
                             text: "Notes you add appear here",
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
+                            textStyle:
+                                Theme.of(context).textTheme.displayMedium,
                           )
                         ],
                       ))
@@ -99,13 +98,14 @@ class NotesViewHome extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: SizedBox(
                                   height: height * 0.06,
-                                  child: const Align(
+                                  child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: MyText(
-                                        text: "Pinned",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black),
+                                      text: "Pinned",
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
+                                    ),
                                   ),
                                 ),
                               )
@@ -166,13 +166,14 @@ class NotesViewHome extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: SizedBox(
                                   height: height * 0.06,
-                                  child: const Align(
+                                  child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: MyText(
-                                        text: "Others",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black),
+                                      text: "Others",
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
+                                    ),
                                   ),
                                 ),
                               )
@@ -239,13 +240,13 @@ class NotesViewHome extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20.0),
                             child: SizedBox(
                               height: height * 0.06,
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: MyText(
-                                    text: "Pinned",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black),
+                                  text: "Pinned",
+                                  textStyle:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
                               ),
                             ),
                           )
@@ -298,13 +299,13 @@ class NotesViewHome extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20.0),
                             child: SizedBox(
                               height: height * 0.06,
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: MyText(
-                                    text: "Others",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black),
+                                  text: "Others",
+                                  textStyle:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
                               ),
                             ),
                           )

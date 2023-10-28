@@ -16,7 +16,6 @@ import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/addnotes_cubit/addnotes_states.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
-import 'package:notes_app/constants/themes.dart' as my_theme;
 
 class AddNewWidgetPage extends StatefulWidget {
   const AddNewWidgetPage({
@@ -97,7 +96,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             backgroundColor:
                 getColor(context, notesBlocState, state.colorIndex),
             appBar: AppBar(
-              iconTheme: const IconThemeData(color: Colors.black),
+              iconTheme: Theme.of(context).iconTheme,
               backgroundColor:
                   getColor(context, notesBlocState, state.colorIndex),
               actions: [
@@ -145,8 +144,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                           }
                         },
                         icon: state.note.pinned
-                            ? const Icon(CupertinoIcons.pin_fill)
-                            : const Icon(CupertinoIcons.pin),
+                            ? Icon(
+                                CupertinoIcons.pin_fill,
+                                color: Theme.of(context).iconTheme.color,
+                              )
+                            : Icon(
+                                CupertinoIcons.pin,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
                       ),
                 state.inTrash
                     ? Container()
@@ -212,12 +217,21 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                           }
                         },
                         icon: state.inArchive
-                            ? const Icon(Icons.unarchive_outlined)
-                            : const Icon(Icons.archive_outlined)),
+                            ? Icon(
+                                Icons.unarchive_outlined,
+                                color: Theme.of(context).iconTheme.color,
+                              )
+                            : Icon(
+                                Icons.archive_outlined,
+                                color: Theme.of(context).iconTheme.color,
+                              )),
                 state.inTrash
                     ? Container()
                     : IconButton(
-                        icon: const Icon(Icons.check),
+                        icon: Icon(
+                          Icons.check,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                         onPressed: () async {
                           var state = context.read<AddNotesCubit>().state;
                           var notesBlocState = context.read<NotesBloc>().state;
@@ -313,17 +327,17 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       readOnly: state.inTrash,
                       autofocus: widget.isUpdate ? false : true,
                       controller: titleController,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.notoSans(
                           fontSize: 22,
                           color: Colors.black,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Title",
-                          hintStyle: GoogleFonts.poppins(
+                          hintStyle: GoogleFonts.notoSans(
                               fontSize: 22,
                               color: Colors.grey,
-                              fontWeight: FontWeight.w500)),
+                              fontWeight: FontWeight.w600)),
                     ),
                     TextField(
                       onTap: () {
@@ -334,14 +348,14 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       readOnly: state.inTrash,
                       maxLines: null,
                       controller: contentController,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.notoSans(
                           fontSize: 16,
                           color: Colors.black,
                           fontWeight: FontWeight.w400),
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Note",
-                          hintStyle: GoogleFonts.poppins(
+                          hintStyle: GoogleFonts.notoSans(
                               fontSize: 16,
                               color: Colors.grey.withOpacity(1),
                               fontWeight: FontWeight.w400)),
@@ -377,12 +391,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    const MyText(
-                                                        text: "Color",
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black),
+                                                    MyText(
+                                                      text: "Color",
+                                                      textStyle:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .headlineMedium,
+                                                    ),
                                                     SizedBox(
                                                       height: height * 0.02,
                                                     ),
@@ -393,27 +408,9 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                         scrollDirection:
                                                             Axis.horizontal,
                                                         children: List.generate(
-                                                            notesBlocState
-                                                                        .theme ==
-                                                                    my_theme
-                                                                        .Theme
-                                                                        .lightMode
-                                                                ? colorsLightMode
-                                                                    .length
-                                                                : notesBlocState
-                                                                            .theme ==
-                                                                        my_theme
-                                                                            .Theme
-                                                                            .darkMode
-                                                                    ? colorsDarkMode
-                                                                        .length
-                                                                    : Theme.of(context).brightness ==
-                                                                            Brightness
-                                                                                .dark
-                                                                        ? colorsDarkMode
-                                                                            .length
-                                                                        : colorsLightMode
-                                                                            .length,
+                                                            // lightMode and darkMode has same number of colors
+                                                            colorsLightMode
+                                                                .length,
                                                             (index) => Padding(
                                                                   padding:
                                                                       const EdgeInsets
@@ -467,14 +464,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                               },
                         icon: Icon(
                           Icons.color_lens_outlined,
-                          color: state.inTrash ? Colors.black26 : Colors.black,
+                          color: Theme.of(context).iconTheme.color,
                         )),
                     MyText(
-                        text:
-                            "Edited ${TimeOfDay.fromDateTime(DateTime.now()).format(context)}",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
+                      text:
+                          "Edited ${TimeOfDay.fromDateTime(DateTime.now()).format(context)}",
+                      textStyle: Theme.of(context).textTheme.labelSmall,
+                    ),
                     IconButton(
                         onPressed: () {
                           showModalBottomSheet(
@@ -531,18 +527,17 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                       },
                                                       leading: const Icon(
                                                           Icons.restore),
-                                                      title: const Padding(
+                                                      title: Padding(
                                                         padding:
-                                                            EdgeInsets.only(
+                                                            const EdgeInsets.only(
                                                                 left: 8.0),
                                                         child: MyText(
-                                                            text: "Restore",
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            color:
-                                                                Colors.black),
+                                                          text: "Restore",
+                                                          textStyle: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headlineMedium,
+                                                        ),
                                                       ),
                                                     )
                                                   : Container(),
@@ -559,16 +554,15 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                   AlertDialog(
                                                                     backgroundColor:
                                                                         textFieldBackgroundColor,
-                                                                    title: const MyText(
-                                                                        text:
-                                                                            "Delete this note forever",
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .normal,
-                                                                        color: Colors
-                                                                            .black),
+                                                                    title:
+                                                                        MyText(
+                                                                      text:
+                                                                          "Delete this note forever",
+                                                                      textStyle: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .displayMedium,
+                                                                    ),
                                                                     actions: [
                                                                       MyTextButton(
                                                                           text:
@@ -633,13 +627,13 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                       const EdgeInsets.only(
                                                           left: 8.0),
                                                   child: MyText(
-                                                      text: state.inTrash
-                                                          ? "Delete forever"
-                                                          : "Delete",
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black),
+                                                    text: state.inTrash
+                                                        ? "Delete forever"
+                                                        : "Delete",
+                                                    textStyle: Theme.of(context)
+                                                        .textTheme
+                                                        .headlineMedium,
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -649,7 +643,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                     ),
                                   ));
                         },
-                        color: Colors.black,
+                        color: Theme.of(context).iconTheme.color,
                         icon: const Icon(Icons.more_vert_outlined))
                   ],
                 ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MyPainter extends CustomPainter {
+
+  MyPainter({required this.context});
+
+    final BuildContext context;
+
   @override
   void paint(Canvas canvas, Size size) {
     Path path = Path();
@@ -20,7 +25,7 @@ class MyPainter extends CustomPainter {
     Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = Colors.grey.shade300;
+      ..color = Theme.of(context).brightness == Brightness.dark ? Colors.black12 : Colors.grey.shade300;
 
     canvas.drawPath(path, paint);
   }

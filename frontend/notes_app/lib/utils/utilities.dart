@@ -6,9 +6,9 @@ class Utilities {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: MyText(
           text: text,
-          fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: Colors.white),
+        textStyle: Theme.of(context)
+            .textTheme
+            .headlineMedium,),
       duration: const Duration(seconds: 3),
       backgroundColor: Colors.black,
       behavior: SnackBarBehavior.fixed,

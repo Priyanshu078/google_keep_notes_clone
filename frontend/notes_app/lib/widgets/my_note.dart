@@ -41,17 +41,17 @@ class MyNote extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   text: titleText,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .displayLarge,),
               SizedBox(
-                height: height * 0.005,
+                height: height * 0.01,
               ),
               MyText(
                 text: contentText,
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .displayMedium,
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
               )

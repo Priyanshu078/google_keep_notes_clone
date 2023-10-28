@@ -23,9 +23,7 @@ class MyTextButton extends StatelessWidget {
         onPressed: onPressed,
         child: MyText(
           text: text,
-          fontSize: fontSize ?? 12,
-          fontWeight: fontWeight ?? FontWeight.w500,
-          color: textColor ?? Theme.of(context).colorScheme.primary,
+          textStyle: Theme.of(context).textTheme.headlineMedium,
         ));
   }
 }

@@ -62,6 +62,9 @@ class SearchNotesPage extends StatelessWidget {
       builder: (searchBlocContext, searchState) {
         return SearchAnchor(
             viewHintText: "Search your notes",
+            headerHintStyle:Theme.of(context)
+            .textTheme
+            .labelMedium,
             searchController: controller,
             dividerColor: Colors.white,
             viewLeading: IconButton(
@@ -83,14 +86,8 @@ class SearchNotesPage extends StatelessWidget {
                     ? "${notesState.selectedNotes.length}"
                     : "Search your notes",
                 hintStyle: notesState is NotesSelected
-                    ? const MaterialStatePropertyAll(TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black87))
-                    : const MaterialStatePropertyAll(TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black54)),
+                    ? MaterialStatePropertyAll(Theme.of(context).textTheme.labelLarge)
+                    : MaterialStatePropertyAll(Theme.of(context).textTheme.labelMedium),
                 leading: IconButton(
                   icon: notesState is NotesSelected
                       ? const Icon(Icons.close)
@@ -151,17 +148,18 @@ class SearchNotesPage extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                      title: const MyText(
+                                      title: MyText(
                                           text: "Note Color",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium,),
                                       content: GridView(
                                         shrinkWrap: true,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 4),
                                         children: List.generate(
+                                          // lightMode and darkMode has same number of colors
                                             colorsLightMode.length,
                                             (index) => Padding(
                                                   padding:
@@ -224,9 +222,9 @@ class SearchNotesPage extends StatelessWidget {
                                           text: notesState.homeNotesSelected
                                               ? "Archive"
                                               : "Unrchive",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black)),
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium,)),
                                   PopupMenuItem(
                                       onTap: () {
                                         context
@@ -236,11 +234,11 @@ class SearchNotesPage extends StatelessWidget {
                                                   notesState.selectedNotes,
                                             ));
                                       },
-                                      child: const MyText(
+                                      child: MyText(
                                           text: "Delete",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black)),
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium,)),
                                 ]);
                           },
                         )
@@ -313,11 +311,11 @@ class SearchNotesPage extends StatelessWidget {
                                 SizedBox(
                                   height: height * 0.02,
                                 ),
-                                const MyText(
+                                MyText(
                                   text: "Search your Notes",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium,
                                 )
                               ],
                             ),
@@ -409,7 +407,7 @@ class SearchNotesPage extends StatelessWidget {
                 },
               );
             },
-            suggestionsBuilder: (BuildContext suggestionBuildercontext,
+            suggestionsBuilder: (BuildContext suggestionBuilderContext,
                 SearchController controller) {
               var state = context.read<NotesBloc>().state;
               if (state.homeNotesSelected) {

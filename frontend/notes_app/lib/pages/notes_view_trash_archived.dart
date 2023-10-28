@@ -93,9 +93,8 @@ class NotesViewTrashArchived extends StatelessWidget {
                             text: inArchivedNotes
                                 ? "Your archived notes appear here"
                                 : "No notes in Trash",
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
+                            textStyle:
+                                Theme.of(context).textTheme.displayMedium,
                           )
                         ],
                       ))
@@ -169,14 +168,14 @@ class NotesViewTrashArchived extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MyText(
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    text: inArchivedNotes
-                                        ? state.archivedNotes[index].title
-                                        : state.trashNotes[index].title,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: inArchivedNotes
+                                      ? state.archivedNotes[index].title
+                                      : state.trashNotes[index].title,
+                                  textStyle:
+                                      Theme.of(context).textTheme.displayLarge,
+                                ),
                                 SizedBox(
                                   height: height * 0.005,
                                 ),
@@ -184,9 +183,8 @@ class NotesViewTrashArchived extends StatelessWidget {
                                   text: inArchivedNotes
                                       ? state.archivedNotes[index].content
                                       : state.trashNotes[index].content,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  textStyle:
+                                      Theme.of(context).textTheme.displayMedium,
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
                                 )
@@ -259,14 +257,15 @@ class NotesViewTrashArchived extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   MyText(
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      text: inArchivedNotes
-                                          ? state.archivedNotes[index].title
-                                          : state.trashNotes[index].title,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: inArchivedNotes
+                                        ? state.archivedNotes[index].title
+                                        : state.trashNotes[index].title,
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge,
+                                  ),
                                   SizedBox(
                                     height: height * 0.005,
                                   ),
@@ -274,9 +273,9 @@ class NotesViewTrashArchived extends StatelessWidget {
                                     text: inArchivedNotes
                                         ? state.archivedNotes[index].content
                                         : state.trashNotes[index].content,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                     maxLines: 4,
                                     overflow: TextOverflow.ellipsis,
                                   )

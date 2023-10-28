@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Notes App',
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
+            theme: MyThemes().lightTheme,
+            darkTheme: MyThemes().darkTheme,
             themeMode: state.theme == my_theme.Theme.systemDefault
                 ? ThemeMode.system
                 : state.theme == my_theme.Theme.lightMode

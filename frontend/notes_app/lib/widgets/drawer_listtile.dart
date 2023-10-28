@@ -47,9 +47,9 @@ class DrawerListTile extends StatelessWidget {
             ),
             MyText(
               text: text,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: textColor,
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .headlineSmall,
             ),
             isTheme
                 ? Expanded(
@@ -59,9 +59,9 @@ class DrawerListTile extends StatelessWidget {
             isTheme
                 ? MyText(
                     text: themeText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black)
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .displayMedium,)
                 : Container()
           ],
         ),
