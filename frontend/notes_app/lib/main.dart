@@ -7,7 +7,7 @@ import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
 import 'package:notes_app/constants/themes.dart';
 import 'package:notes_app/notesbloc_observer.dart';
 import 'package:notes_app/pages/homepage.dart';
-import 'package:notes_app/widgets/mydrawer.dart' as drawer;
+import 'package:notes_app/constants/themes.dart' as my_theme;
 
 void main() {
   Bloc.observer = NotesBlocObserver();
@@ -43,9 +43,9 @@ class MyApp extends StatelessWidget {
             title: 'Notes App',
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,
-            themeMode: state.theme == drawer.Theme.systemDefault
+            themeMode: state.theme == my_theme.Theme.systemDefault
                 ? ThemeMode.system
-                : state.theme == drawer.Theme.lightMode
+                : state.theme == my_theme.Theme.lightMode
                     ? ThemeMode.light
                     : ThemeMode.dark,
             home: const MyHomePage(),

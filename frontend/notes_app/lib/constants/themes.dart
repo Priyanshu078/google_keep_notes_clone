@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/constants/colors.dart';
 
+enum Theme { darkMode, lightMode, systemDefault }
+
 class MyThemes {
   static final lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.white,

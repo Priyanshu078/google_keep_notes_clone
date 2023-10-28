@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:notes_app/data/note.dart';
-
-import '../../widgets/mydrawer.dart';
+import 'package:notes_app/constants/themes.dart';
 
 class NotesEvent extends Equatable {
   @override

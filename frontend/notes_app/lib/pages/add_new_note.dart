@@ -16,6 +16,7 @@ import '../blocs and cubits/addnotes_cubit/addnotes_cubit.dart';
 import '../blocs and cubits/addnotes_cubit/addnotes_states.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
+import 'package:notes_app/constants/themes.dart' as my_theme;
 
 class AddNewWidgetPage extends StatefulWidget {
   const AddNewWidgetPage({
@@ -61,10 +62,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return BlocBuilder<AddNotesCubit, AddNotesState>(builder: (context, state) {
+      var notesBlocState = context.read<NotesBloc>().state;
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          systemNavigationBarColor: colorsLightMode[state.colorIndex],
-          statusBarColor: colorsLightMode[state.colorIndex],
+          systemNavigationBarColor:
+              getColor(context, notesBlocState, state.colorIndex),
+          statusBarColor: getColor(context, notesBlocState, state.colorIndex),
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
@@ -91,10 +94,12 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
             }
           },
           child: Scaffold(
-            backgroundColor: colorsLightMode[state.colorIndex],
+            backgroundColor:
+                getColor(context, notesBlocState, state.colorIndex),
             appBar: AppBar(
               iconTheme: const IconThemeData(color: Colors.black),
-              backgroundColor: colorsLightMode[state.colorIndex],
+              backgroundColor:
+                  getColor(context, notesBlocState, state.colorIndex),
               actions: [
                 state.inTrash
                     ? Container()
@@ -362,7 +367,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                     const EdgeInsets.all(16.0),
                                                 height: height * 0.2,
                                                 width: double.infinity,
-                                                color: colorsLightMode[state.colorIndex],
+                                                color: getColor(
+                                                    context,
+                                                    notesBlocState,
+                                                    state.colorIndex),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -385,7 +393,27 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                         scrollDirection:
                                                             Axis.horizontal,
                                                         children: List.generate(
-                                                            colorsLightMode.length,
+                                                            notesBlocState
+                                                                        .theme ==
+                                                                    my_theme
+                                                                        .Theme
+                                                                        .lightMode
+                                                                ? colorsLightMode
+                                                                    .length
+                                                                : notesBlocState
+                                                                            .theme ==
+                                                                        my_theme
+                                                                            .Theme
+                                                                            .darkMode
+                                                                    ? colorsDarkMode
+                                                                        .length
+                                                                    : Theme.of(context).brightness ==
+                                                                            Brightness
+                                                                                .dark
+                                                                        ? colorsDarkMode
+                                                                            .length
+                                                                        : colorsLightMode
+                                                                            .length,
                                                             (index) => Padding(
                                                                   padding:
                                                                       const EdgeInsets
@@ -406,7 +434,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                                         children: [
                                                                           Container(
                                                                             decoration:
-                                                                                BoxDecoration(color: colorsLightMode[index], shape: BoxShape.circle),
+                                                                                BoxDecoration(color: getColor(context, notesBlocState, index), shape: BoxShape.circle),
                                                                             height:
                                                                                 height * 0.1,
                                                                             width:
@@ -461,7 +489,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                         AddNotesState>(
                                       builder: (context, state) {
                                         return Container(
-                                          color: colorsLightMode[state.colorIndex],
+                                          color: getColor(context,
+                                              notesBlocState, state.colorIndex),
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8),
                                           height: state.inTrash
@@ -529,7 +558,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                               (_) =>
                                                                   AlertDialog(
                                                                     backgroundColor:
-                                                                        textFieldBackgoundColor,
+                                                                        textFieldBackgroundColor,
                                                                     title: const MyText(
                                                                         text:
                                                                             "Delete this note forever",

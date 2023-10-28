@@ -4,11 +4,9 @@ import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/widgets/drawer_listtile.dart';
 import 'package:notes_app/widgets/mytext.dart';
-
+import 'package:notes_app/constants/themes.dart' as my_theme;
 import '../blocs and cubits/notes_bloc/notes_bloc.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
-
-enum Theme { darkMode, lightMode, systemDefault }
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -164,12 +162,12 @@ class MyDrawer extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       RadioListTile(
-                                        value: Theme.darkMode,
+                                        value: my_theme.Theme.darkMode,
                                         groupValue: state.theme,
                                         onChanged: (val) {
                                           context.read<NotesBloc>().add(
                                               ChangeTheme(
-                                                  theme: Theme.darkMode));
+                                                  theme: my_theme.Theme.darkMode));
                                           Navigator.of(context).pop();
                                         },
                                         title: const MyText(
@@ -179,12 +177,12 @@ class MyDrawer extends StatelessWidget {
                                             color: Colors.black),
                                       ),
                                       RadioListTile(
-                                        value: Theme.lightMode,
+                                        value: my_theme.Theme.lightMode,
                                         groupValue: state.theme,
                                         onChanged: (val) {
                                           context.read<NotesBloc>().add(
                                               ChangeTheme(
-                                                  theme: Theme.lightMode));
+                                                  theme: my_theme.Theme.lightMode));
                                           Navigator.of(context).pop();
                                         },
                                         title: const MyText(
@@ -194,12 +192,12 @@ class MyDrawer extends StatelessWidget {
                                             color: Colors.black),
                                       ),
                                       RadioListTile(
-                                        value: Theme.systemDefault,
+                                        value: my_theme.Theme.systemDefault,
                                         groupValue: state.theme,
                                         onChanged: (val) {
                                           context.read<NotesBloc>().add(
                                               ChangeTheme(
-                                                  theme: Theme.systemDefault));
+                                                  theme: my_theme.Theme.systemDefault));
                                           Navigator.of(context).pop();
                                         },
                                         title: const MyText(
@@ -223,9 +221,9 @@ class MyDrawer extends StatelessWidget {
                           height: height * 0.07,
                           width: width,
                           isTheme: true,
-                          themeText: state.theme == Theme.lightMode
+                          themeText: state.theme == my_theme.Theme.lightMode
                               ? "Light"
-                              : state.theme == Theme.darkMode
+                              : state.theme == my_theme.Theme.darkMode
                                   ? "Dark"
                                   : "System default",
                         ),

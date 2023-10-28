@@ -1,6 +1,8 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:notes_app/blocs and cubits/notes_bloc/notes_states.dart';
+import 'themes.dart' as my_theme;
 
-Color textFieldBackgoundColor = const Color(0xfff4f7fc);
+Color textFieldBackgroundColor = const Color(0xfff4f7fc);
 Color bottomBannerColor = const Color(0xfff2f5fc);
 Color fabColor = const Color(0xffeff4fa);
 Color dividerColor = const Color(0xffdae5f4);
@@ -40,3 +42,17 @@ const List<Color> colorsDarkMode = [
   Color(0xff4b443a),
   Color(0xff232428),
 ];
+
+Color getColor(
+    BuildContext context,
+    NotesStates notesStates,
+    int colorIndex,
+    ) {
+  return notesStates.theme == my_theme.Theme.lightMode
+      ? colorsLightMode[colorIndex]
+      : notesStates.theme == my_theme.Theme.darkMode
+      ? colorsDarkMode[colorIndex]
+      : Theme.of(context).brightness == Brightness.dark
+      ? colorsDarkMode[colorIndex]
+      : colorsLightMode[colorIndex];
+}

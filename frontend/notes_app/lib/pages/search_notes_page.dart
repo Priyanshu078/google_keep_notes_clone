@@ -184,7 +184,10 @@ class SearchNotesPage extends StatelessWidget {
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                          color: colorsLightMode[index],
+                                                          color: getColor(
+                                                              context,
+                                                              notesState,
+                                                              index),
                                                           shape:
                                                               BoxShape.circle),
                                                       height: height * 0.1,
@@ -349,8 +352,11 @@ class SearchNotesPage extends StatelessWidget {
                                             //             .searchedNotes[index],
                                             //         addNotesPage: false));
                                           },
-                                          color: colorsLightMode[state
-                                              .searchedNotes[index].colorIndex],
+                                          color: getColor(
+                                              context,
+                                              notesState,
+                                              state.searchedNotes[index]
+                                                  .colorIndex),
                                           border: (state.searchedNotes[index]
                                                       .colorIndex) ==
                                                   0
@@ -381,9 +387,11 @@ class SearchNotesPage extends StatelessWidget {
                                               //             .searchedNotes[index],
                                               //         addNotesPage: false));
                                             },
-                                            color: colorsLightMode[state
-                                                .searchedNotes[index]
-                                                .colorIndex],
+                                            color: getColor(
+                                                context,
+                                                notesState,
+                                                state.searchedNotes[index]
+                                                    .colorIndex),
                                             border: (state.searchedNotes[index]
                                                         .colorIndex) ==
                                                     0
