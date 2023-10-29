@@ -8,7 +8,6 @@ class DrawerListTile extends StatelessWidget {
     required this.text,
     required this.textColor,
     required this.backgroundColor,
-    required this.iconColor,
     required this.isTheme,
     required this.themeText,
     required this.height,
@@ -19,7 +18,6 @@ class DrawerListTile extends StatelessWidget {
   final String text;
   final Color textColor;
   final Color backgroundColor;
-  final Color iconColor;
   final double height;
   final double width;
   final bool isTheme;
@@ -40,16 +38,13 @@ class DrawerListTile extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: iconColor,
             ),
             SizedBox(
               width: width * 0.04,
             ),
             MyText(
               text: text,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .headlineSmall,
+              textStyle: Theme.of(context).textTheme.headlineSmall,
             ),
             isTheme
                 ? Expanded(
@@ -59,9 +54,8 @@ class DrawerListTile extends StatelessWidget {
             isTheme
                 ? MyText(
                     text: themeText,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .displayMedium,)
+                    textStyle: Theme.of(context).textTheme.displayMedium,
+                  )
                 : Container()
           ],
         ),

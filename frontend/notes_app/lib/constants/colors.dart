@@ -7,7 +7,8 @@ Color bottomBannerColor = const Color(0xfff2f5fc);
 Color fabColor = const Color(0xffeff4fa);
 Color dividerColor = const Color(0xffdae5f4);
 Color rippleColor = const Color(0xffe6eef9);
-Color selectedColor = const Color(0xffc3e7ff);
+Color lightModeSelectedColor = const Color(0xffc3e7ff);
+Color darkModeSelectedColor = const Color(0xff374955);
 Color selectedTextColor = const Color(0xff124b99);
 Color selectedBorderColor = const Color(0xff00658b);
 Color darkModeScaffoldColor = const Color(0xff181c1f);
@@ -44,15 +45,15 @@ const List<Color> colorsDarkMode = [
 ];
 
 Color getColor(
-    BuildContext context,
-    NotesStates notesStates,
-    int colorIndex,
-    ) {
+  BuildContext context,
+  NotesStates notesStates,
+  int colorIndex,
+) {
   return notesStates.theme == my_theme.Theme.lightMode
       ? colorsLightMode[colorIndex]
       : notesStates.theme == my_theme.Theme.darkMode
-      ? colorsDarkMode[colorIndex]
-      : Theme.of(context).brightness == Brightness.dark
-      ? colorsDarkMode[colorIndex]
-      : colorsLightMode[colorIndex];
+          ? colorsDarkMode[colorIndex]
+          : Theme.of(context).brightness == Brightness.dark
+              ? colorsDarkMode[colorIndex]
+              : colorsLightMode[colorIndex];
 }

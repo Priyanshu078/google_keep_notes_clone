@@ -6,7 +6,11 @@ enum Theme { darkMode, lightMode, systemDefault }
 
 class MyThemes {
   final lightTheme = ThemeData(
-    iconTheme: const IconThemeData(color: Colors.black87),
+    iconTheme: const IconThemeData(color: Colors.black),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: bottomBannerColor,
+      foregroundColor: Colors.black,
+    ),
     scaffoldBackgroundColor: Colors.white,
     colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.indigo, brightness: Brightness.light),
@@ -49,21 +53,22 @@ class MyThemes {
         fontWeight: FontWeight.normal,
       ),
       labelMedium: GoogleFonts.notoSans(
-        color: Colors.black87,
+        color: Colors.black,
         fontSize: 16,
         fontWeight: FontWeight.normal,
       ),
       labelLarge: GoogleFonts.notoSans(
-        color: Colors.black87,
+        color: Colors.black,
         fontSize: 20,
         fontWeight: FontWeight.normal,
       ),
     ),
   );
   final darkTheme = ThemeData(
-      iconTheme: const IconThemeData(color: Colors.white70),
+      iconTheme: const IconThemeData(color: Colors.white),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: themeColorDarkMode,
+        foregroundColor: Colors.white,
       ),
       textTheme: TextTheme(
         // for notesHeadline at homePage
@@ -103,12 +108,12 @@ class MyThemes {
           fontWeight: FontWeight.normal,
         ),
         labelMedium: GoogleFonts.notoSans(
-          color: Colors.white70,
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.normal,
         ),
         labelLarge: GoogleFonts.notoSans(
-          color: Colors.white70,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.normal,
         ),

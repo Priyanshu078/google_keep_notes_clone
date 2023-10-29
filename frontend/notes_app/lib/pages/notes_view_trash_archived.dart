@@ -83,7 +83,10 @@ class NotesViewTrashArchived extends StatelessWidget {
                                 : inTrashedNotes
                                     ? Icons.delete_outline
                                     : Icons.lightbulb_outline_rounded,
-                            color: Colors.amber,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.amber
+                                    : Colors.white,
                             size: 130,
                           ),
                           SizedBox(

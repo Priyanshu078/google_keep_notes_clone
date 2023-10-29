@@ -72,9 +72,12 @@ class NotesViewHome extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.lightbulb_outline_rounded,
-                            color: Colors.amber,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.amber
+                                    : Colors.white,
                             size: 130,
                           ),
                           SizedBox(

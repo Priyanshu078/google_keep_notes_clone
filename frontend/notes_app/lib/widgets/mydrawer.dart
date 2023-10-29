@@ -130,11 +130,12 @@ class MyDrawer extends StatelessWidget {
                             ? selectedTextColor
                             : Colors.black,
                         backgroundColor: state.homeNotesSelected
-                            ? selectedColor
-                            : Theme.of(context).brightness == Brightness.dark ? darkModeScaffoldColor : Colors.white,
-                        iconColor: state.homeNotesSelected
-                            ? selectedTextColor
-                            : Colors.black,
+                            ? Theme.of(context).brightness == Brightness.dark
+                                ? darkModeSelectedColor
+                                : lightModeSelectedColor
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? darkModeScaffoldColor
+                                : Colors.white,
                         height: height * 0.07,
                         width: width,
                         isTheme: false,
@@ -165,11 +166,12 @@ class MyDrawer extends StatelessWidget {
                             ? selectedTextColor
                             : Colors.black,
                         backgroundColor: state.archiveSelected
-                            ? selectedColor
-                            : Theme.of(context).brightness == Brightness.dark ? darkModeScaffoldColor : Colors.white,
-                        iconColor: state.archiveSelected
-                            ? selectedTextColor
-                            : Colors.black,
+                            ? Theme.of(context).brightness == Brightness.dark
+                                ? darkModeSelectedColor
+                                : lightModeSelectedColor
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? darkModeScaffoldColor
+                                : Colors.white,
                         height: height * 0.07,
                         width: width,
                         isTheme: false,
@@ -196,11 +198,13 @@ class MyDrawer extends StatelessWidget {
                         textColor: state.trashSelected
                             ? selectedTextColor
                             : Colors.black,
-                        backgroundColor:
-                            state.trashSelected ? selectedColor : Theme.of(context).brightness == Brightness.dark ? darkModeScaffoldColor : Colors.white,
-                        iconColor: state.trashSelected
-                            ? selectedTextColor
-                            : Colors.black,
+                        backgroundColor: state.trashSelected
+                            ? Theme.of(context).brightness == Brightness.dark
+                                ? darkModeSelectedColor
+                                : lightModeSelectedColor
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? darkModeScaffoldColor
+                                : Colors.white,
                         height: height * 0.07,
                         width: width,
                         isTheme: false,
@@ -282,8 +286,10 @@ class MyDrawer extends StatelessWidget {
                           icon: Icons.format_paint_outlined,
                           text: "Theme",
                           textColor: Colors.black,
-                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? darkModeScaffoldColor : Colors.white,
-                          iconColor: Colors.black,
+                          backgroundColor:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? darkModeScaffoldColor
+                                  : Colors.white,
                           height: height * 0.07,
                           width: width,
                           isTheme: true,
@@ -299,8 +305,10 @@ class MyDrawer extends StatelessWidget {
                       icon: Icons.help_outline_outlined,
                       text: "Help & feedback",
                       textColor: Colors.black,
-                      backgroundColor: Theme.of(context).brightness == Brightness.dark ? darkModeScaffoldColor : Colors.white,
-                      iconColor: Colors.black,
+                      backgroundColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? darkModeScaffoldColor
+                              : Colors.white,
                       height: height * 0.07,
                       width: width,
                       isTheme: false,

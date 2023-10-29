@@ -72,7 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ? notesState.homeNotesSelected
                         ? themeColorDarkMode
                         : darkModeScaffoldColor
-                    : bottomBannerColor,
+                    : notesState.homeNotesSelected
+                        ? bottomBannerColor
+                        : Colors.white,
             statusBarColor: Theme.of(context).brightness == Brightness.dark
                 ? darkModeScaffoldColor
                 : Colors.white,
@@ -436,9 +438,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   return state.homeNotesSelected
                       ? Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 8.0, right: 16.0),
+                              const EdgeInsets.only(bottom: 12.0, right: 20.0),
                           child: FloatingActionButton(
-                            backgroundColor: bottomBannerColor,
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   fullscreenDialog: true,
