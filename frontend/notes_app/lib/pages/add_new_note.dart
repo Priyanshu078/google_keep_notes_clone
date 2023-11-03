@@ -327,10 +327,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       readOnly: state.inTrash,
                       autofocus: widget.isUpdate ? false : true,
                       controller: titleController,
-                      style: GoogleFonts.notoSans(
-                          fontSize: 22,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.headlineLarge,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Title",
@@ -348,10 +345,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                       readOnly: state.inTrash,
                       maxLines: null,
                       controller: contentController,
-                      style: GoogleFonts.notoSans(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400),
+                      style: Theme.of(context).textTheme.headlineMedium,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Note",
@@ -529,7 +523,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                           Icons.restore),
                                                       title: Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                .only(
                                                                 left: 8.0),
                                                         child: MyText(
                                                           text: "Restore",
