@@ -8,8 +8,14 @@ import 'package:notes_app/constants/themes.dart';
 import 'package:notes_app/notesbloc_observer.dart';
 import 'package:notes_app/pages/homepage.dart';
 import 'package:notes_app/constants/themes.dart' as my_theme;
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 
-void main() {
+int appThemeIndex = 3;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesUtils.initialize();
+  appThemeIndex = SharedPreferencesUtils.getThemeIndex() ?? 3;
   Bloc.observer = NotesBlocObserver();
   runApp(const MyApp());
 }

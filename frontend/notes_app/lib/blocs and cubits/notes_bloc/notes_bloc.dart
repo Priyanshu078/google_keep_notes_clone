@@ -2,27 +2,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/api/api_service.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/constants/themes.dart';
+import 'package:notes_app/main.dart';
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 import 'notes_event.dart';
 import 'notes_states.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesStates> {
   NotesBloc()
-      : super(const NotesLoading(
-          pinnedNotes: [],
-          otherNotes: [],
+      : super(NotesLoading(
+          pinnedNotes: const [],
+          otherNotes: const [],
           gridViewMode: true,
-          theme: Theme.systemDefault,
+          theme: appThemeIndex == 1
+              ? Theme.darkMode
+              : appThemeIndex == 2
+                  ? Theme.lightMode
+                  : Theme.systemDefault,
           homeNotesSelected: true,
           archiveSelected: false,
           trashSelected: false,
-          trashNotes: [],
-          archivedNotes: [],
+          trashNotes: const [],
+          archivedNotes: const [],
           archiveSearchOn: false,
           homeSearchOn: false,
-          selectedNotes: [],
+          selectedNotes: const [],
           pinSelectedNotes: false,
-          selectedPinnedNotes: [],
-          selectedOtherNotes: [],
+          selectedPinnedNotes: const [],
+          selectedOtherNotes: const [],
         )) {
     on<FetchNotes>((event, emit) => fetchNotes(event, emit));
     on<AddNote>((event, emit) => addNotes(event, emit));
@@ -74,25 +80,35 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
           selectedPinnedNotes: const [],
           selectedOtherNotes: const [],
         )));
-    on<ChangeTheme>((event, emit) => emit(NotesStates(
-          pinnedNotes: state.pinnedNotes,
-          otherNotes: state.otherNotes,
-          gridViewMode: state.gridViewMode,
-          theme: event.theme,
-          homeNotesSelected: state.homeNotesSelected,
-          archiveSelected: state.archiveSelected,
-          trashSelected: state.trashSelected,
-          trashNotes: state.trashNotes,
-          archivedNotes: state.archivedNotes,
-          archiveSearchOn: state.archiveSearchOn,
-          homeSearchOn: state.homeSearchOn,
-          selectedNotes: state.selectedNotes,
-          pinSelectedNotes: state.pinSelectedNotes,
-          selectedOtherNotes: state.selectedOtherNotes,
-          selectedPinnedNotes: state.selectedPinnedNotes,
-        )));
+    on<ChangeTheme>((event, emit) => _changeTheme(event, emit));
   }
   final ApiService _apiService = ApiService();
+
+  Future<void> _changeTheme(ChangeTheme event, Emitter emit) async {
+    await SharedPreferencesUtils.setThemeIndex(
+        themeIndex: event.theme == Theme.darkMode
+            ? 1
+            : event.theme == Theme.lightMode
+                ? 2
+                : 3);
+    emit(NotesStates(
+      pinnedNotes: state.pinnedNotes,
+      otherNotes: state.otherNotes,
+      gridViewMode: state.gridViewMode,
+      theme: event.theme,
+      homeNotesSelected: state.homeNotesSelected,
+      archiveSelected: state.archiveSelected,
+      trashSelected: state.trashSelected,
+      trashNotes: state.trashNotes,
+      archivedNotes: state.archivedNotes,
+      archiveSearchOn: state.archiveSearchOn,
+      homeSearchOn: state.homeSearchOn,
+      selectedNotes: state.selectedNotes,
+      pinSelectedNotes: false,
+      selectedPinnedNotes: const [],
+      selectedOtherNotes: const [],
+    ));
+  }
 
   Future<void> _bulkTrashNotes(BulkTrashEvent event, Emitter emit) async {
     List<Note> notesList = List.from(event.notesList);
