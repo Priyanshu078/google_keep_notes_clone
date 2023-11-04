@@ -57,8 +57,13 @@ class NotesViewHome extends StatelessWidget {
               SizedBox(
                 height: height * 0.75,
                 width: double.infinity,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeAlign: 2,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               )
             ]),

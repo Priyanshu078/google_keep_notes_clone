@@ -10,6 +10,7 @@ import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/blocs and cubits/search_bloc/search_state.dart';
 import 'package:notes_app/pages/add_new_note.dart';
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 import 'package:notes_app/widgets/my_note.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
@@ -320,6 +321,20 @@ class SearchNotesPage extends StatelessWidget {
                             );
                           },
                         ),
+                  notesState.homeNotesSelected
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundImage: NetworkImage(
+                                  SharedPreferencesUtils.instance!
+                                      .getString("imageUrl")!),
+                            ),
+                          ),
+                        )
+                      : Container()
                   // notesState.archiveSelected
                   //     ? BlocBuilder<NotesBloc, NotesStates>(
                   //         builder: (context, state) {

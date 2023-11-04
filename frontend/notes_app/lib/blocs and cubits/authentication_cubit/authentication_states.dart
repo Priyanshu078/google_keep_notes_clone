@@ -8,3 +8,7 @@ class AuthenticationStates extends Equatable {
 class AuthenticationInitial extends AuthenticationStates {}
 
 class AuthenticationLoading extends AuthenticationStates {}
+
+class UserAuthenticated extends AuthenticationStates {}
+
+class AuthenticationErrorState extends AuthenticationStates {}

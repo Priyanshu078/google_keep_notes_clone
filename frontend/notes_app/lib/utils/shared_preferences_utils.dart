@@ -2,6 +2,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesUtils {
   static SharedPreferences? instance;
+  static String? imageUrl;
+  static String? name;
+  static String? email;
 
   static Future<void> initialize() async {
     instance = await SharedPreferences.getInstance();
@@ -16,8 +19,16 @@ class SharedPreferencesUtils {
   }
 
   static bool checkForCredentials() {
-    return false;
+    imageUrl = instance!.getString("imageUrl");
+    name = instance!.getString("name");
+    email = instance!.getString("email");
+    return ((imageUrl != null) && (name != null) && (email != null));
   }
 
-  static Future<void> setCredentials() async {}
+  static Future<void> setCredentials(
+      String name, String email, String imageUrl) async {
+    await instance!.setString("name", name);
+    await instance!.setString("email", email);
+    await instance!.setString("imageUrl", imageUrl);
+  }
 }

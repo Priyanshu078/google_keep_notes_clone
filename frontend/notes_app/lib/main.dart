@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:notes_app/authentication/signin_page.dart';
 import 'package:notes_app/blocs%20and%20cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
@@ -19,8 +18,7 @@ int appThemeIndex = 3;
 bool credentialsAvailable = false;
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -28,7 +26,6 @@ void main() async {
   appThemeIndex = SharedPreferencesUtils.getThemeIndex() ?? 3;
   credentialsAvailable = SharedPreferencesUtils.checkForCredentials();
   Bloc.observer = NotesBlocObserver();
-  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 
@@ -40,15 +37,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NotesBloc()
-            ..add(
-              FetchNotes(
-                userId: 'priyanshupaliwal',
-                notes: true,
-                trashedNotes: false,
-                archivedNotes: false,
-              ),
-            ),
+          create: credentialsAvailable
+              ? (context) => NotesBloc()
+                ..add(
+                  FetchNotes(
+                    userId: 'priyanshupaliwal',
+                    notes: true,
+                    trashedNotes: false,
+                    archivedNotes: false,
+                  ),
+                )
+              : (context) => NotesBloc(),
         ),
         BlocProvider(
           create: (context) => SearchBloc(),

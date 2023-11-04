@@ -438,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return state.homeNotesSelected
                       ? Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 12.0, right: 20.0),
+                              const EdgeInsets.only(bottom: 9.0, right: 14.5),
                           child: FloatingActionButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
