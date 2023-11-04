@@ -14,4 +14,10 @@ class SharedPreferencesUtils {
   static int? getThemeIndex() {
     return instance!.getInt("theme");
   }
+
+  static bool checkForCredentials() {
+    return false;
+  }
+
+  static Future<void> setCredentials() async {}
 }

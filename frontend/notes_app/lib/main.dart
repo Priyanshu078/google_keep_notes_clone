@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:notes_app/authentication/signin_page.dart';
+import 'package:notes_app/blocs%20and%20cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_states.dart';
@@ -13,15 +16,19 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 int appThemeIndex = 3;
+bool credentialsAvailable = false;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await SharedPreferencesUtils.initialize();
   appThemeIndex = SharedPreferencesUtils.getThemeIndex() ?? 3;
+  credentialsAvailable = SharedPreferencesUtils.checkForCredentials();
   Bloc.observer = NotesBlocObserver();
+  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 
@@ -59,7 +66,12 @@ class MyApp extends StatelessWidget {
                 : state.theme == my_theme.Theme.lightMode
                     ? ThemeMode.light
                     : ThemeMode.dark,
-            home: const MyHomePage(),
+            home: credentialsAvailable
+                ? const MyHomePage()
+                : BlocProvider(
+                    create: (context) => AuthenticationCubit(),
+                    child: const SignInPage(),
+                  ),
           );
         },
       ),
