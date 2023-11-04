@@ -54,52 +54,73 @@ class MyDrawer extends StatelessWidget {
                                     TextSpan(
                                       text: "G",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.blue,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.blue,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     TextSpan(
                                       text: "o",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.red,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.red,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     TextSpan(
                                       text: "o",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.amber,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.amber,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     TextSpan(
                                       text: "g",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.blue,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.blue,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     TextSpan(
                                       text: "l",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.green,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.green,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     TextSpan(
                                       text: "e",
                                       style: GoogleFonts.notoSans(
-                                          color: Colors.red,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.red,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ]),
                                   TextSpan(
                                     text: " Keep",
                                     style: GoogleFonts.notoSans(
-                                        color: Colors.black87,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white.withOpacity(0.9)
+                                            : Colors.black87,
                                         fontSize: 22,
-                                        fontWeight: FontWeight.w600),
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ]),
                               ]),
