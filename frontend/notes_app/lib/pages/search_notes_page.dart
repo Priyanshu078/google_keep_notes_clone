@@ -174,46 +174,51 @@ class SearchNotesPage extends StatelessWidget {
                                             .textTheme
                                             .headlineMedium,
                                       ),
-                                      content: GridView(
-                                        shrinkWrap: true,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 4),
-                                        children: List.generate(
-                                            // lightMode and darkMode has same number of colors
-                                            colorsLightMode.length,
-                                            (index) => Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8.0),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      context
-                                                          .read<NotesBloc>()
-                                                          .add(
-                                                            BulkUpdateNotes(
-                                                                notesList:
-                                                                    notesState
-                                                                        .selectedNotes,
-                                                                colorIndex:
+                                      content: SizedBox(
+                                        height: height * 0.3,
+                                        width: width * 0.9,
+                                        child: GridView(
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 4),
+                                          children: List.generate(
+                                              // lightMode and darkMode has same number of colors
+                                              colorsLightMode.length,
+                                              (index) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 8.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        context
+                                                            .read<NotesBloc>()
+                                                            .add(
+                                                              BulkUpdateNotes(
+                                                                  notesList:
+                                                                      notesState
+                                                                          .selectedNotes,
+                                                                  colorIndex:
+                                                                      index),
+                                                            );
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: getColor(
+                                                                    context,
+                                                                    notesState,
                                                                     index),
-                                                          );
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: getColor(
-                                                              context,
-                                                              notesState,
-                                                              index),
-                                                          shape:
-                                                              BoxShape.circle),
-                                                      height: height * 0.1,
-                                                      width: height * 0.1,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                        height: height * 0.1,
+                                                        width: height * 0.1,
+                                                      ),
                                                     ),
-                                                  ),
-                                                )).toList(),
+                                                  )).toList(),
+                                        ),
                                       ),
                                     ));
                           },

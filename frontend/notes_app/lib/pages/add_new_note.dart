@@ -97,6 +97,17 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                 getColor(context, notesBlocState, state.colorIndex),
             appBar: AppBar(
               iconTheme: Theme.of(context).iconTheme,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
               backgroundColor:
                   getColor(context, notesBlocState, state.colorIndex),
               actions: [

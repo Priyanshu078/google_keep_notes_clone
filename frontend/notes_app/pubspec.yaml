@@ -41,6 +41,9 @@ dependencies:
   equatable: ^2.0.5
   google_fonts: ^6.0.0
   shared_preferences: ^2.2.2
+  firebase_core: ^2.21.0
+  firebase_auth: ^4.12.1
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:
