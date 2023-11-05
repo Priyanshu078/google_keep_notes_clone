@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "google_keep_notes_backend",
   "version": "1.0.0",
   "description": "This is the backend of the notes app using flutter",
   "main": "server.js",
