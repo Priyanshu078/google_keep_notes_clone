@@ -431,11 +431,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onDrawerChanged: (value) {
                 var state = context.read<NotesBloc>().state;
-                context.read<NotesBloc>().add(UnselectAllNotesEvent(
-                      homeNotesSelected: state.homeNotesSelected,
-                      archivedSelected: state.archiveSelected,
-                      trashSelected: state.trashSelected,
-                    ));
+                if (state is NotesSelected) {
+                  context.read<NotesBloc>().add(UnselectAllNotesEvent(
+                        homeNotesSelected: state.homeNotesSelected,
+                        archivedSelected: state.archiveSelected,
+                        trashSelected: state.trashSelected,
+                      ));
+                }
               },
               floatingActionButton: BlocBuilder<NotesBloc, NotesStates>(
                 builder: (context, state) {
