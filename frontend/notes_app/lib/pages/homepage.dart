@@ -301,6 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           builder:
                                                               (_) =>
                                                                   AlertDialog(
+                                                                    backgroundColor: Theme.of(context).brightness ==
+                                                                            Brightness.dark
+                                                                        ? themeColorDarkMode
+                                                                        : bottomBannerColor,
                                                                     title:
                                                                         MyText(
                                                                       text: state

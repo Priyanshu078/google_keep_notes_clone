@@ -6,6 +6,7 @@ import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/pages/homepage.dart';
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 import 'package:notes_app/utils/utilities.dart';
 import 'package:notes_app/widgets/mytext.dart';
 
@@ -36,7 +37,7 @@ class SignInPage extends StatelessWidget {
                 listener: (context, state) {
                   if (state is UserAuthenticated) {
                     context.read<NotesBloc>().add(FetchNotes(
-                          userId: 'priyanshupaliwal',
+                          userId: SharedPreferencesUtils.email!,
                           notes: true,
                           trashedNotes: false,
                           archivedNotes: false,

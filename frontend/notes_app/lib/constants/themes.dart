@@ -62,6 +62,16 @@ class MyThemes {
         fontSize: 20,
         fontWeight: FontWeight.normal,
       ),
+      titleMedium: GoogleFonts.notoSans(
+        color: Colors.black45,
+        fontSize: 10,
+        fontWeight: FontWeight.normal,
+      ),
+      titleLarge: GoogleFonts.notoSans(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
     ),
   );
   final darkTheme = ThemeData(
@@ -116,6 +126,16 @@ class MyThemes {
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.normal,
+        ),
+        titleMedium: GoogleFonts.notoSans(
+          color: Colors.white.withOpacity(0.9),
+          fontSize: 10,
+          fontWeight: FontWeight.normal,
+        ),
+        titleLarge: GoogleFonts.notoSans(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
       ),
       useMaterial3: true,

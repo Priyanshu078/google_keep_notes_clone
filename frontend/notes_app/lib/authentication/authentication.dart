@@ -55,4 +55,10 @@ class Authentication {
     }
     return null;
   }
+
+  Future<void> signOut() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.disconnect();
+    await FirebaseAuth.instance.signOut();
+  }
 }

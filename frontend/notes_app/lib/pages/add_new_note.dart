@@ -8,6 +8,7 @@ import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/search_bloc/search_event.dart';
 import 'package:notes_app/data/note.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 import 'package:notes_app/utils/utilities.dart';
 import 'package:notes_app/widgets/my_text_button.dart';
 import 'package:notes_app/widgets/mytext.dart';
@@ -298,7 +299,7 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                             } else {
                               Note newNote = state.note.copyWith(
                                 id: const Uuid().v1(),
-                                userid: "priyanshupaliwal",
+                                userid: SharedPreferencesUtils.email!,
                                 content: contentController.text,
                                 title: titleController.text,
                                 dateAdded: DateTime.now().toIso8601String(),
@@ -558,8 +559,10 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                                                           builder:
                                                               (_) =>
                                                                   AlertDialog(
-                                                                    backgroundColor:
-                                                                        textFieldBackgroundColor,
+                                                                    backgroundColor: Theme.of(context).brightness ==
+                                                                            Brightness.dark
+                                                                        ? themeColorDarkMode
+                                                                        : bottomBannerColor,
                                                                     title:
                                                                         MyText(
                                                                       text:

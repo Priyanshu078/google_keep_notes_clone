@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/constants/colors.dart';
+import 'package:notes_app/utils/shared_preferences_utils.dart';
 import 'package:notes_app/widgets/drawer_listtile.dart';
 import 'package:notes_app/widgets/mytext.dart';
 import 'package:notes_app/constants/themes.dart' as my_theme;
@@ -135,7 +136,7 @@ class MyDrawer extends StatelessWidget {
                         if (!state.homeNotesSelected) {
                           context.read<NotesBloc>().add(
                                 FetchNotes(
-                                  userId: 'priyanshupaliwal',
+                                  userId: SharedPreferencesUtils.email!,
                                   notes: true,
                                   trashedNotes: false,
                                   archivedNotes: false,
@@ -171,7 +172,7 @@ class MyDrawer extends StatelessWidget {
                                   archiveSearchOn: false));
                           context.read<NotesBloc>().add(
                                 FetchNotes(
-                                  userId: 'priyanshupaliwal',
+                                  userId: SharedPreferencesUtils.email!,
                                   notes: false,
                                   trashedNotes: false,
                                   archivedNotes: true,
@@ -204,7 +205,7 @@ class MyDrawer extends StatelessWidget {
                         if (!state.trashSelected) {
                           context.read<NotesBloc>().add(
                                 FetchNotes(
-                                  userId: 'priyanshupaliwal',
+                                  userId: SharedPreferencesUtils.email!,
                                   notes: false,
                                   trashedNotes: true,
                                   archivedNotes: false,
@@ -239,6 +240,11 @@ class MyDrawer extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
+                                    backgroundColor:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? themeColorDarkMode
+                                            : bottomBannerColor,
                                     title: MyText(
                                       text: "Choose Theme",
                                       textStyle: Theme.of(context)

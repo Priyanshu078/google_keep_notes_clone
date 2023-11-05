@@ -25,6 +25,15 @@ class SharedPreferencesUtils {
     return ((imageUrl != null) && (name != null) && (email != null));
   }
 
+  static Future<void> clearData() async {
+    await instance!.remove("imageUrl");
+    imageUrl = null;
+    await instance!.remove("name");
+    name = null;
+    await instance!.remove("email");
+    email = null;
+  }
+
   static Future<void> setCredentials(
       String name, String email, String imageUrl) async {
     await instance!.setString("name", name);

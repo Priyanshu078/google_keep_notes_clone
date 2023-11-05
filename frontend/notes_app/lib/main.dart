@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
               ? (context) => NotesBloc()
                 ..add(
                   FetchNotes(
-                    userId: 'priyanshupaliwal',
+                    userId: SharedPreferencesUtils.email!,
                     notes: true,
                     trashedNotes: false,
                     archivedNotes: false,
@@ -51,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SearchBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AuthenticationCubit(),
         )
       ],
       child: BlocBuilder<NotesBloc, NotesStates>(
@@ -65,12 +68,8 @@ class MyApp extends StatelessWidget {
                 : state.theme == my_theme.Theme.lightMode
                     ? ThemeMode.light
                     : ThemeMode.dark,
-            home: credentialsAvailable
-                ? const MyHomePage()
-                : BlocProvider(
-                    create: (context) => AuthenticationCubit(),
-                    child: const SignInPage(),
-                  ),
+            home:
+                credentialsAvailable ? const MyHomePage() : const SignInPage(),
           );
         },
       ),

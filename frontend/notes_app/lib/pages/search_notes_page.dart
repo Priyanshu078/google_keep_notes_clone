@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/authentication/signin_page.dart';
 import 'package:notes_app/blocs%20and%20cubits/addnotes_cubit/addnotes_cubit.dart';
+import 'package:notes_app/blocs%20and%20cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_bloc.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_event.dart';
 import 'package:notes_app/blocs%20and%20cubits/notes_bloc/notes_states.dart';
@@ -11,8 +13,11 @@ import 'package:notes_app/constants/colors.dart';
 import 'package:notes_app/blocs and cubits/search_bloc/search_state.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/utils/shared_preferences_utils.dart';
+import 'package:notes_app/utils/utilities.dart';
 import 'package:notes_app/widgets/my_note.dart';
 import 'package:notes_app/widgets/mytext.dart';
+
+import '../blocs and cubits/authentication_cubit/authentication_states.dart';
 
 class SearchNotesPage extends StatelessWidget {
   const SearchNotesPage({
@@ -169,6 +174,11 @@ class SearchNotesPage extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
+                                      backgroundColor:
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? themeColorDarkMode
+                                              : bottomBannerColor,
                                       title: MyText(
                                         text: "Note Color",
                                         textStyle: Theme.of(context)
@@ -325,12 +335,95 @@ class SearchNotesPage extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        backgroundColor:
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? themeColorDarkMode
+                                                : bottomBannerColor,
+                                        title: ListTile(
+                                          minLeadingWidth: 0,
+                                          contentPadding: EdgeInsets.zero,
+                                          leading: CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                SharedPreferencesUtils
+                                                    .imageUrl!),
+                                          ),
+                                          title: MyText(
+                                            text: SharedPreferencesUtils.name!,
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge,
+                                          ),
+                                          subtitle: MyText(
+                                            text: SharedPreferencesUtils.email!,
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                        ),
+                                        content: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            BlocConsumer<AuthenticationCubit,
+                                                AuthenticationStates>(
+                                              listener: (context, state) {
+                                                if (state
+                                                    is AuthenticationInitial) {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const SignInPage()));
+                                                } else if (state
+                                                    is AuthenticationErrorState) {
+                                                  Utilities().showSnackBar(
+                                                      context,
+                                                      "Please try again !!!");
+                                                }
+                                              },
+                                              builder: (context, state) {
+                                                return state
+                                                        is AuthenticationLoading
+                                                    ? CircularProgressIndicator(
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.dark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        strokeWidth: 2,
+                                                      )
+                                                    : ElevatedButton(
+                                                        onPressed: () {
+                                                          context
+                                                              .read<
+                                                                  AuthenticationCubit>()
+                                                              .signOutWithGoogle();
+                                                        },
+                                                        child: MyText(
+                                                          text: "Sign out",
+                                                          textStyle:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleLarge,
+                                                        ),
+                                                      );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ));
+                            },
                             child: CircleAvatar(
                               radius: 15,
                               backgroundImage: NetworkImage(
-                                  SharedPreferencesUtils.instance!
-                                      .getString("imageUrl")!),
+                                  SharedPreferencesUtils.imageUrl!),
                             ),
                           ),
                         )
