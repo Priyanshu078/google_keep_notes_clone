@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/data/note.dart';
 
 class ApiService {
-  String baseUrl = "https://google-keep-notes-backend-vx39.vercel.app/api";
+  String baseUrl = "https://google-keep-eaxq.onrender.com";
   final dio = Dio();
 
   Future<void> emptyTrash() async {
@@ -28,7 +28,6 @@ class ApiService {
             maxRedirects: 0,
             validateStatus: (status) => status! < 500,
           ));
-      print(response.data);
       List<Note> pinnedNotes = (response.data['pinned'] as List<dynamic>)
           .map((element) => Note.fromJson(element))
           .toList();

@@ -6,20 +6,23 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 
+const notesRoute = require('./routes/notes')
+
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
 
-// connecting mongoose database
-mongoose
-  .connect(
-    "mongodb+srv://priyanshupaliwal:Pass%401234@cluster0.fcfkqqb.mongodb.net/?retryWrites=true&w=majority"
-  )
-  .then(() => {
-    console.log("connected to MongoDB database");
-    app.use('/api', require('./routes/notes'));
-  });
+
+app.use('/', notesRoute);
 
 // listening to the port 
 app.listen(PORT, () =>{
   console.log(`Listening to PORT: ${PORT}`);
+  // connecting mongoose database
+  mongoose
+    .connect(
+      "mongodb+srv://priyanshupaliwal:Pass%401234@cluster0.fcfkqqb.mongodb.net/?retryWrites=true&w=majority"
+    )
+    .then(() => {
+      console.log("connected to MongoDB database");
+    });
 });
