@@ -1,4 +1,4 @@
 /backend/node_modules
 
 /frontend/notes_app/lib/firebase_options.dart
-frontend\notes_app\lib\firebase_options.dart
+\frontend\notes_app\lib\firebase_options.dart
