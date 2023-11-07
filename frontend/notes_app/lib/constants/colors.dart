@@ -10,7 +10,8 @@ Color rippleColor = const Color(0xffe6eef9);
 Color lightModeSelectedColor = const Color(0xffc3e7ff);
 Color darkModeSelectedColor = const Color(0xff374955);
 Color selectedTextColor = const Color(0xff124b99);
-Color selectedBorderColor = const Color(0xff00658b);
+Color selectedBorderColorLightMode = const Color(0xff00658b);
+Color selectedBorderColorDarkMode = const Color(0xff77cffe);
 Color darkModeScaffoldColor = const Color(0xff181c1f);
 Color themeColorDarkMode = const Color(0xff1f282d);
 

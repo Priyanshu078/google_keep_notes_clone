@@ -160,7 +160,11 @@ class NotesViewTrashArchived extends StatelessWidget {
                                           ? state.archivedNotes[index].selected
                                           : state.trashNotes[index].selected)
                                       ? Border.all(
-                                          color: selectedBorderColor, width: 3)
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? selectedBorderColorDarkMode
+                                              : selectedBorderColorLightMode,
+                                          width: 3)
                                       : (inArchivedNotes
                                                   ? state.archivedNotes[index]
                                                       .colorIndex
@@ -254,7 +258,11 @@ class NotesViewTrashArchived extends StatelessWidget {
                                                 .archivedNotes[index].selected
                                             : state.trashNotes[index].selected)
                                         ? Border.all(
-                                            color: selectedBorderColor,
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? selectedBorderColorDarkMode
+                                                : selectedBorderColorLightMode,
                                             width: 3)
                                         : (inArchivedNotes
                                                     ? state.archivedNotes[index]

@@ -161,7 +161,11 @@ class NotesViewHome extends StatelessWidget {
                                   ),
                                   border: state.pinnedNotes[index].selected
                                       ? Border.all(
-                                          color: selectedBorderColor, width: 3)
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? selectedBorderColorDarkMode
+                                              : selectedBorderColorLightMode,
+                                          width: 3)
                                       : (state.pinnedNotes[index].colorIndex) ==
                                               0
                                           ? Border.all(color: Colors.grey)
@@ -234,7 +238,11 @@ class NotesViewHome extends StatelessWidget {
                                       state.otherNotes[index].colorIndex),
                                   border: state.otherNotes[index].selected
                                       ? Border.all(
-                                          color: selectedBorderColor, width: 3)
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? selectedBorderColorDarkMode
+                                              : selectedBorderColorLightMode,
+                                          width: 3)
                                       : (state.otherNotes[index].colorIndex) ==
                                               0
                                           ? Border.all(color: Colors.grey)
@@ -300,7 +308,11 @@ class NotesViewHome extends StatelessWidget {
                                     state.pinnedNotes[index].colorIndex),
                                 border: state.pinnedNotes[index].selected
                                     ? Border.all(
-                                        color: selectedBorderColor, width: 3)
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? selectedBorderColorDarkMode
+                                            : selectedBorderColorLightMode,
+                                        width: 3)
                                     : (state.pinnedNotes[index].colorIndex) == 0
                                         ? Border.all(color: Colors.grey)
                                         : null,
@@ -367,7 +379,11 @@ class NotesViewHome extends StatelessWidget {
                                     state.otherNotes[index].colorIndex),
                                 border: state.otherNotes[index].selected
                                     ? Border.all(
-                                        color: selectedBorderColor, width: 3)
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? selectedBorderColorDarkMode
+                                            : selectedBorderColorLightMode,
+                                        width: 3)
                                     : (state.otherNotes[index].colorIndex) == 0
                                         ? Border.all(color: Colors.grey)
                                         : null,
