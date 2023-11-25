@@ -331,7 +331,7 @@ class SearchNotesPage extends StatelessWidget {
                             );
                           },
                         ),
-                  notesState.homeNotesSelected
+                  (notesState.homeNotesSelected && notesState is! NotesSelected)
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: GestureDetector(
