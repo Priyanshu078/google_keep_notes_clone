@@ -288,7 +288,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ? IconButton(
                                           onPressed: () {
                                             showMenu(
-                                                color: textFieldBackgroundColor,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? themeColorDarkMode
+                                                    : textFieldBackgroundColor,
                                                 context: context,
                                                 position:
                                                     const RelativeRect.fromLTRB(
@@ -444,7 +448,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return state.homeNotesSelected
                       ? Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 9.0, right: 14.5),
+                              const EdgeInsets.only(bottom: 9.0, right: 22),
                           child: FloatingActionButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
