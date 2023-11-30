@@ -18,8 +18,8 @@ import '../blocs and cubits/addnotes_cubit/addnotes_states.dart';
 import '../blocs and cubits/notes_bloc/notes_states.dart';
 import '../constants/colors.dart';
 
-class AddNewWidgetPage extends StatefulWidget {
-  const AddNewWidgetPage({
+class AddNewNotePage extends StatefulWidget {
+  const AddNewNotePage({
     super.key,
     required this.isUpdate,
     required this.isArchiveUpdate,
@@ -34,10 +34,10 @@ class AddNewWidgetPage extends StatefulWidget {
   final bool isSearchUpdate;
 
   @override
-  State<AddNewWidgetPage> createState() => _AddNewWidgetPageState();
+  State<AddNewNotePage> createState() => _AddNewWidgetPageState();
 }
 
-class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
+class _AddNewWidgetPageState extends State<AddNewNotePage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final _utilities = Utilities();
@@ -481,12 +481,8 @@ class _AddNewWidgetPageState extends State<AddNewWidgetPage> {
                         onPressed: () {
                           showModalBottomSheet(
                               context: context,
-                              builder: (_) => MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider.value(
-                                        value: context.read<AddNotesCubit>(),
-                                      ),
-                                    ],
+                              builder: (_) => BlocProvider.value(
+                                    value: context.read<AddNotesCubit>(),
                                     child: BlocBuilder<AddNotesCubit,
                                         AddNotesState>(
                                       builder: (context, state) {

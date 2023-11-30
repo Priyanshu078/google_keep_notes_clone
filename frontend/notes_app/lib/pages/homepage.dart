@@ -463,7 +463,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           value: context.read<NotesBloc>(),
                                         ),
                                       ],
-                                      child: const AddNewWidgetPage(
+                                      child: const AddNewNotePage(
                                         isUpdate: false,
                                         isArchiveUpdate: false,
                                         pinnedNote: false,

@@ -38,7 +38,7 @@ class NotesViewTrashArchived extends StatelessWidget {
                       inArchive: inArchivedNotes,
                     ))
             ],
-            child: AddNewWidgetPage(
+            child: AddNewNotePage(
               isUpdate: false,
               isArchiveUpdate: true,
               note: inArchivedNotes

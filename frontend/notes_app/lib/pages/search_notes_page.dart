@@ -50,7 +50,7 @@ class SearchNotesPage extends StatelessWidget {
                       inArchive: !state.homeNotes,
                     ))
             ],
-            child: AddNewWidgetPage(
+            child: AddNewNotePage(
               isUpdate: state.homeNotes,
               isArchiveUpdate: !state.homeNotes,
               note: state.searchedNotes[index],
@@ -487,7 +487,9 @@ class SearchNotesPage extends StatelessWidget {
                       : Container(
                           height: height,
                           width: width,
-                          color: Colors.white,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? darkModeScaffoldColor
+                              : Colors.white,
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 8.0),

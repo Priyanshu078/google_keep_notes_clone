@@ -35,7 +35,7 @@ class NotesViewHome extends StatelessWidget {
                       inArchive: false,
                     ))
             ],
-            child: AddNewWidgetPage(
+            child: AddNewNotePage(
               isUpdate: true,
               isArchiveUpdate: false,
               note: pinnedNotes
