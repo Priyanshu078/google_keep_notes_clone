@@ -198,20 +198,37 @@ class NotesViewHome extends StatelessWidget {
                                   height: height * 0.01,
                                 )
                               : Container(),
-                          GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: state.otherNotes.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: height * 0.065,
                             ),
-                            itemBuilder: ((_, index) {
-                              return MyNote(
-                                  onTap: () {
-                                    if (state is NotesSelected) {
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: state.otherNotes.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                              ),
+                              itemBuilder: ((_, index) {
+                                return MyNote(
+                                    onTap: () {
+                                      if (state is NotesSelected) {
+                                        context
+                                            .read<NotesBloc>()
+                                            .add(SelectNoteEvent(
+                                              note: state.otherNotes[index],
+                                              homeNotes: true,
+                                              archivedNotes: false,
+                                              trashNotes: false,
+                                            ));
+                                      } else {
+                                        moveToUpdatePage(context, index, false);
+                                      }
+                                    },
+                                    onLongPress: () {
                                       context
                                           .read<NotesBloc>()
                                           .add(SelectNoteEvent(
@@ -220,37 +237,28 @@ class NotesViewHome extends StatelessWidget {
                                             archivedNotes: false,
                                             trashNotes: false,
                                           ));
-                                    } else {
-                                      moveToUpdatePage(context, index, false);
-                                    }
-                                  },
-                                  onLongPress: () {
-                                    context
-                                        .read<NotesBloc>()
-                                        .add(SelectNoteEvent(
-                                          note: state.otherNotes[index],
-                                          homeNotes: true,
-                                          archivedNotes: false,
-                                          trashNotes: false,
-                                        ));
-                                  },
-                                  color: getColor(context, state,
-                                      state.otherNotes[index].colorIndex),
-                                  border: state.otherNotes[index].selected
-                                      ? Border.all(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? selectedBorderColorDarkMode
-                                              : selectedBorderColorLightMode,
-                                          width: 3)
-                                      : (state.otherNotes[index].colorIndex) ==
-                                              0
-                                          ? Border.all(color: Colors.grey)
-                                          : null,
-                                  titleText: state.otherNotes[index].title,
-                                  contentText: state.otherNotes[index].content,
-                                  height: height);
-                            }),
+                                    },
+                                    color: getColor(context, state,
+                                        state.otherNotes[index].colorIndex),
+                                    border: state.otherNotes[index].selected
+                                        ? Border.all(
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? selectedBorderColorDarkMode
+                                                : selectedBorderColorLightMode,
+                                            width: 3)
+                                        : (state.otherNotes[index]
+                                                    .colorIndex) ==
+                                                0
+                                            ? Border.all(color: Colors.grey)
+                                            : null,
+                                    titleText: state.otherNotes[index].title,
+                                    contentText:
+                                        state.otherNotes[index].content,
+                                    height: height);
+                              }),
+                            ),
                           ),
                         ],
                       ),
@@ -345,16 +353,32 @@ class NotesViewHome extends StatelessWidget {
                               height: height * 0.01,
                             )
                           : Container(),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.otherNotes.length,
-                        itemBuilder: ((_, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
-                            child: MyNote(
-                                onTap: () {
-                                  if (state is NotesSelected) {
+                      Padding(
+                        padding: EdgeInsets.only(bottom: height * 0.065),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.otherNotes.length,
+                          itemBuilder: ((_, index) {
+                            return Padding(
+                              padding:
+                                  EdgeInsets.only(top: index == 0 ? 0 : 8.0),
+                              child: MyNote(
+                                  onTap: () {
+                                    if (state is NotesSelected) {
+                                      context
+                                          .read<NotesBloc>()
+                                          .add(SelectNoteEvent(
+                                            note: state.otherNotes[index],
+                                            homeNotes: true,
+                                            archivedNotes: false,
+                                            trashNotes: false,
+                                          ));
+                                    } else {
+                                      moveToUpdatePage(context, index, false);
+                                    }
+                                  },
+                                  onLongPress: () {
                                     context
                                         .read<NotesBloc>()
                                         .add(SelectNoteEvent(
@@ -363,35 +387,26 @@ class NotesViewHome extends StatelessWidget {
                                           archivedNotes: false,
                                           trashNotes: false,
                                         ));
-                                  } else {
-                                    moveToUpdatePage(context, index, false);
-                                  }
-                                },
-                                onLongPress: () {
-                                  context.read<NotesBloc>().add(SelectNoteEvent(
-                                        note: state.otherNotes[index],
-                                        homeNotes: true,
-                                        archivedNotes: false,
-                                        trashNotes: false,
-                                      ));
-                                },
-                                color: getColor(context, state,
-                                    state.otherNotes[index].colorIndex),
-                                border: state.otherNotes[index].selected
-                                    ? Border.all(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? selectedBorderColorDarkMode
-                                            : selectedBorderColorLightMode,
-                                        width: 3)
-                                    : (state.otherNotes[index].colorIndex) == 0
-                                        ? Border.all(color: Colors.grey)
-                                        : null,
-                                titleText: state.otherNotes[index].title,
-                                contentText: state.otherNotes[index].content,
-                                height: height),
-                          );
-                        }),
+                                  },
+                                  color: getColor(context, state,
+                                      state.otherNotes[index].colorIndex),
+                                  border: state.otherNotes[index].selected
+                                      ? Border.all(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? selectedBorderColorDarkMode
+                                              : selectedBorderColorLightMode,
+                                          width: 3)
+                                      : (state.otherNotes[index].colorIndex) ==
+                                              0
+                                          ? Border.all(color: Colors.grey)
+                                          : null,
+                                  titleText: state.otherNotes[index].title,
+                                  contentText: state.otherNotes[index].content,
+                                  height: height),
+                            );
+                          }),
+                        ),
                       ),
                     ]));
     });
