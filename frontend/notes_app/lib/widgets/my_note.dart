@@ -38,20 +38,17 @@ class MyNote extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MyText(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  text: titleText,
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .displayLarge,),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                text: titleText,
+                textStyle: Theme.of(context).textTheme.displayLarge,
+              ),
               SizedBox(
                 height: height * 0.01,
               ),
               MyText(
                 text: contentText,
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .displayMedium,
+                textStyle: Theme.of(context).textTheme.displayMedium,
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
               )

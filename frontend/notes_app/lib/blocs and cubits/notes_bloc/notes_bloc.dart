@@ -635,7 +635,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
         selectedOtherNotes: const [],
       ));
     } else if (event.forArchive) {
-      List<Note> notes = event.note.pinned
+      List<Note> notes = event.homeNotePinned
           ? List.from(state.pinnedNotes)
           : List.from(state.otherNotes);
       int index = notes.indexWhere((element) => element.id == event.note.id);
@@ -646,8 +646,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
       archivedNotes.add(note);
       archivedNotes = sortNotes(archivedNotes);
       emit(NotesArchived(
-        pinnedNotes: event.note.pinned ? notes : state.pinnedNotes,
-        otherNotes: !event.note.pinned ? notes : state.otherNotes,
+        pinnedNotes: event.homeNotePinned ? notes : state.pinnedNotes,
+        otherNotes: !event.homeNotePinned ? notes : state.otherNotes,
         gridViewMode: state.gridViewMode,
         theme: state.theme,
         homeNotesSelected: state.homeNotesSelected,
@@ -960,16 +960,24 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     List<Note> notesList = List.from(event.notesList);
     List<Note> pinnedNotes = List.from(state.pinnedNotes);
     List<Note> otherNotes = List.from(state.otherNotes);
+    List<Note> archivedNotes = List.from(state.archivedNotes);
     for (int i = 0; i < notesList.length; i++) {
-      if (notesList[i].pinned) {
-        int index =
-            pinnedNotes.indexWhere((element) => element.id == notesList[i].id);
-        pinnedNotes[index] = pinnedNotes[index]
-            .copyWith(colorIndex: event.colorIndex, selected: false);
+      if (state.homeNotesSelected) {
+        if (notesList[i].pinned) {
+          int index = pinnedNotes
+              .indexWhere((element) => element.id == notesList[i].id);
+          pinnedNotes[index] = pinnedNotes[index]
+              .copyWith(colorIndex: event.colorIndex, selected: false);
+        } else {
+          int index =
+              otherNotes.indexWhere((element) => element.id == notesList[i].id);
+          otherNotes[index] = otherNotes[index]
+              .copyWith(colorIndex: event.colorIndex, selected: false);
+        }
       } else {
-        int index =
-            otherNotes.indexWhere((element) => element.id == notesList[i].id);
-        otherNotes[index] = otherNotes[index]
+        int index = archivedNotes
+            .indexWhere((element) => element.id == notesList[i].id);
+        archivedNotes[index] = archivedNotes[index]
             .copyWith(colorIndex: event.colorIndex, selected: false);
       }
       notesList[i] = notesList[i].copyWith(
@@ -979,15 +987,16 @@ class NotesBloc extends Bloc<NotesEvent, NotesStates> {
     }
     await _apiService.bulkUpdateNotes(notesList);
     emit(NotesStates(
-        pinnedNotes: pinnedNotes,
-        otherNotes: otherNotes,
+        pinnedNotes: state.homeNotesSelected ? pinnedNotes : state.pinnedNotes,
+        otherNotes: state.homeNotesSelected ? otherNotes : state.otherNotes,
         gridViewMode: state.gridViewMode,
         theme: state.theme,
         homeNotesSelected: state.homeNotesSelected,
         archiveSelected: state.archiveSelected,
         trashSelected: state.trashSelected,
         trashNotes: state.trashNotes,
-        archivedNotes: state.archivedNotes,
+        archivedNotes:
+            state.archiveSelected ? archivedNotes : state.archivedNotes,
         archiveSearchOn: state.archiveSearchOn,
         homeSearchOn: state.homeSearchOn,
         selectedNotes: const [],
