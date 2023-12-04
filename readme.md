@@ -10,11 +10,14 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/1365a234-288a-471d-8921-0d185e522fea"  width="150" height="300" >
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/901a0b91-90c6-439a-b102-8bbbc430d690"  width="150" height="300" >
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/f8ebeeb5-2622-47a2-bb7b-191ef96c9d56"  width="150" height="300" >
+  <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e9fc7a2d-e614-499d-b95a-a0c0abe1fdb9"  width="150" height="300" >
 
    #### Dark Mode
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/289a47cb-673e-4d75-9cc6-b1762b1e639f"  width="150" height="300" >
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/5ca03172-4de7-4620-a15c-18457a775cc5"  width="150" height="300" >
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a9aed818-bb42-444b-9368-f9d85724e8d2"  width="150" height="300" >
+  <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/73302b9d-f8e5-4101-81c7-4a0174da3b14"  width="150" height="300" >
+
 
 ### Active Notes
 #### Light Mode
