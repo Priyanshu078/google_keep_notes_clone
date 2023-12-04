@@ -20,10 +20,11 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 
 ### Active Notes
-#### Light Mode
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d866525e-5b21-41bd-b55d-1378013ca8c1"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d61ce547-c1a9-4ef8-95f5-f1f4148c196f"  width="150" height="300" >
 
-![IMG-20231204-WA0059](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d866525e-5b21-41bd-b55d-1378013ca8c1)
-![IMG-20231204-WA0061](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d61ce547-c1a9-4ef8-95f5-f1f4148c196f)
+### Archive Notes
+
 
 ### I have used bloc for state management.
 
