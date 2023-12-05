@@ -44,11 +44,11 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 
 ### Archive Notes
-![IMG-20231204-WA0037](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/81f1d800-110c-46b4-bb84-fe454dc98984)
-![IMG-20231204-WA0038](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/0b33625a-03da-4c02-8dd6-68c1783fff7c)
-![IMG-20231204-WA0045](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/b4a2b570-02e3-459d-a88e-8d6b2696954f)
-![IMG-20231204-WA0044](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a18ffe35-8f74-439d-8964-2d7a324b246e)
-![IMG-20231204-WA0043](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/41c30f4c-b1b5-4445-9a41-edc51754b1b7)
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/81f1d800-110c-46b4-bb84-fe454dc98984"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/0b33625a-03da-4c02-8dd6-68c1783fff7c"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/b4a2b570-02e3-459d-a88e-8d6b2696954f"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a18ffe35-8f74-439d-8964-2d7a324b246e"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/41c30f4c-b1b5-4445-9a41-edc51754b1b7"  width="150" height="300" >
 
 ### Searching Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9"  width="150" height="300" >
