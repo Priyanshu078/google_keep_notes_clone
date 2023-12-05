@@ -42,10 +42,10 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d61ce547-c1a9-4ef8-95f5-f1f4148c196f"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/61328b01-0c7a-4ca2-824d-67fa4555b781"  width="150" height="300" >
 
-![IMG-20231204-WA0039](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c2fc25cf-2a8d-49f1-8dba-6a06d8beb5d8)
-![IMG-20231204-WA0042](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/6ec9981c-f5cf-48be-8a0f-0811dde44d29)
-![IMG-20231204-WA0041](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/5d9d57a3-f0e4-4d12-9a5b-ba257ef6a0e3)
-![IMG-20231204-WA0040](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a17331ef-4bf1-434d-bdf8-9d80a31a7a98)
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c2fc25cf-2a8d-49f1-8dba-6a06d8beb5d8"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/6ec9981c-f5cf-48be-8a0f-0811dde44d29"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/5d9d57a3-f0e4-4d12-9a5b-ba257ef6a0e3"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a17331ef-4bf1-434d-bdf8-9d80a31a7a98"  width="150" height="300" >
 
 ### Archive Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/81f1d800-110c-46b4-bb84-fe454dc98984"  width="150" height="300" >
@@ -63,9 +63,6 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a7e8ca15-39eb-474c-887e-96b7b84c2165"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e2c3addd-4751-4965-b18f-c9538daec330"  width="150" height="300" >
 
-
-
-### Searching Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3a6ce9c3-ecc4-4379-afbe-c5149b01e60d"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3e2564d9-06a4-4c59-926d-409708ecd1e0"  width="150" height="300" >
