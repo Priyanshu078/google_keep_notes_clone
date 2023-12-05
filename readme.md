@@ -5,6 +5,20 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 ## Features
 
+  1. Adding new Notes with its title and description.
+  2. You can change the color of the notes.
+  3. Pin / Unpin Notes while saving and after saving Notes.
+  4. Updating Notes after saving them.
+  5. Moving notes to Archives.
+  6. Moving notes to trash.
+  7. Restoring trashed and archived Notes.
+  8. Completely deleting Notes from Trash
+  9. Empty trash at once.
+  10. Grid view and List view for the notes.
+  11. Dark Mode, Light Mode and System Default theme options.
+  12. Google Signin to get only those notes which you added using the signed in email id.
+  13. Searching notes functionality.
+
 ## Snaps
 
 ### Empty Notes
@@ -21,7 +35,7 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
   <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/73302b9d-f8e5-4101-81c7-4a0174da3b14"  width="150" height="300" >
 
 
-### Active Notes
+### Current Active Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d866525e-5b21-41bd-b55d-1378013ca8c1"  width="150" height="300" >
 
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/bc2005c5-db9e-434e-826a-61e603f7f94c"  width="150" height="300" >
@@ -32,6 +46,8 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 
 ### Archive Notes
+
+
 
 
 ### I have used bloc for state management.
