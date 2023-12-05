@@ -64,7 +64,6 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e2c3addd-4751-4965-b18f-c9538daec330"  width="150" height="300" >
 
 ### Searching Notes
-
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3a6ce9c3-ecc4-4379-afbe-c5149b01e60d"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3e2564d9-06a4-4c59-926d-409708ecd1e0"  width="150" height="300" >
@@ -76,3 +75,16 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/1d866347-2b21-4ba8-a77e-b96526861a40"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c89748bd-e764-43c8-b788-7c97f9786da1"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e62c9f92-b78a-4211-a804-552878864484"  width="150" height="300" >
+
+### Saving, Updating, Restoring Notes
+![IMG-20231204-WA0024](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/46151c2b-a2a8-4a81-85fc-70978c07874f)
+![IMG-20231204-WA0023](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/b2d4572a-5831-47c2-b911-f03ea8a73686)
+![IMG-20231204-WA0022](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/74c64d79-13aa-4fb7-b9aa-965a9ffd7764)
+![IMG-20231204-WA0021](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/03a78de0-0823-4a0b-a3a1-042499b2b66d)
+![IMG-20231204-WA0029](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/44e7bdb0-9900-4e49-ab48-eb2f2169cabd)
+![IMG-20231204-WA0028](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c056d919-be86-4e38-826b-b8163a0eb104)
+![IMG-20231204-WA0027](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/81c487e2-30c2-4d05-ba7e-95f4c7b6fb41)
+![IMG-20231204-WA0026](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/cf53fe31-855f-4add-ace5-478a9f82b3e7)
+![IMG-20231204-WA0025](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/4944e1d9-2b72-428b-8d5d-18454b65f12b)
+
+
