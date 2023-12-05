@@ -1,6 +1,14 @@
 # Google Keep Notes Clone
 This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bloc for State Management.
 
+##Note: 
+Apk Link:- 
+The backend of the app is hosted on a free hosting platform render.com 
+So it takes around 30 seconds to spin up the backend.
+If you face loading issue after starting the app, 
+wait for 30-40 seconds then it will work properly.
+
+
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/748bd2e0-ee45-49f3-8dbf-b346c2b86548"  width="400" height="350" >
 
 ## Features
