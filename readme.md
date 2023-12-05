@@ -56,7 +56,7 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/2b553244-85fe-4979-b079-d9074968066e"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/34900be1-d517-4167-a04a-7f8303a8aa3c"  width="150" height="300" >
 
-### drawer Ui
-![IMG-20231204-WA0054](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/1d866347-2b21-4ba8-a77e-b96526861a40)
-![IMG-20231204-WA0055](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c89748bd-e764-43c8-b788-7c97f9786da1)
-![IMG-20231204-WA0056](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e62c9f92-b78a-4211-a804-552878864484)
+### drawer ui
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/1d866347-2b21-4ba8-a77e-b96526861a40"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/c89748bd-e764-43c8-b788-7c97f9786da1"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e62c9f92-b78a-4211-a804-552878864484"  width="150" height="300" >
