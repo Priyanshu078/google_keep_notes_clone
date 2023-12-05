@@ -18,6 +18,7 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
   11. Dark Mode, Light Mode and System Default theme options.
   12. Google Signin to get only those notes which you added using the signed in email id.
   13. Searching notes functionality.
+  14. Selecting multiple notes and moving to archive or trash or restoring them.
 
 ## Snaps
 
@@ -46,10 +47,3 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 
 ### Archive Notes
-
-
-
-
-### I have used bloc for state management.
-
-#### It is now under development, only 1-2 features are left and will be completed this week.
