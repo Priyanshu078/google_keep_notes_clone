@@ -49,16 +49,16 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/b4a2b570-02e3-459d-a88e-8d6b2696954f"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a18ffe35-8f74-439d-8964-2d7a324b246e"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/41c30f4c-b1b5-4445-9a41-edc51754b1b7"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/78f52306-e859-405a-bd2a-f5905f1a2f26"  width="150" height="300" >
 
 ### Trash Notes
-![IMG-20231204-WA0031](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/88b2fa72-d585-4680-93d8-adab440cb855)
-![IMG-20231204-WA0030](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/204f1d23-dcee-472b-bb21-79bd7211192f)
-![IMG-20231204-WA0036](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/ed2f0a48-3164-49c1-a9b8-f679e9db1c4c)
-![IMG-20231204-WA0035](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/47921928-5263-4b80-acec-4b8ad1fbd1de)
-![IMG-20231204-WA0034](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d4196ef4-2014-4d19-87cb-9683f3cd53ae)
-![IMG-20231204-WA0033](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a7e8ca15-39eb-474c-887e-96b7b84c2165)
-![IMG-20231204-WA0032](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e2c3addd-4751-4965-b18f-c9538daec330)
-![IMG-20231204-WA0047](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/78f52306-e859-405a-bd2a-f5905f1a2f26)
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/88b2fa72-d585-4680-93d8-adab440cb855"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/204f1d23-dcee-472b-bb21-79bd7211192f"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/47921928-5263-4b80-acec-4b8ad1fbd1de"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d4196ef4-2014-4d19-87cb-9683f3cd53ae"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a7e8ca15-39eb-474c-887e-96b7b84c2165"  width="150" height="300" >
+<image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e2c3addd-4751-4965-b18f-c9538daec330"  width="150" height="300" >
+
 
 
 ### Searching Notes
