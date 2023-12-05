@@ -63,6 +63,8 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a7e8ca15-39eb-474c-887e-96b7b84c2165"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/e2c3addd-4751-4965-b18f-c9538daec330"  width="150" height="300" >
 
+### Searching Notes
+
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3a6ce9c3-ecc4-4379-afbe-c5149b01e60d"  width="150" height="300" >
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3e2564d9-06a4-4c59-926d-409708ecd1e0"  width="150" height="300" >
