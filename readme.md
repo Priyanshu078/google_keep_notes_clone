@@ -16,7 +16,7 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
   9. Empty trash at once.
   10. Grid view and List view for the notes.
   11. Dark Mode, Light Mode, and System Default theme options.
-  12. Google Sign in to get only those notes that you added using the signed-in email id.
+  12. Google Sign in to get only those notes that you added using the signed-in email ID.
   13. Searching notes functionality.
   14. Select multiple notes and move to archive trash or restore them.
 
@@ -38,15 +38,17 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 ### Current Active Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d866525e-5b21-41bd-b55d-1378013ca8c1"  width="150" height="300" >
-
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/bc2005c5-db9e-434e-826a-61e603f7f94c"  width="150" height="300" >
-
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/d61ce547-c1a9-4ef8-95f5-f1f4148c196f"  width="150" height="300" >
-
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/61328b01-0c7a-4ca2-824d-67fa4555b781"  width="150" height="300" >
 
 
 ### Archive Notes
+![IMG-20231204-WA0037](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/81f1d800-110c-46b4-bb84-fe454dc98984)
+![IMG-20231204-WA0038](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/0b33625a-03da-4c02-8dd6-68c1783fff7c)
+![IMG-20231204-WA0045](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/b4a2b570-02e3-459d-a88e-8d6b2696954f)
+![IMG-20231204-WA0044](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/a18ffe35-8f74-439d-8964-2d7a324b246e)
+![IMG-20231204-WA0043](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/41c30f4c-b1b5-4445-9a41-edc51754b1b7)
 
 ### Searching Notes
 <image src="https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9"  width="150" height="300" >
