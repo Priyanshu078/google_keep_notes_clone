@@ -15,10 +15,10 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
   8. Completely deleting Notes from Trash
   9. Empty trash at once.
   10. Grid view and List view for the notes.
-  11. Dark Mode, Light Mode and System Default theme options.
-  12. Google Signin to get only those notes which you added using the signed in email id.
+  11. Dark Mode, Light Mode, and System Default theme options.
+  12. Google Sign in to get only those notes that you added using the signed-in email id.
   13. Searching notes functionality.
-  14. Selecting multiple notes and moving to archive or trash or restoring them.
+  14. Select multiple notes and move to archive trash or restore them.
 
 ## Snaps
 
@@ -47,3 +47,13 @@ This is a Google Keep Notes Clone developed using Flutter and Nodejs and used Bl
 
 
 ### Archive Notes
+
+### Searching Notes
+![IMG-20231204-WA0019](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/77c6605e-94da-4654-a0f4-b3605cf901b9)
+
+![IMG-20231204-WA0020](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3a6ce9c3-ecc4-4379-afbe-c5149b01e60d)
+
+![IMG-20231204-WA0016](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/3e2564d9-06a4-4c59-926d-409708ecd1e0)
+![IMG-20231204-WA0017](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/7b2dd1c6-fca7-488f-a9f4-932724a937d4)
+![IMG-20231204-WA0018](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/2b553244-85fe-4979-b079-d9074968066e)
+![IMG-20231204-WA0015](https://github.com/Priyanshu078/google_keep_notes_clone/assets/66347715/34900be1-d517-4167-a04a-7f8303a8aa3c)
