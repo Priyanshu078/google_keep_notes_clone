@@ -21,7 +21,6 @@ app.listen(PORT, () =>{
   mongoose
     .connect(
       // replace this with your own mongodb atlas connection url
-      "mongodb+srv://priyanshupaliwal:Pass%401234@cluster0.fcfkqqb.mongodb.net/?retryWrites=true&w=majority"
     )
     .then(() => {
       console.log("connected to MongoDB database");
